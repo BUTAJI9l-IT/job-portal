@@ -1,0 +1,47 @@
+#spring.datasource.url=jdbc:postgresql://localhost:5432/jobportal
+#spring.datasource.username=jobportal
+#spring.datasource.password=jobportal
+server:
+  port: {$PORT:8080}
+
+spring:
+  application:
+    name: jobportal
+  liquibase:
+    enabled: true
+    contexts: default
+    change-log: classpath:db/changelog/master.xml
+    drop-first: false
+  profiles:
+    include: doc
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      'hibernate.cache.use_second_level_cache': true
+      'hibernate.cache.region.factory_class': org.hibernate.cache.jcache.JCacheRegionFactory
+      'hibernate.cache.use_query_cache': true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/jobportal
+    username: jobportal
+    password: jobportal
+
+springdoc:
+  packages-to-scan:
+    - muni.fi.cz.jobportal.resource
+  api-docs:
+    resolve-schema-properties: true
+  writer-with-order-by-keys: true
+
+job-portal:
+  key-store:
+    key-store-password: KKLdv39i3EW
+    key-pair-name: keyPair
+    key-pair-password: SAui78gew8Y
+    location: classpath:/keypair
+    kid: kid
+  access-token:
+    duration: 1H
+  refresh-token:
+    duration: 7D
