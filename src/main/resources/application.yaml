@@ -1,8 +1,5 @@
-#spring.datasource.url=jdbc:postgresql://localhost:5432/jobportal
-#spring.datasource.username=jobportal
-#spring.datasource.password=jobportal
 server:
-  port: {$PORT:8080}
+  port: { $PORT:8080 }
 
 spring:
   application:

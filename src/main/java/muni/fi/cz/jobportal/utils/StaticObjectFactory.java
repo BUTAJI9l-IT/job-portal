@@ -7,6 +7,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 
 @Component
 public class StaticObjectFactory {
+
   private static final ZoneId ZONE = ZoneId.of("Europe/Prague");
 
   public Clock getClock() {

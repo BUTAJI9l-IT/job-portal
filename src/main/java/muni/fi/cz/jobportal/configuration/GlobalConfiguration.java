@@ -5,8 +5,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
 @EnableJpaRepositories(
-    enableDefaultTransactions = false,
-    basePackages = {"muni.fi.cz.jobportal.repository"}
+  enableDefaultTransactions = false,
+  basePackages = {"muni.fi.cz.jobportal.repository"}
 )
 public class GlobalConfiguration {
 
