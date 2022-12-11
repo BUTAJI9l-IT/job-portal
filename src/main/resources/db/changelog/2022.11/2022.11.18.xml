@@ -1,0 +1,168 @@
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+  <changeSet id="2022.11.18.01" author="vitalii.bortsov" context="default">
+    <renameTable oldTableName="positions" newTableName="job_positions"/>
+
+
+    <createTable tableName="experiences">
+      <column name="id" type="uuid">
+        <constraints primaryKey="true" primaryKeyName="pk_experiences"/>
+      </column>
+      <column name="company_id" type="uuid">
+        <constraints
+          nullable="true"
+          foreignKeyName="experience_company_fk"
+          referencedTableName="companies"
+          referencedColumnNames="id"/>
+      </column>
+      <column name="company_name" type="varchar(128)"/>
+      <column name="from" type="date"/>
+      <column name="to" type="date"/>
+      <column name="applicant_id" type="uuid">
+        <constraints
+          nullable="false"
+          foreignKeyName="experience_applicant_fk"
+          referencedTableName="applicants"
+          referencedColumnNames="id"/>
+      </column>
+    </createTable>
+
+    <createTable tableName="job_categories">
+      <column name="id" type="uuid">
+        <constraints primaryKey="true" primaryKeyName="pk_job_categories"/>
+      </column>
+      <column name="name" type="text">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+
+    <createTable tableName="position_category">
+      <column name="job_position" type="uuid">
+        <constraints
+          nullable="false"
+          foreignKeyName="position_category_position_fk"
+          referencedTableName="job_positions"
+          referencedColumnNames="id"/>
+      </column>
+      <column name="category" type="uuid">
+        <constraints
+          nullable="false"
+          foreignKeyName="position_category_category_fk"
+          referencedTableName="job_categories"
+          referencedColumnNames="id"/>
+      </column>
+    </createTable>
+
+    <createTable tableName="experience_category">
+      <column name="experience" type="uuid">
+        <constraints
+          nullable="false"
+          foreignKeyName="experience_category_experience_fk"
+          referencedTableName="experiences"
+          referencedColumnNames="id"/>
+      </column>
+      <column name="category" type="uuid">
+        <constraints
+          nullable="false"
+          foreignKeyName="experience_category_category_fk"
+          referencedTableName="job_categories"
+          referencedColumnNames="id"/>
+      </column>
+    </createTable>
+
+    <addColumn tableName="applicants">
+      <column name="country" type="varchar(128)"/>
+      <column name="state" type="varchar(128)"/>
+      <column name="city" type="varchar(128)"/>
+      <column name="profile" type="text"/>
+      <column name="user_id" type="uuid">
+        <constraints
+          nullable="false"
+          foreignKeyName="applicant_user_fk"
+          referencedTableName="jp_users"
+          referencedColumnNames="id"/>
+      </column>
+    </addColumn>
+
+    <addColumn tableName="applications">
+      <column name="state" type="varchar(15)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="date" type="timestamp">
+        <constraints nullable="false"/>
+      </column>
+      <column name="applicant" type="uuid">
+        <constraints
+          nullable="false"
+          foreignKeyName="application_applicant_fk"
+          referencedTableName="applicants"
+          referencedColumnNames="id"/>
+      </column>
+      <column name="job_position" type="uuid">
+        <constraints
+          nullable="false"
+          foreignKeyName="application_position_fk"
+          referencedTableName="job_positions"
+          referencedColumnNames="id"/>
+      </column>
+    </addColumn>
+
+    <addColumn tableName="companies">
+      <column name="cin" type="varchar(128)">
+        <constraints unique="true" nullable="false" uniqueConstraintName="company_cin"/>
+      </column>
+      <column name="company_name" type="varchar(128)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="company_link" type="varchar(128)"/>
+      <column name="user_id" type="uuid">
+        <constraints
+          nullable="false"
+          foreignKeyName="company_user_fk"
+          referencedTableName="jp_users"
+          referencedColumnNames="id"/>
+      </column>
+    </addColumn>
+
+    <addColumn tableName="job_positions">
+      <column name="status" type="varchar(15)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="position_name" type="text">
+        <constraints nullable="false"/>
+      </column>
+      <column name="country" type="varchar(128)"/>
+      <column name="state" type="varchar(128)"/>
+      <column name="city" type="varchar(128)"/>
+      <column name="company_id" type="uuid">
+        <constraints
+          nullable="false"
+          foreignKeyName="position_company_fk"
+          referencedTableName="companies"
+          referencedColumnNames="id"/>
+      </column>
+    </addColumn>
+
+    <addColumn tableName="jp_users">
+      <column name="name" type="varchar(128)"/>
+      <column name="last_name" type="varchar(128)"/>
+      <column name="applicant_id" type="uuid">
+        <constraints
+          foreignKeyName="user_applicant_fk"
+          referencedTableName="applicants"
+          referencedColumnNames="id"/>
+      </column>
+      <column name="company_id" type="uuid">
+        <constraints
+          foreignKeyName="user_company_fk"
+          referencedTableName="companies"
+          referencedColumnNames="id"/>
+      </column>
+    </addColumn>
+
+
+  </changeSet>
+
+</databaseChangeLog>

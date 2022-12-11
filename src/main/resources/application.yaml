@@ -34,11 +34,11 @@ springdoc:
 job-portal:
   key-store:
     key-store-password: KKLdv39i3EW
-    key-pair-name: keyPair
+    key-pair-name: keypair
     key-pair-password: SAui78gew8Y
     location: classpath:/keypair
     kid: kid
   access-token:
     duration: 1H
   refresh-token:
-    duration: 7D
+    duration: 1D

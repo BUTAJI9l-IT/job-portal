@@ -13,9 +13,18 @@
         <constraints primaryKey="true" primaryKeyName="pk_companies"/>
       </column>
     </createTable>
-    <createTable tableName="users">
+    <createTable tableName="jp_users">
       <column name="id" type="uuid">
         <constraints primaryKey="true" primaryKeyName="pk_users"/>
+      </column>
+      <column name="scope" type="varchar(20)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="password" type="varchar(60)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="email" type="varchar(128)">
+        <constraints nullable="false" unique="true" uniqueConstraintName="user_email"/>
       </column>
     </createTable>
     <createTable tableName="positions">
@@ -26,6 +35,20 @@
     <createTable tableName="applications">
       <column name="id" type="uuid">
         <constraints primaryKey="true" primaryKeyName="pk_applications"/>
+      </column>
+    </createTable>
+    <createTable tableName="refresh_tokens">
+      <column name="token" type="text">
+        <constraints primaryKey="true" primaryKeyName="pk_rtokens"/>
+      </column>
+      <column name="expires" type="timestamp">
+        <constraints nullable="false"/>
+      </column>
+      <column name="jp_user" type="uuid">
+        <constraints nullable="false"
+          foreignKeyName="fk_refresh_user"
+          referencedColumnNames="id"
+          referencedTableName="jp_users"/>
       </column>
     </createTable>
   </changeSet>

@@ -1,10 +1,9 @@
 package muni.fi.cz.jobportal.domain;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -12,41 +11,37 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import muni.fi.cz.jobportal.enums.PositionState;
 
 @Getter
 @Setter
-@Table(name = "job_positions")
+@Table(name = "experiences")
 @Entity
 @EqualsAndHashCode(of = "id")
-public class JobPosition {
-
+public class Experience {
   @Id
   @GeneratedValue
   private UUID id;
-  @Enumerated(EnumType.STRING)
-  private PositionState status;
-  private String positionName;
 
-  private String country;
-  private String state;
-  private String city;
-
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne
   @JoinColumn(name = "company_id")
   private Company company;
+  private String companyName;
 
-  @OneToMany(mappedBy = "jobPosition", fetch = FetchType.LAZY)
-  private List<Application> applications;
+  private LocalDate from;
+  private LocalDate to;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "applicant_id")
+  private Applicant applicant;
 
   @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(name = "position_category",
-    joinColumns = @JoinColumn(name = "job_position", referencedColumnName = "id"),
+  @JoinTable(name = "experience_category",
+    joinColumns = @JoinColumn(name = "experience", referencedColumnName = "id"),
     inverseJoinColumns = @JoinColumn(name = "category", referencedColumnName = "id"))
   private List<JobCategory> jobCategories;
+
 }
