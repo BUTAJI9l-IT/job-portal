@@ -5,7 +5,6 @@
   <changeSet id="2022.11.18.01" author="vitalii.bortsov" context="default">
     <renameTable oldTableName="positions" newTableName="job_positions"/>
 
-
     <createTable tableName="experiences">
       <column name="id" type="uuid">
         <constraints primaryKey="true" primaryKeyName="pk_experiences"/>
@@ -161,7 +160,6 @@
           referencedColumnNames="id"/>
       </column>
     </addColumn>
-
 
   </changeSet>
 

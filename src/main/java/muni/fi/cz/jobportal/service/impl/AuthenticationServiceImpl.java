@@ -34,7 +34,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
@@ -58,8 +57,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
   private final JwtEncoder jwtEncoder;
   private final JwtDecoder jwtDecoder;
 
-  private final PasswordEncoder passwordEncoder;
-
   @NonNull
   @Override
   public LoginResponse performLogin(@NonNull LoginRequest request) {
@@ -74,16 +71,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     final var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
     return performLoginForUser(authentication, user);
-  }
-
-  private LoginResponse performLoginForUser(Authentication authentication, User user) {
-    final var now = staticObjectFactory.getNowAsInstant();
-
-    final var accessTokenClaims = createAccessToken(staticObjectFactory.getRandomId(), user, now, authentication);
-    final var refreshTokenClaims = JwtClaimsSet.from(accessTokenClaims)
-      .expiresAt(now.plus(applicationProperties.getRefreshToken().getDuration())).build();
-
-    return getLoginResponse(user, accessTokenClaims, refreshTokenClaims);
   }
 
   @NonNull
@@ -107,13 +94,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
       .expiresAt(refreshExpiry).id(staticObjectFactory.getRandomId().toString()).build();
 
     return getLoginResponse(user, accessTokenClaims, refreshTokenClaims);
-  }
-
-  private LoginResponse getLoginResponse(User user, JwtClaimsSet accessTokenClaims, JwtClaimsSet refreshTokenClaims) {
-    final var accessTokenValue = jwtEncoder.encode(JwtEncoderParameters.from(accessTokenClaims)).getTokenValue();
-    final var refreshTokenValue = jwtEncoder.encode(JwtEncoderParameters.from(refreshTokenClaims)).getTokenValue();
-    refreshTokenRepository.save(new RefreshToken(refreshTokenValue, refreshTokenClaims.getExpiresAt(), user));
-    return new LoginResponse(accessTokenValue, refreshTokenValue);
   }
 
   @Scheduled(cron = "@hourly")
@@ -163,5 +143,22 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     claims.subject(user.getId().toString());
     claims.expiresAt(now.plus(applicationProperties.getAccessToken().getDuration()));
     return claims.build();
+  }
+
+  private LoginResponse performLoginForUser(Authentication authentication, User user) {
+    final var now = staticObjectFactory.getNowAsInstant();
+
+    final var accessTokenClaims = createAccessToken(staticObjectFactory.getRandomId(), user, now, authentication);
+    final var refreshTokenClaims = JwtClaimsSet.from(accessTokenClaims)
+      .expiresAt(now.plus(applicationProperties.getRefreshToken().getDuration())).build();
+
+    return getLoginResponse(user, accessTokenClaims, refreshTokenClaims);
+  }
+
+  private LoginResponse getLoginResponse(User user, JwtClaimsSet accessTokenClaims, JwtClaimsSet refreshTokenClaims) {
+    final var accessTokenValue = jwtEncoder.encode(JwtEncoderParameters.from(accessTokenClaims)).getTokenValue();
+    final var refreshTokenValue = jwtEncoder.encode(JwtEncoderParameters.from(refreshTokenClaims)).getTokenValue();
+    refreshTokenRepository.save(new RefreshToken(refreshTokenValue, refreshTokenClaims.getExpiresAt(), user));
+    return new LoginResponse(accessTokenValue, refreshTokenValue);
   }
 }
