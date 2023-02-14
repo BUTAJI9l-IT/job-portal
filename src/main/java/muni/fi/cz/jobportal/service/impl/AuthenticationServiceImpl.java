@@ -6,6 +6,7 @@ import static muni.fi.cz.jobportal.api.JwtClaims.SCOPE_CLAIM;
 import java.time.Instant;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import muni.fi.cz.jobportal.annotation.JobPortalService;
 import muni.fi.cz.jobportal.api.common.LoginResponse;
 import muni.fi.cz.jobportal.api.common.RegistrationRequest;
 import muni.fi.cz.jobportal.api.request.LoginRequest;
@@ -38,11 +39,8 @@ import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-@Service
-@Transactional
+@JobPortalService
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
 

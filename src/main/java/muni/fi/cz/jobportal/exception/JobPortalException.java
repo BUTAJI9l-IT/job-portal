@@ -10,7 +10,7 @@ import org.zalando.problem.spring.common.HttpStatusAdapter;
 public abstract class JobPortalException extends AbstractThrowableProblem {
 
   private final transient Object originalProblem;
-  public static final String ROOT = "http://iseo-dms-service/";
+  public static final String ROOT = "http://job-portal/";
 
   protected JobPortalException(String title, HttpStatus status, Object detail, String code) {
     super(URI.create(ROOT + code), title, new HttpStatusAdapter(status), null);
