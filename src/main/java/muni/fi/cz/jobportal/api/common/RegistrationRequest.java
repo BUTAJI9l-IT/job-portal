@@ -2,8 +2,8 @@ package muni.fi.cz.jobportal.api.common;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import lombok.Data;
+import muni.fi.cz.jobportal.annotation.RepeatPassword;
 import muni.fi.cz.jobportal.enums.JobPortalScope;
 
 @Data
@@ -14,10 +14,8 @@ public class RegistrationRequest {
   @NotNull
   @Email
   private String email;
-  @NotNull
-  @Size(min = 8)
-  private String password;
-  @NotNull
-  @Size(min = 8)
-  private String repeatPassword;
+  private String name;
+  private String lastName;
+  @RepeatPassword
+  private RepeatPasswordDto password;
 }

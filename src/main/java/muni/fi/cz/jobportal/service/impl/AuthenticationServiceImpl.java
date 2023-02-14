@@ -12,20 +12,15 @@ import muni.fi.cz.jobportal.api.common.RegistrationRequest;
 import muni.fi.cz.jobportal.api.request.LoginRequest;
 import muni.fi.cz.jobportal.api.request.RefreshTokenRequest;
 import muni.fi.cz.jobportal.configuration.properties.JobPortalApplicationProperties;
-import muni.fi.cz.jobportal.domain.Applicant;
-import muni.fi.cz.jobportal.domain.Company;
 import muni.fi.cz.jobportal.domain.RefreshToken;
 import muni.fi.cz.jobportal.domain.User;
-import muni.fi.cz.jobportal.enums.JobPortalScope;
 import muni.fi.cz.jobportal.exception.EmptyScopesException;
-import muni.fi.cz.jobportal.exception.PasswordMissmatchException;
-import muni.fi.cz.jobportal.exception.UserAlreadyRegisteredException;
+import muni.fi.cz.jobportal.exception.EntityNotFoundException;
 import muni.fi.cz.jobportal.mapper.UserMapper;
-import muni.fi.cz.jobportal.repository.ApplicantRepository;
-import muni.fi.cz.jobportal.repository.CompanyRepository;
 import muni.fi.cz.jobportal.repository.RefreshTokenRepository;
 import muni.fi.cz.jobportal.repository.UserRepository;
 import muni.fi.cz.jobportal.service.AuthenticationService;
+import muni.fi.cz.jobportal.service.UserService;
 import muni.fi.cz.jobportal.utils.StaticObjectFactory;
 import org.springframework.lang.NonNull;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -49,8 +44,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
   private final UserMapper userMapper;
   private final StaticObjectFactory staticObjectFactory;
   private final UserRepository userRepository;
-  private final CompanyRepository companyRepository;
-  private final ApplicantRepository applicantRepository;
+  private final UserService userService;
   private final RefreshTokenRepository refreshTokenRepository;
   private final JwtEncoder jwtEncoder;
   private final JwtDecoder jwtDecoder;
@@ -67,8 +61,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
       throw new AccessDeniedException("Unauthorized");
     }
 
-    final var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
-    return performLoginForUser(authentication, user);
+    final var user = userRepository.findByEmail(request.getEmail())
+      .orElseThrow(() -> {
+        throw new EntityNotFoundException(User.class);
+      });
+    return performLoginForUser(authentication, user.getId());
   }
 
   @NonNull
@@ -102,26 +99,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
   @NonNull
   @Override
   public LoginResponse registerUser(@NonNull RegistrationRequest request) {
-    if (!request.getPassword().equals(request.getRepeatPassword())) {
-      throw new PasswordMissmatchException();
-    }
-    if (userRepository.existsByEmail(request.getEmail())) {
-      throw new UserAlreadyRegisteredException(request.getEmail());
-    }
-    final var user = userRepository.save(userMapper.map(request));
-    if (request.getScope().equals(JobPortalScope.REGULAR_USER)) {
-      final var applicant = new Applicant();
-      applicant.setUser(user);
-      applicantRepository.save(applicant);
-      user.setApplicant(applicant);
-    } else if (request.getScope().equals(JobPortalScope.COMPANY)) {
-      final var company = new Company();
-      company.setUser(user);
-      companyRepository.save(company);
-      user.setCompany(company);
-    }
     return performLoginForUser(authenticationManager.authenticate(
-      new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())), user);
+        new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())),
+      userService.create(userMapper.map(request)).getId());
   }
 
   private JwtClaimsSet createAccessToken(UUID id, User user, Instant now, Authentication authentication) {
@@ -143,7 +123,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     return claims.build();
   }
 
-  private LoginResponse performLoginForUser(Authentication authentication, User user) {
+  private LoginResponse performLoginForUser(Authentication authentication, UUID userId) {
+    final var user = userRepository.findById(userId).orElseThrow(() -> {
+      throw new EntityNotFoundException(User.class);
+    });
     final var now = staticObjectFactory.getNowAsInstant();
 
     final var accessTokenClaims = createAccessToken(staticObjectFactory.getRandomId(), user, now, authentication);

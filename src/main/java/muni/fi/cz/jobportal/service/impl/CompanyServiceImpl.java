@@ -8,6 +8,8 @@ import muni.fi.cz.jobportal.api.detail.CompanyDetailDto;
 import muni.fi.cz.jobportal.api.request.CompanyCreateDto;
 import muni.fi.cz.jobportal.api.request.CompanyUpdateDto;
 import muni.fi.cz.jobportal.api.search.CompanyQueryParams;
+import muni.fi.cz.jobportal.mapper.CompanyMapper;
+import muni.fi.cz.jobportal.repository.CompanyRepository;
 import muni.fi.cz.jobportal.service.CompanyService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,10 +20,13 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CompanyServiceImpl implements CompanyService {
 
+  private final CompanyRepository companyRepository;
+  private final CompanyMapper companyMapper;
+
   @NonNull
   @Override
   public CompanyDetailDto create(@NonNull CompanyCreateDto payload) {
-    return CompanyService.super.create(payload);
+    return companyMapper.map(companyRepository.save(companyMapper.map(payload)));
   }
 
   @NonNull

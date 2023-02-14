@@ -4,7 +4,7 @@ import java.time.Duration;
 import lombok.Data;
 
 @Data
-abstract class TokenProperties {
+public class TokenProperties {
 
   private Duration duration;
 }

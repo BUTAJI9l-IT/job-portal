@@ -14,8 +14,8 @@ public class JobPortalApplicationProperties {
   private KeyStoreProperties keyStore;
 
   @NestedConfigurationProperty
-  private AccessTokenProperties accessToken;
+  private TokenProperties accessToken;
 
   @NestedConfigurationProperty
-  private RefreshTokenProperties refreshToken;
+  private TokenProperties refreshToken;
 }

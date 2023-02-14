@@ -9,8 +9,6 @@ spring:
     contexts: default
     change-log: classpath:db/changelog/master.xml
     drop-first: false
-  profiles:
-    include: doc
   jpa:
     open-in-view: false
     hibernate:

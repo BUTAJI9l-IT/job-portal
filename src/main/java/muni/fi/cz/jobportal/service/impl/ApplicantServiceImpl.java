@@ -8,6 +8,8 @@ import muni.fi.cz.jobportal.api.detail.ApplicantDetailDto;
 import muni.fi.cz.jobportal.api.request.ApplicantCreateDto;
 import muni.fi.cz.jobportal.api.request.ApplicantUpdateDto;
 import muni.fi.cz.jobportal.api.search.ApplicantQueryParams;
+import muni.fi.cz.jobportal.mapper.ApplicantMapper;
+import muni.fi.cz.jobportal.repository.ApplicantRepository;
 import muni.fi.cz.jobportal.service.ApplicantService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,10 +20,13 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ApplicantServiceImpl implements ApplicantService {
 
+  private final ApplicantRepository applicantRepository;
+  private final ApplicantMapper applicantMapper;
+
   @NonNull
   @Override
   public ApplicantDetailDto create(@NonNull ApplicantCreateDto payload) {
-    return ApplicantService.super.create(payload);
+    return applicantMapper.map(applicantRepository.save(applicantMapper.map(payload)));
   }
 
   @NonNull
