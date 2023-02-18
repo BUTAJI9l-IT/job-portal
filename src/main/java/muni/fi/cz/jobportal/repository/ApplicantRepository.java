@@ -2,8 +2,11 @@ package muni.fi.cz.jobportal.repository;
 
 import java.util.UUID;
 import muni.fi.cz.jobportal.domain.Applicant;
-import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ApplicantRepository extends JpaRepository<Applicant, UUID> {
+public interface ApplicantRepository extends AbstractJobPortalRepository<Applicant, UUID> {
 
+  @Override
+  default Class<Applicant> getBaseClass() {
+    return Applicant.class;
+  }
 }

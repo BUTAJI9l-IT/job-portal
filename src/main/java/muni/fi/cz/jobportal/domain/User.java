@@ -48,4 +48,11 @@ public class User {
   @JoinColumn(name = "company_id")
   private Company company;
 
+  public String getFullName() {
+    if (name == null) {
+      return lastName == null ? "" : lastName;
+    }
+    return lastName == null ? name : name + " " + lastName;
+  }
+
 }

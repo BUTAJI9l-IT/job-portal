@@ -33,7 +33,7 @@ public class ApplicantServiceImpl implements ApplicantService {
   @Override
   @Transactional(readOnly = true)
   public ApplicantDetailDto findOne(@NonNull UUID id) {
-    return ApplicantService.super.findOne(id);
+    return applicantMapper.map(applicantRepository.getOneByIdOrThrowNotFound(id));
   }
 
   @NonNull

@@ -33,7 +33,7 @@ public class CompanyServiceImpl implements CompanyService {
   @Override
   @Transactional(readOnly = true)
   public CompanyDetailDto findOne(@NonNull UUID id) {
-    return CompanyService.super.findOne(id);
+    return companyMapper.map(companyRepository.getOneByIdOrThrowNotFound(id));
   }
 
   @NonNull

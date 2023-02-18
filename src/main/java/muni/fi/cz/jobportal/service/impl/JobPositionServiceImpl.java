@@ -8,6 +8,8 @@ import muni.fi.cz.jobportal.api.detail.JobPositionDetailDto;
 import muni.fi.cz.jobportal.api.request.JobPositionCreateDto;
 import muni.fi.cz.jobportal.api.request.JobPositionUpdateDto;
 import muni.fi.cz.jobportal.api.search.JobPositionQueryParams;
+import muni.fi.cz.jobportal.mapper.JobPositionMapper;
+import muni.fi.cz.jobportal.repository.JobPositionRepository;
 import muni.fi.cz.jobportal.service.JobPositionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 @JobPortalService
 @RequiredArgsConstructor
 public class JobPositionServiceImpl implements JobPositionService {
+
+  private final JobPositionRepository jobPositionRepository;
+  private final JobPositionMapper jobPositionMapper;
 
   @NonNull
   @Override
@@ -28,7 +33,7 @@ public class JobPositionServiceImpl implements JobPositionService {
   @Override
   @Transactional(readOnly = true)
   public JobPositionDetailDto findOne(@NonNull UUID id) {
-    return JobPositionService.super.findOne(id);
+    return jobPositionMapper.map(jobPositionRepository.getOneByIdOrThrowNotFound(id));
   }
 
   @NonNull

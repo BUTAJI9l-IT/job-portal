@@ -99,9 +99,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
   @NonNull
   @Override
   public LoginResponse registerUser(@NonNull RegistrationRequest request) {
+    final var userId = userService.create(userMapper.map(request)).getId();
     return performLoginForUser(authenticationManager.authenticate(
-        new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())),
-      userService.create(userMapper.map(request)).getId());
+      new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword().getPassword())), userId);
   }
 
   private JwtClaimsSet createAccessToken(UUID id, User user, Instant now, Authentication authentication) {
@@ -124,9 +124,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
   }
 
   private LoginResponse performLoginForUser(Authentication authentication, UUID userId) {
-    final var user = userRepository.findById(userId).orElseThrow(() -> {
-      throw new EntityNotFoundException(User.class);
-    });
+    final var user = userRepository.getOneByIdOrThrowNotFound(userId);
     final var now = staticObjectFactory.getNowAsInstant();
 
     final var accessTokenClaims = createAccessToken(staticObjectFactory.getRandomId(), user, now, authentication);

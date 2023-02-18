@@ -7,4 +7,14 @@ import lombok.Data;
 public class ApplicantDetailDto {
 
   private UUID id;
+
+  private String name;
+  private String lastName;
+  private String email;
+
+  private String country;
+  private String state;
+  private String city;
+  private String profile;
+
 }

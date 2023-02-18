@@ -37,6 +37,9 @@ public class JobPosition {
   private String state;
   private String city;
 
+  private String contactEmail;
+  private String detail;
+
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "company_id")
   private Company company;

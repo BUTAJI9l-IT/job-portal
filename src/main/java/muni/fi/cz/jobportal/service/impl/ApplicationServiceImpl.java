@@ -8,6 +8,8 @@ import muni.fi.cz.jobportal.api.common.ApplicationDto;
 import muni.fi.cz.jobportal.api.request.ApplicationCreateDto;
 import muni.fi.cz.jobportal.api.request.ApplicationUpdateDto;
 import muni.fi.cz.jobportal.api.search.ApplicationQueryParams;
+import muni.fi.cz.jobportal.mapper.ApplicationMapper;
+import muni.fi.cz.jobportal.repository.ApplicationRepository;
 import muni.fi.cz.jobportal.service.ApplicationService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 @JobPortalService
 @RequiredArgsConstructor
 public class ApplicationServiceImpl implements ApplicationService {
+
+  private final ApplicationRepository applicationRepository;
+  private final ApplicationMapper applicationMapper;
 
   @NonNull
   @Override
@@ -28,7 +33,7 @@ public class ApplicationServiceImpl implements ApplicationService {
   @Override
   @Transactional(readOnly = true)
   public ApplicationDto findOne(@NonNull UUID id) {
-    return ApplicationService.super.findOne(id);
+    return applicationMapper.map(applicationRepository.getOneByIdOrThrowNotFound(id));
   }
 
   @NonNull
