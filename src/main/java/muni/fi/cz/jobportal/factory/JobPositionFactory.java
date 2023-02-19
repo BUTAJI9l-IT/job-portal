@@ -19,7 +19,9 @@ public class JobPositionFactory {
   @ObjectFactory
   public JobPositionDetailDto prepare(JobPosition source) {
     final var detail = new JobPositionDetailDto();
-    detail.setApplied(jobPositionRepository.userWithIdApplied(getCurrentUser()));
+    final var currentUser = getCurrentUser();
+    detail.setApplied(jobPositionRepository.userWithIdApplied(source.getId(), currentUser));
+    detail.setFavourite(jobPositionRepository.userWithIdLiked(source, currentUser));
     detail.setAppliedCount(source.getApplications().size());
     detail.setJobCategories(source.getJobCategories().stream().map(JobCategory::getName).toList());
     return detail;

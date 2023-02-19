@@ -1,0 +1,32 @@
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+  <changeSet id="2023.02.19.01" author="vitalii.bortsov" context="default">
+    <createTable tableName="applicant_saved_jobs">
+      <column name="applicant" type="uuid">
+        <constraints
+          nullable="false"
+          foreignKeyName="applicant_saved_jobs_applicant_fk"
+          referencedTableName="applicants"
+          referencedColumnNames="id"/>
+      </column>
+      <column name="job_position" type="uuid">
+        <constraints
+          nullable="false"
+          foreignKeyName="applicant_saved_jobs_job_position_fk"
+          referencedTableName="job_positions"
+          referencedColumnNames="id"/>
+      </column>
+    </createTable>
+
+    <addColumn tableName="job_positions">
+      <column name="created" type="timestamp">
+        <constraints nullable="false"/>
+      </column>
+      <column name="lastUpdated" type="timestamp">
+        <constraints nullable="true"/>
+      </column>
+    </addColumn>
+  </changeSet>
+</databaseChangeLog>

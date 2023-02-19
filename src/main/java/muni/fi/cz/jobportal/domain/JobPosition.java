@@ -1,5 +1,6 @@
 package muni.fi.cz.jobportal.domain;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 import javax.persistence.Entity;
@@ -39,6 +40,9 @@ public class JobPosition {
 
   private String contactEmail;
   private String detail;
+
+  private Instant created;
+  private Instant lastUpdated;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "company_id")

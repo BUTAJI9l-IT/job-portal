@@ -1,6 +1,7 @@
 package muni.fi.cz.jobportal.service;
 
 import java.util.UUID;
+import muni.fi.cz.jobportal.api.common.FavouritesJobsResponse;
 import muni.fi.cz.jobportal.api.common.JobPositionDto;
 import muni.fi.cz.jobportal.api.detail.JobPositionDetailDto;
 import muni.fi.cz.jobportal.api.request.JobPositionCreateDto;
@@ -13,4 +14,7 @@ public interface JobPositionService extends
 
   @NonNull
   JobPositionDetailDto apply(@NonNull UUID jobPositionId);
+
+  @NonNull
+  FavouritesJobsResponse getFavorites();
 }

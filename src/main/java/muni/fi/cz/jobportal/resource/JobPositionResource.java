@@ -9,6 +9,7 @@ import java.util.UUID;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import muni.fi.cz.jobportal.annotation.JobPortalSecuredController;
+import muni.fi.cz.jobportal.api.common.FavouritesJobsResponse;
 import muni.fi.cz.jobportal.api.common.JobPositionDto;
 import muni.fi.cz.jobportal.api.detail.JobPositionDetailDto;
 import muni.fi.cz.jobportal.api.request.JobPositionCreateDto;
@@ -66,5 +67,11 @@ public class JobPositionResource {
   @Operation(summary = "Returns a job position by given id")
   public ResponseEntity<JobPositionDetailDto> getJobPosition(@PathVariable("jobPositionId") UUID jobPositionId) {
     return ResponseEntity.ok(jobPositionService.findOne(jobPositionId));
+  }
+
+  @GetMapping("/favorites")
+  @Operation(summary = "Get favorites jobs of a current user")
+  public ResponseEntity<FavouritesJobsResponse> getFavorites() {
+    return ResponseEntity.ok(jobPositionService.getFavorites());
   }
 }

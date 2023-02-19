@@ -3,6 +3,7 @@ package muni.fi.cz.jobportal.service.impl;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import muni.fi.cz.jobportal.annotation.JobPortalService;
+import muni.fi.cz.jobportal.api.common.FavouritesJobsResponse;
 import muni.fi.cz.jobportal.api.common.JobPositionDto;
 import muni.fi.cz.jobportal.api.detail.JobPositionDetailDto;
 import muni.fi.cz.jobportal.api.request.JobPositionCreateDto;
@@ -57,6 +58,12 @@ public class JobPositionServiceImpl implements JobPositionService {
   @NonNull
   @Override
   public JobPositionDetailDto apply(@NonNull UUID jobPositionId) {
+    throw new UnsupportedOperationException();
+  }
+
+  @NonNull
+  @Override
+  public FavouritesJobsResponse getFavorites() {
     throw new UnsupportedOperationException();
   }
 }

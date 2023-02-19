@@ -1,5 +1,6 @@
 package muni.fi.cz.jobportal.api.detail;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 import lombok.Data;
@@ -19,8 +20,11 @@ public class JobPositionDetailDto {
   private String contactEmail;
   private String detail;
   private ReferenceDto company;
-
   private Boolean applied;
+  private Boolean favourite;
   private Integer appliedCount;
   private List<String> jobCategories;
+
+  private Instant created;
+  private Instant lastUpdated;
 }
