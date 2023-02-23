@@ -1,6 +1,5 @@
 package muni.fi.cz.jobportal.service.impl;
 
-import java.io.ByteArrayInputStream;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import muni.fi.cz.jobportal.annotation.JobPortalService;
@@ -14,6 +13,7 @@ import muni.fi.cz.jobportal.service.ApplicationService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.NonNull;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 
 @JobPortalService
@@ -26,7 +26,7 @@ public class ApplicationServiceImpl implements ApplicationService {
   @NonNull
   @Override
   public ApplicationDto create(@NonNull ApplicationCreateDto payload) {
-    return ApplicationService.super.create(payload);
+    return applicationMapper.map(applicationRepository.saveAndFlush(applicationMapper.map(payload)));
   }
 
   @NonNull
@@ -45,19 +45,18 @@ public class ApplicationServiceImpl implements ApplicationService {
 
   @NonNull
   @Override
+  @PreAuthorize("@authorityValidator.canManageApplication(#id)")
   public ApplicationDto update(@NonNull UUID id, @NonNull ApplicationUpdateDto payload) {
-    return ApplicationService.super.update(id, payload);
+    final var updated = applicationMapper.map(applicationRepository.saveAndFlush(
+      applicationMapper.update(applicationRepository.getOneByIdOrThrowNotFound(id), payload)));
+    // todo SEND NOTIFICATION TO USER ABOUT CHANGING A STATE OF APPLICATON
+    // notifyStateChangedTo(payload.getState());
+    return updated;
   }
 
   @Override
+  @PreAuthorize("@authorityValidator.canDeleteApplication(#id)")
   public void delete(@NonNull UUID id) {
-    ApplicationService.super.delete(id);
-  }
-
-  @NonNull
-  @Override
-  @Transactional(readOnly = true)
-  public ByteArrayInputStream generateCV() {
-    throw new UnsupportedOperationException();
+    applicationRepository.delete(applicationRepository.getOneByIdOrThrowNotFound(id));
   }
 }

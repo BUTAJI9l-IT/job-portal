@@ -70,8 +70,20 @@ public class JobPositionResource {
   }
 
   @GetMapping("/favorites")
-  @Operation(summary = "Get favorites jobs of a current user")
+  @Operation(summary = "Get favorite jobs of a current user")
   public ResponseEntity<FavouritesJobsResponse> getFavorites() {
     return ResponseEntity.ok(jobPositionService.getFavorites());
+  }
+
+  @PutMapping("/favourites/{jobPositionId}/add")
+  @Operation(summary = "Add to favorite jobs of a current user")
+  public ResponseEntity<FavouritesJobsResponse> addToFavorites(@PathVariable("jobPositionId") UUID jobPositionId) {
+    return ResponseEntity.ok(jobPositionService.addToFavorites(jobPositionId));
+  }
+
+  @PutMapping("/favourites/{jobPositionId}/remove")
+  @Operation(summary = "Remove from favorite jobs of a current user")
+  public ResponseEntity<FavouritesJobsResponse> removeFromFavorites(@PathVariable("jobPositionId") UUID jobPositionId) {
+    return ResponseEntity.ok(jobPositionService.removeFromFavorites(jobPositionId));
   }
 }

@@ -5,6 +5,7 @@ import lombok.experimental.SuperBuilder;
 
 @Data
 @SuperBuilder
-public class JobPositionQueryParams extends QueryParams {
+public abstract class QueryParams {
 
+  private String q;
 }

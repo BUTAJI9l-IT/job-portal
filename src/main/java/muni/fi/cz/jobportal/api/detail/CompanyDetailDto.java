@@ -15,5 +15,6 @@ public class CompanyDetailDto {
   private String companyLink;
   private CompanyNumberOfEmployees companySize;
   private List<JobPosition> jobPositions;
+  private String description;
 
 }

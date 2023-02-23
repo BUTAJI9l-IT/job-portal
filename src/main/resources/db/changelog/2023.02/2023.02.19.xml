@@ -24,7 +24,7 @@
       <column name="created" type="timestamp">
         <constraints nullable="false"/>
       </column>
-      <column name="lastUpdated" type="timestamp">
+      <column name="last_updated" type="timestamp">
         <constraints nullable="true"/>
       </column>
     </addColumn>

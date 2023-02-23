@@ -14,6 +14,7 @@ import muni.fi.cz.jobportal.service.CompanyService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.NonNull;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 
 @JobPortalService
@@ -45,12 +46,10 @@ public class CompanyServiceImpl implements CompanyService {
 
   @NonNull
   @Override
+  @PreAuthorize("@authorityValidator.isAdmin() || @authorityValidator.isCurrentCompany(#id)")
   public CompanyDetailDto update(@NonNull UUID id, @NonNull CompanyUpdateDto payload) {
-    return CompanyService.super.update(id, payload);
-  }
-
-  @Override
-  public void delete(@NonNull UUID id) {
-    CompanyService.super.delete(id);
+    final var company = companyRepository.getOneByIdOrThrowNotFound(id);
+    companyRepository.saveAndFlush(companyMapper.update(company, payload));
+    return companyMapper.map(company);
   }
 }

@@ -7,8 +7,8 @@ import muni.fi.cz.jobportal.api.common.UserDto;
 import muni.fi.cz.jobportal.api.request.ApplicantCreateDto;
 import muni.fi.cz.jobportal.api.request.UserCreateDto;
 import muni.fi.cz.jobportal.api.request.UserUpdateDto;
-import muni.fi.cz.jobportal.api.search.UserQueryParams;
 import muni.fi.cz.jobportal.enums.JobPortalScope;
+import muni.fi.cz.jobportal.exception.OldPasswordMismatchException;
 import muni.fi.cz.jobportal.exception.UserAlreadyRegisteredException;
 import muni.fi.cz.jobportal.mapper.CompanyMapper;
 import muni.fi.cz.jobportal.mapper.UserMapper;
@@ -18,9 +18,9 @@ import muni.fi.cz.jobportal.repository.UserRepository;
 import muni.fi.cz.jobportal.service.ApplicantService;
 import muni.fi.cz.jobportal.service.CompanyService;
 import muni.fi.cz.jobportal.service.UserService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.lang.NonNull;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 @JobPortalService
@@ -34,6 +34,7 @@ public class UserServiceImpl implements UserService {
   private final CompanyMapper companyMapper;
   private final ApplicantService applicantService;
   private final CompanyService companyService;
+  private final PasswordEncoder passwordEncoder;
 
   @NonNull
   @Override
@@ -55,25 +56,25 @@ public class UserServiceImpl implements UserService {
   @NonNull
   @Override
   @Transactional(readOnly = true)
+  @PreAuthorize("@authorityValidator.isAdmin() || @authorityValidator.isCurrentUser(#id)")
   public UserDto findOne(@NonNull UUID id) {
     return userMapper.map(userRepository.getOneByIdOrThrowNotFound(id));
   }
 
   @NonNull
   @Override
-  @Transactional(readOnly = true)
-  public Page<UserDto> findAll(Pageable pageable, UserQueryParams params) {
-    return UserService.super.findAll(pageable, params);
-  }
-
-  @NonNull
-  @Override
+  @PreAuthorize("@authorityValidator.isAdmin() || @authorityValidator.isCurrentUser(#id)")
   public UserDto update(@NonNull UUID id, @NonNull UserUpdateDto payload) {
-    return UserService.super.update(id, payload);
+    final var user = userRepository.getOneByIdOrThrowNotFound(id);
+    if (!passwordEncoder.matches(user.getPassword(), payload.getOldPassword())) {
+      throw new OldPasswordMismatchException();
+    }
+    return userMapper.map(userRepository.saveAndFlush(user));
   }
 
   @Override
+  @PreAuthorize("@authorityValidator.isAdmin() || @authorityValidator.isCurrentUser(#id)")
   public void delete(@NonNull UUID id) {
-    UserService.super.delete(id);
+    userRepository.delete(userRepository.getOneByIdOrThrowNotFound(id));
   }
 }

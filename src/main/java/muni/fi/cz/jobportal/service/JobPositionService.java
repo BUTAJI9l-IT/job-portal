@@ -17,4 +17,10 @@ public interface JobPositionService extends
 
   @NonNull
   FavouritesJobsResponse getFavorites();
+
+  @NonNull
+  FavouritesJobsResponse addToFavorites(@NonNull UUID jobPositionId);
+
+  @NonNull
+  FavouritesJobsResponse removeFromFavorites(@NonNull UUID jobPositionId);
 }

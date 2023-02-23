@@ -1,10 +1,10 @@
 package muni.fi.cz.jobportal.api.search;
 
-import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
 
 @Data
-@Builder
-public class UserQueryParams {
+@SuperBuilder
+public class UserQueryParams extends QueryParams {
 
 }

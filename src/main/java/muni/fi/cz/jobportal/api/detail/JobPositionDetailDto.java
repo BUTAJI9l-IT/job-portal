@@ -1,29 +1,20 @@
 package muni.fi.cz.jobportal.api.detail;
 
 import java.time.Instant;
-import java.util.List;
-import java.util.UUID;
 import lombok.Data;
-import muni.fi.cz.jobportal.api.common.ReferenceDto;
-import muni.fi.cz.jobportal.enums.PositionState;
+import muni.fi.cz.jobportal.api.common.JobPositionDto;
 
 @Data
-public class JobPositionDetailDto {
+public class JobPositionDetailDto extends JobPositionDto {
 
-  private UUID id;
-  private String positionName;
-  private PositionState status;
   private String country;
   private String state;
   private String city;
 
   private String contactEmail;
   private String detail;
-  private ReferenceDto company;
-  private Boolean applied;
-  private Boolean favourite;
+
   private Integer appliedCount;
-  private List<String> jobCategories;
 
   private Instant created;
   private Instant lastUpdated;
