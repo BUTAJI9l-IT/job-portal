@@ -10,15 +10,15 @@ import org.mapstruct.Mapping;
 @Mapper(uses = {ExperienceFactory.class, CompanyMapper.class})
 public interface ExperienceMapper {
 
-  @Mapping(target = "dateRange.from", source = "from")
-  @Mapping(target = "dateRange.to", source = "to")
+  @Mapping(target = "dateRange.fromDate", source = "fromDate")
+  @Mapping(target = "dateRange.toDate", source = "toDate")
   @Mapping(target = "company.companyName", source = "companyName")
   ExperienceDto map(Experience source);
 
   @Mapping(target = "company", ignore = true)
   @Mapping(target = "jobCategories", ignore = true)
-  @Mapping(target = "from", source = "source.dateRange.from")
-  @Mapping(target = "to", source = "source.dateRange.to")
+  @Mapping(target = "fromDate", source = "source.dateRange.fromDate")
+  @Mapping(target = "toDate", source = "source.dateRange.toDate")
   @Mapping(target = "companyName", source = "source.company.companyName")
   @Mapping(target = "applicant", source = "applicant")
   Experience create(ExperienceDto source, Applicant applicant);

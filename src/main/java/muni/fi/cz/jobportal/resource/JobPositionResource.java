@@ -5,6 +5,7 @@ import static muni.fi.cz.jobportal.api.ApiTags.JOB_POSITION;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import java.util.UUID;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import muni.fi.cz.jobportal.api.detail.JobPositionDetailDto;
 import muni.fi.cz.jobportal.api.request.JobPositionCreateDto;
 import muni.fi.cz.jobportal.api.request.JobPositionUpdateDto;
 import muni.fi.cz.jobportal.api.search.JobPositionQueryParams;
+import muni.fi.cz.jobportal.enums.PositionState;
 import muni.fi.cz.jobportal.service.JobPositionService;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Page;
@@ -59,8 +61,17 @@ public class JobPositionResource {
   @PageableAsQueryParam
   @Operation(summary = "Returns all job positions")
   public Page<JobPositionDto> getJobPositions(@Parameter(hidden = true) Pageable pageable,
-    @RequestParam(required = false) String q) {
-    return jobPositionService.findAll(pageable, JobPositionQueryParams.builder().build());
+    @RequestParam(required = false) String q,
+    @RequestParam(required = false) PositionState status,
+    @RequestParam(required = false) List<UUID> categories,
+    @RequestParam(required = false) List<UUID> companies
+  ) {
+    return jobPositionService.findAll(pageable, JobPositionQueryParams.builder()
+      .q(q)
+      .category(categories)
+      .company(companies)
+      .status(status)
+      .build());
   }
 
   @GetMapping("/{jobPositionId}")

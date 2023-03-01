@@ -1,5 +1,7 @@
 package muni.fi.cz.jobportal.factory;
 
+import java.util.ArrayList;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import muni.fi.cz.jobportal.api.common.ExperienceDto;
 import muni.fi.cz.jobportal.api.common.ReferenceDto;
@@ -23,7 +25,10 @@ public class ExperienceFactory {
       experience.setCompany(companyRepository.getOneByIdOrThrowNotFound(source.getCompany().getId()));
     }
     experience.setJobCategories(
-      jobCategoryRepository.findAllById(source.getJobCategories().stream().map(ReferenceDto::getId).toList()));
+      jobCategoryRepository.findAllById(
+        Optional.ofNullable(source.getJobCategories())
+          .map(u -> u.stream().map(ReferenceDto::getId).toList())
+          .orElse(new ArrayList<>())));
     return experience;
   }
 }

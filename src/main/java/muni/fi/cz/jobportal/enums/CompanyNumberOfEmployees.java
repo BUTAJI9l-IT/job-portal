@@ -15,11 +15,4 @@ public enum CompanyNumberOfEmployees {
   private final Integer minEmployees;
   private final Integer maxEmployees;
 
-  @Override
-  public String toString() {
-    if (maxEmployees == null) {
-      return minEmployees + "+";
-    }
-    return minEmployees + " - " + maxEmployees;
-  }
 }

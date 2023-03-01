@@ -78,8 +78,12 @@ public class ApplicantResource {
   @Operation(summary = "Returns all applicants")
   public Page<ApplicantDto> getApplicants(@Parameter(hidden = true) Pageable pageable,
     @RequestParam(required = false) String q,
-    @RequestParam(required = false) UUID jobPositionId) {
-    return applicantService.findAll(pageable, ApplicantQueryParams.builder().build());
+    @RequestParam(required = false) UUID jobPosition) {
+    return applicantService.findAll(pageable, ApplicantQueryParams.builder()
+      .q(q)
+      .jobPosition(jobPosition)
+      .build()
+    );
   }
 
   @GetMapping(value = "/generate-cv", produces = MediaType.APPLICATION_PDF_VALUE)

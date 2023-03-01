@@ -13,6 +13,7 @@ import muni.fi.cz.jobportal.api.common.CompanyDto;
 import muni.fi.cz.jobportal.api.detail.CompanyDetailDto;
 import muni.fi.cz.jobportal.api.request.CompanyUpdateDto;
 import muni.fi.cz.jobportal.api.search.CompanyQueryParams;
+import muni.fi.cz.jobportal.enums.CompanyNumberOfEmployees;
 import muni.fi.cz.jobportal.service.CompanyService;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Page;
@@ -50,7 +51,9 @@ public class CompanyResource {
   @PageableAsQueryParam
   @Operation(summary = "Returns all companies")
   public Page<CompanyDto> getCompanies(@Parameter(hidden = true) Pageable pageable,
-    @RequestParam(required = false) String q) {
-    return companyService.findAll(pageable, CompanyQueryParams.builder().build());
+    @RequestParam(required = false) String q,
+    @RequestParam(required = false) CompanyNumberOfEmployees companySize
+  ) {
+    return companyService.findAll(pageable, CompanyQueryParams.builder().q(q).companySize(companySize).build());
   }
 }

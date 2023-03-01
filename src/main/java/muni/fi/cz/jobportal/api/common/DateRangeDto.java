@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 public class DateRangeDto {
 
-  private LocalDate from;
-  private LocalDate to;
+  private LocalDate fromDate;
+  private LocalDate toDate;
 }

@@ -2,9 +2,10 @@ package muni.fi.cz.jobportal.repository;
 
 import java.util.UUID;
 import muni.fi.cz.jobportal.domain.Company;
+import muni.fi.cz.jobportal.repository.search.CompanySearchRepository;
 import org.springframework.data.jpa.repository.Query;
 
-public interface CompanyRepository extends AbstractJobPortalRepository<Company, UUID> {
+public interface CompanyRepository extends CompanySearchRepository, JobPortalRepository<Company, UUID> {
 
   @Query("""
     SELECT CASE

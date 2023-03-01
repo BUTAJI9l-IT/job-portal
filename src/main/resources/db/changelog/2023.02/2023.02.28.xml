@@ -1,0 +1,16 @@
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+  <changeSet id="2023.02.28.01" author="vitalii.bortsov" context="default">
+    <addColumn tableName="experiences">
+      <column name="occupation" type="varchar(32)">
+        <constraints nullable="false"/>
+      </column>
+    </addColumn>
+  </changeSet>
+  <changeSet id="2023.02.28.02" author="vitalii.bortsov" context="default">
+    <renameColumn tableName="experiences" oldColumnName="from" newColumnName="from_date"/>
+    <renameColumn tableName="experiences" oldColumnName="to" newColumnName="to_date"/>
+  </changeSet>
+</databaseChangeLog>

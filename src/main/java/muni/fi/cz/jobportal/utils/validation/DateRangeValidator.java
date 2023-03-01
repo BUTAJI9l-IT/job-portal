@@ -9,13 +9,13 @@ public class DateRangeValidator implements ConstraintValidator<DateRange, DateRa
 
   @Override
   public boolean isValid(DateRangeDto value, ConstraintValidatorContext cxt) {
-    if (value.getTo() == null) {
+    if (value.getToDate() == null) {
       return true;
     }
-    if (value.getFrom() == null) {
+    if (value.getFromDate() == null) {
       return false;
     }
-    return value.getTo().isAfter(value.getFrom());
+    return value.getToDate().isAfter(value.getFromDate());
   }
 
 }

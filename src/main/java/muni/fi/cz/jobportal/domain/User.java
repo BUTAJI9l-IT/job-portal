@@ -1,5 +1,13 @@
 package muni.fi.cz.jobportal.domain;
 
+import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.EMAIL;
+import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.SORT_SUFFIX;
+import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.USER_SCOPE;
+import static muni.fi.cz.jobportal.configuration.search.LuceneConfiguration.FULLTEXT_ANALYZER;
+import static muni.fi.cz.jobportal.configuration.search.LuceneConfiguration.SORT_NORMALIZER;
+import static muni.fi.cz.jobportal.configuration.search.LuceneConfiguration.SUGGESTER;
+import static org.hibernate.search.engine.backend.types.Sortable.YES;
+
 import java.util.UUID;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,13 +23,22 @@ import javax.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import muni.fi.cz.jobportal.configuration.search.binder.UserBinder;
 import muni.fi.cz.jobportal.enums.JobPortalScope;
+import org.hibernate.search.mapper.pojo.bridge.mapping.annotation.TypeBinderRef;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.TypeBinding;
 
 @Getter
 @Setter
-@Table(name = "jp_users")
 @Entity
+@Indexed
+@Table(name = "jp_users")
 @EqualsAndHashCode(of = "id")
+@TypeBinding(binder = @TypeBinderRef(type = UserBinder.class))
 public class User {
 
   @Id
@@ -29,6 +46,8 @@ public class User {
   private UUID id;
 
   @Column(name = "email", unique = true)
+  @KeywordField(name = EMAIL + SORT_SUFFIX, sortable = YES, normalizer = SORT_NORMALIZER)
+  @FullTextField(name = EMAIL, analyzer = FULLTEXT_ANALYZER, searchAnalyzer = SUGGESTER)
   private String email;
   @Column(name = "password")
   private String password;
@@ -38,6 +57,8 @@ public class User {
 
   @Enumerated(EnumType.STRING)
   @Column(name = "scope")
+  @KeywordField(name = USER_SCOPE + SORT_SUFFIX, sortable = YES)
+  @GenericField(name = USER_SCOPE)
   private JobPortalScope scope;
 
   @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)

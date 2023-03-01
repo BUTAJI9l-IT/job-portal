@@ -41,7 +41,7 @@ public class CompanyServiceImpl implements CompanyService {
   @Override
   @Transactional(readOnly = true)
   public Page<CompanyDto> findAll(Pageable pageable, CompanyQueryParams params) {
-    return CompanyService.super.findAll(pageable, params);
+    return companyRepository.search(pageable, params).map(companyMapper::mapDto);
   }
 
   @NonNull

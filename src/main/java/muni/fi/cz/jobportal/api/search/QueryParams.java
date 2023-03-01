@@ -8,4 +8,8 @@ import lombok.experimental.SuperBuilder;
 public abstract class QueryParams {
 
   private String q;
+
+  public String[] queryIndices() {
+    return new String[]{};
+  }
 }

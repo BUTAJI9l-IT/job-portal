@@ -22,6 +22,7 @@ import lombok.Setter;
 @Entity
 @EqualsAndHashCode(of = "id")
 public class Experience {
+
   @Id
   @GeneratedValue
   private UUID id;
@@ -30,9 +31,10 @@ public class Experience {
   @JoinColumn(name = "company_id")
   private Company company;
   private String companyName;
+  private String occupation;
 
-  private LocalDate from;
-  private LocalDate to;
+  private LocalDate fromDate;
+  private LocalDate toDate;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "applicant_id")

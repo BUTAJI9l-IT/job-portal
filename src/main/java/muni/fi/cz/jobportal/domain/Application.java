@@ -1,5 +1,10 @@
 package muni.fi.cz.jobportal.domain;
 
+import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.APPLICATION_DATE;
+import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.SORT_SUFFIX;
+import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.STATUS;
+import static org.hibernate.search.engine.backend.types.Sortable.YES;
+
 import java.time.Instant;
 import java.util.UUID;
 import javax.persistence.Entity;
@@ -14,13 +19,21 @@ import javax.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import muni.fi.cz.jobportal.configuration.search.binder.ApplicationBinder;
 import muni.fi.cz.jobportal.enums.ApplicationState;
+import org.hibernate.search.mapper.pojo.bridge.mapping.annotation.TypeBinderRef;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.TypeBinding;
 
+@Indexed
 @Getter
 @Setter
 @Table(name = "applications")
 @Entity
 @EqualsAndHashCode(of = "id")
+@TypeBinding(binder = @TypeBinderRef(type = ApplicationBinder.class))
 public class Application {
 
   @Id
@@ -28,8 +41,12 @@ public class Application {
   private UUID id;
 
   @Enumerated(EnumType.STRING)
+  @KeywordField(name = STATUS + SORT_SUFFIX, sortable = YES)
+  @GenericField(name = STATUS)
   private ApplicationState state;
 
+  @GenericField(name = APPLICATION_DATE)
+  @GenericField(name = APPLICATION_DATE + SORT_SUFFIX, sortable = YES)
   private Instant date;
 
   @ManyToOne(fetch = FetchType.LAZY)

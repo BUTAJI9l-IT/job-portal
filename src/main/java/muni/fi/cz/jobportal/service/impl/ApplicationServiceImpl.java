@@ -40,7 +40,7 @@ public class ApplicationServiceImpl implements ApplicationService {
   @Override
   @Transactional(readOnly = true)
   public Page<ApplicationDto> findAll(Pageable pageable, ApplicationQueryParams params) {
-    return ApplicationService.super.findAll(pageable, params);
+    return applicationRepository.search(pageable, params).map(applicationMapper::map);
   }
 
   @NonNull

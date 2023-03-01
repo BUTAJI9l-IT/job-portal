@@ -10,6 +10,7 @@ import static muni.fi.cz.jobportal.utils.AuthenticationUtils.getCurrentUser;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import muni.fi.cz.jobportal.api.request.JobPositionCreateDto;
+import muni.fi.cz.jobportal.repository.ApplicantRepository;
 import muni.fi.cz.jobportal.repository.ApplicationRepository;
 import muni.fi.cz.jobportal.repository.CompanyRepository;
 import org.springframework.lang.NonNull;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Component;
 public class AuthorityValidator {
 
   private final CompanyRepository companyRepository;
+  private final ApplicantRepository applicantRepository;
   private final ApplicationRepository applicationRepository;
 
   public boolean jobBelongsToCompany(UUID id) {
@@ -60,16 +62,16 @@ public class AuthorityValidator {
     return hasScope(ADMIN.toString());
   }
 
-  private static boolean isRegularUser() {
+  public static boolean isRegularUser() {
     return hasScope(REGULAR_USER.toString());
   }
 
-  private static boolean isCompany() {
+  public static boolean isCompany() {
     return hasScope(COMPANY.toString());
   }
 
   private UUID getUserFromApplicant(UUID id) {
-    return applicationRepository.getOneByIdOrThrowNotFound(id).getApplicant().getUser().getId();
+    return applicantRepository.getOneByIdOrThrowNotFound(id).getUser().getId();
   }
 
   private UUID getUserFromCompany(UUID id) {

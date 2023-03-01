@@ -5,6 +5,7 @@ import static muni.fi.cz.jobportal.api.ApiTags.APPLICATION;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.time.Instant;
 import java.util.UUID;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import muni.fi.cz.jobportal.annotation.JobPortalSecuredController;
 import muni.fi.cz.jobportal.api.common.ApplicationDto;
 import muni.fi.cz.jobportal.api.request.ApplicationUpdateDto;
 import muni.fi.cz.jobportal.api.search.ApplicationQueryParams;
+import muni.fi.cz.jobportal.enums.ApplicationState;
 import muni.fi.cz.jobportal.service.ApplicationService;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Page;
@@ -35,11 +37,25 @@ public class ApplicationResource {
 
   @GetMapping
   @PageableAsQueryParam
-  @Operation(summary = "Returns all applicants")
+  @Operation(summary = "Returns all applications")
   public Page<ApplicationDto> getApplications(@Parameter(hidden = true) Pageable pageable,
     @RequestParam(required = false) String q,
-    @RequestParam(required = false) UUID jobPositionId) {
-    return applicationService.findAll(pageable, ApplicationQueryParams.builder().build());
+    @RequestParam(required = false) UUID applicant,
+    @RequestParam(required = false) UUID jobPosition,
+    @RequestParam(required = false) UUID company,
+    @RequestParam(required = false) ApplicationState status,
+    @RequestParam(required = false) Instant dateFrom,
+    @RequestParam(required = false) Instant dateTo
+  ) {
+    return applicationService.findAll(pageable, ApplicationQueryParams.builder()
+      .q(q)
+      .applicant(applicant)
+      .jobPosition(jobPosition)
+      .company(company)
+      .status(status)
+      .dateFrom(dateFrom)
+      .dateTo(dateTo)
+      .build());
   }
 
   @PutMapping("/{applicationId}/state")

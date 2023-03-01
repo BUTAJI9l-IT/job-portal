@@ -11,6 +11,7 @@ public class ApiTags {
   public static final String USER = "User";
   public static final String APPLICATION = "Application";
   public static final String JOB_POSITION = "Job Position";
+  public static final String JOB_POSITION_CATEGORY = "Job Position Category";
   public static final String COMPANY = "Company";
 
 }

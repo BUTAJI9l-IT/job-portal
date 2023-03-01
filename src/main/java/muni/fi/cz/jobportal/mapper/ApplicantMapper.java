@@ -1,5 +1,6 @@
 package muni.fi.cz.jobportal.mapper;
 
+import muni.fi.cz.jobportal.api.common.ApplicantDto;
 import muni.fi.cz.jobportal.api.detail.ApplicantDetailDto;
 import muni.fi.cz.jobportal.api.request.ApplicantCreateDto;
 import muni.fi.cz.jobportal.api.request.ApplicantUpdateDto;
@@ -19,6 +20,11 @@ public interface ApplicantMapper {
   @Mapping(target = "lastName", source = "user.lastName")
   @Mapping(target = "email", source = "user.email")
   ApplicantDetailDto map(Applicant source);
+
+  @Mapping(target = "name", source = "user.name")
+  @Mapping(target = "lastName", source = "user.lastName")
+  @Mapping(target = "email", source = "user.email")
+  ApplicantDto mapDto(Applicant source);
 
   @Mapping(source = "name", target = "user.name")
   @Mapping(source = "lastName", target = "user.lastName")

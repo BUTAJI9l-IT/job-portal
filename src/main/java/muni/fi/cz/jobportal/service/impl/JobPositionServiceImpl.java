@@ -58,7 +58,7 @@ public class JobPositionServiceImpl implements JobPositionService {
   @Override
   @Transactional(readOnly = true)
   public Page<JobPositionDto> findAll(Pageable pageable, JobPositionQueryParams params) {
-    return JobPositionService.super.findAll(pageable, params);
+    return jobPositionRepository.search(pageable, params).map(jobPositionMapper::map);
   }
 
   @NonNull

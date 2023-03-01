@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 
 @NoRepositoryBean
-public interface AbstractJobPortalRepository<T, I> extends JpaRepository<T, I> {
+public interface JobPortalRepository<T, I> extends JpaRepository<T, I> {
 
   Class<T> getBaseClass();
 
