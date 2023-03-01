@@ -18,7 +18,7 @@ spring:
       'hibernate.cache.region.factory_class': org.hibernate.cache.jcache.JCacheRegionFactory
       'hibernate.cache.use_query_cache': true
       'hibernate.search.backend.analysis.configurer': muni.fi.cz.jobportal.configuration.search.LuceneConfiguration
-      'hibernate.search.backend.directory.root': ./data/index
+      'hibernate.search.backend.directory.root': ./tmp/index
   datasource:
     url: jdbc:postgresql://localhost:5432/jobportal
     username: jobportal
