@@ -6,21 +6,16 @@ import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.COMP
 import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.COMPANY_NAME;
 import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.JOB_POSITION;
 import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.JOB_POSITION_NAME;
-import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.SORT_SUFFIX;
-import static muni.fi.cz.jobportal.configuration.search.LuceneConfiguration.KEYWORD_ANALYZER;
-import static muni.fi.cz.jobportal.configuration.search.LuceneConfiguration.SORT_NORMALIZER;
 
 import muni.fi.cz.jobportal.domain.Application;
 import muni.fi.cz.jobportal.domain.Application_;
 import org.hibernate.search.engine.backend.document.DocumentElement;
 import org.hibernate.search.engine.backend.document.IndexFieldReference;
-import org.hibernate.search.engine.backend.types.Sortable;
 import org.hibernate.search.mapper.pojo.bridge.TypeBridge;
 import org.hibernate.search.mapper.pojo.bridge.binding.TypeBindingContext;
-import org.hibernate.search.mapper.pojo.bridge.mapping.programmatic.TypeBinder;
 import org.hibernate.search.mapper.pojo.bridge.runtime.TypeBridgeWriteContext;
 
-public class ApplicationBinder implements TypeBinder {
+public class ApplicationBinder extends AbstractBinder {
 
   @Override
   public void bind(TypeBindingContext typeBindingContext) {
@@ -28,56 +23,15 @@ public class ApplicationBinder implements TypeBinder {
       .use(Application_.APPLICANT)
       .use(Application_.JOB_POSITION);
 
-    final var company = typeBindingContext.indexSchemaElement()
-      .field(COMPANY, f -> f.asString()
-        .analyzer(KEYWORD_ANALYZER)
-        .searchAnalyzer(KEYWORD_ANALYZER))
-      .toReference();
-    final var companySort = typeBindingContext.indexSchemaElement()
-      .field(COMPANY + SORT_SUFFIX, f -> f.asString()
-        .sortable(Sortable.YES)
-        .normalizer(SORT_NORMALIZER))
-      .toReference();
-
-    final var jobPosition = typeBindingContext.indexSchemaElement()
-      .field(JOB_POSITION, f -> f.asString()
-        .analyzer(KEYWORD_ANALYZER)
-        .searchAnalyzer(KEYWORD_ANALYZER))
-      .toReference();
-    final var jobPositionSort = typeBindingContext.indexSchemaElement()
-      .field(JOB_POSITION + SORT_SUFFIX, f -> f.asString()
-        .sortable(Sortable.YES)
-        .normalizer(SORT_NORMALIZER))
-      .toReference();
-
-    final var applicant = typeBindingContext.indexSchemaElement()
-      .field(APPLICANT, f -> f.asString()
-        .analyzer(KEYWORD_ANALYZER)
-        .searchAnalyzer(KEYWORD_ANALYZER))
-      .toReference();
-    final var applicantSort = typeBindingContext.indexSchemaElement()
-      .field(APPLICANT + SORT_SUFFIX, f -> f.asString()
-        .sortable(Sortable.YES)
-        .normalizer(SORT_NORMALIZER))
-      .toReference();
-
-    final var companyName = typeBindingContext.indexSchemaElement()
-      .field(COMPANY_NAME, f -> f.asString()
-        .analyzer(KEYWORD_ANALYZER)
-        .searchAnalyzer(KEYWORD_ANALYZER))
-      .toReference();
-
-    final var jobPositionName = typeBindingContext.indexSchemaElement()
-      .field(JOB_POSITION_NAME, f -> f.asString()
-        .analyzer(KEYWORD_ANALYZER)
-        .searchAnalyzer(KEYWORD_ANALYZER))
-      .toReference();
-
-    final var applicantName = typeBindingContext.indexSchemaElement()
-      .field(APPLICANT_NAME, f -> f.asString()
-        .analyzer(KEYWORD_ANALYZER)
-        .searchAnalyzer(KEYWORD_ANALYZER))
-      .toReference();
+    final var company = keyword(typeBindingContext, COMPANY, String.class);
+    final var companySort = sort(typeBindingContext, COMPANY, String.class);
+    final var jobPosition = keyword(typeBindingContext, JOB_POSITION, String.class);
+    final var jobPositionSort = sort(typeBindingContext, JOB_POSITION, String.class);
+    final var applicant = keyword(typeBindingContext, APPLICANT, String.class);
+    final var applicantSort = sort(typeBindingContext, APPLICANT, String.class);
+    final var companyName = fulltext(typeBindingContext, COMPANY_NAME, String.class);
+    final var jobPositionName = fulltext(typeBindingContext, JOB_POSITION_NAME, String.class);
+    final var applicantName = fulltext(typeBindingContext, APPLICANT_NAME, String.class);
 
     typeBindingContext.bridge(Application.class,
       new Bridge(company, companySort, jobPosition, jobPositionSort, applicant, applicantSort, companyName,

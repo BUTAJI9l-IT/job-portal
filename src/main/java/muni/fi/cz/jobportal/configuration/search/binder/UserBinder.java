@@ -1,38 +1,25 @@
 package muni.fi.cz.jobportal.configuration.search.binder;
 
-import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.SORT_SUFFIX;
-import static muni.fi.cz.jobportal.configuration.search.LuceneConfiguration.FULLTEXT_ANALYZER;
-import static muni.fi.cz.jobportal.configuration.search.LuceneConfiguration.SORT_NORMALIZER;
-import static muni.fi.cz.jobportal.configuration.search.LuceneConfiguration.SUGGESTER;
-
 import muni.fi.cz.jobportal.configuration.constants.SearchProperties;
 import muni.fi.cz.jobportal.domain.User;
 import muni.fi.cz.jobportal.domain.User_;
 import org.hibernate.search.engine.backend.document.DocumentElement;
 import org.hibernate.search.engine.backend.document.IndexFieldReference;
-import org.hibernate.search.engine.backend.types.Sortable;
 import org.hibernate.search.mapper.pojo.bridge.TypeBridge;
 import org.hibernate.search.mapper.pojo.bridge.binding.TypeBindingContext;
-import org.hibernate.search.mapper.pojo.bridge.mapping.programmatic.TypeBinder;
 import org.hibernate.search.mapper.pojo.bridge.runtime.TypeBridgeWriteContext;
 
-public class UserBinder implements TypeBinder {
+public class UserBinder extends AbstractBinder {
 
   @Override
   public void bind(TypeBindingContext typeBindingContext) {
     typeBindingContext.dependencies()
       .use(User_.NAME)
       .use(User_.LAST_NAME);
-    final var fullName = typeBindingContext.indexSchemaElement()
-      .field(SearchProperties.NAME, f -> f.asString()
-        .analyzer(FULLTEXT_ANALYZER)
-        .searchAnalyzer(SUGGESTER)
-      )
-      .toReference();
-    final var fullNameSort = typeBindingContext.indexSchemaElement()
-      .field(SearchProperties.NAME + SORT_SUFFIX, f -> f.asString()
-        .sortable(Sortable.YES).normalizer(SORT_NORMALIZER)
-      ).toReference();
+
+    final var fullName = fulltext(typeBindingContext, SearchProperties.NAME, String.class);
+    final var fullNameSort = sort(typeBindingContext, SearchProperties.NAME, String.class);
+
     typeBindingContext.bridge(User.class, new Bridge(fullName, fullNameSort));
   }
 

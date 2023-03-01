@@ -1,0 +1,84 @@
+package muni.fi.cz.jobportal.configuration.search.binder;
+
+import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.SORT_SUFFIX;
+import static muni.fi.cz.jobportal.configuration.search.LuceneConfiguration.FULLTEXT_ANALYZER;
+import static muni.fi.cz.jobportal.configuration.search.LuceneConfiguration.KEYWORD_ANALYZER;
+import static muni.fi.cz.jobportal.configuration.search.LuceneConfiguration.SORT_NORMALIZER;
+import static muni.fi.cz.jobportal.configuration.search.LuceneConfiguration.SUGGESTER;
+import static org.hibernate.search.engine.backend.types.Sortable.YES;
+
+import java.util.function.Function;
+import org.hibernate.search.engine.backend.document.IndexFieldReference;
+import org.hibernate.search.engine.backend.types.dsl.IndexFieldTypeFactory;
+import org.hibernate.search.engine.backend.types.dsl.IndexFieldTypeFinalStep;
+import org.hibernate.search.mapper.pojo.bridge.binding.TypeBindingContext;
+import org.hibernate.search.mapper.pojo.bridge.mapping.programmatic.TypeBinder;
+
+public abstract class AbstractBinder implements TypeBinder {
+  
+  protected <T> IndexFieldReference<T> fulltext(TypeBindingContext typeBindingContext, String fieldName,
+    Class<T> clazz) {
+    return getIndexFieldReference(typeBindingContext, fieldName, fulltextAnalyzer(clazz), false);
+  }
+
+  @SuppressWarnings("unused")
+  protected <T> IndexFieldReference<T> fulltextCollection(TypeBindingContext typeBindingContext, String fieldName,
+    Class<T> clazz) {
+    return getIndexFieldReference(typeBindingContext, fieldName, fulltextAnalyzer(clazz), true);
+  }
+
+  protected <T> IndexFieldReference<T> keyword(TypeBindingContext typeBindingContext, String fieldName,
+    Class<T> clazz) {
+    return getIndexFieldReference(typeBindingContext, fieldName, keywordAnalyzer(clazz), false);
+  }
+
+  protected <T> IndexFieldReference<T> keywordCollection(TypeBindingContext typeBindingContext, String fieldName,
+    Class<T> clazz) {
+    return getIndexFieldReference(typeBindingContext, fieldName, keywordAnalyzer(clazz), true);
+  }
+
+  protected <T> IndexFieldReference<T> sort(TypeBindingContext typeBindingContext, String fieldName, Class<T> clazz) {
+    return getIndexFieldReference(typeBindingContext, fieldName + SORT_SUFFIX, sortAnalyzer(clazz), false);
+  }
+
+  protected <T> IndexFieldReference<T> sortCollection(TypeBindingContext typeBindingContext, String fieldName,
+    Class<T> clazz) {
+    return getIndexFieldReference(typeBindingContext, fieldName + SORT_SUFFIX, sortAnalyzer(clazz), true);
+  }
+
+  private static <T> IndexFieldReference<T> getIndexFieldReference(TypeBindingContext typeBindingContext,
+    String fieldName, Function<? super IndexFieldTypeFactory, ? extends IndexFieldTypeFinalStep<T>> function,
+    boolean multiValued) {
+    final var field = typeBindingContext.indexSchemaElement().field(fieldName, function);
+    return (multiValued ? field.multiValued() : field).toReference();
+  }
+
+  @SuppressWarnings("unchecked")
+  private static <T> Function<? super IndexFieldTypeFactory, ? extends IndexFieldTypeFinalStep<T>> fulltextAnalyzer(
+    Class<T> clazz) {
+    if (clazz.equals(String.class)) {
+      return f -> (IndexFieldTypeFinalStep<T>) f.asString().analyzer(FULLTEXT_ANALYZER).searchAnalyzer(SUGGESTER);
+    }
+    return f -> f.as(clazz);
+  }
+
+  @SuppressWarnings("unchecked")
+  private static <T> Function<? super IndexFieldTypeFactory, ? extends IndexFieldTypeFinalStep<T>> keywordAnalyzer(
+    Class<T> clazz) {
+    if (clazz.equals(String.class)) {
+      return f -> (IndexFieldTypeFinalStep<T>) f.asString().analyzer(KEYWORD_ANALYZER).searchAnalyzer(KEYWORD_ANALYZER);
+    }
+    return f -> f.as(clazz);
+  }
+
+  @SuppressWarnings("unchecked")
+  private static <T> Function<? super IndexFieldTypeFactory, ? extends IndexFieldTypeFinalStep<T>> sortAnalyzer(
+    Class<T> clazz) {
+    if (clazz.equals(String.class)) {
+      return f -> (IndexFieldTypeFinalStep<T>) f.asString().sortable(YES).normalizer(SORT_NORMALIZER);
+    }
+    return f -> f.as(clazz).sortable(YES);
+  }
+
+
+}

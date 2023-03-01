@@ -1,25 +1,16 @@
 package muni.fi.cz.jobportal.configuration.search.binder;
 
-import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.JOB_POSITION;
-import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.SORT_SUFFIX;
-import static muni.fi.cz.jobportal.configuration.search.LuceneConfiguration.FULLTEXT_ANALYZER;
-import static muni.fi.cz.jobportal.configuration.search.LuceneConfiguration.KEYWORD_ANALYZER;
-import static muni.fi.cz.jobportal.configuration.search.LuceneConfiguration.SORT_NORMALIZER;
-import static muni.fi.cz.jobportal.configuration.search.LuceneConfiguration.SUGGESTER;
-
 import com.nimbusds.oauth2.sdk.util.CollectionUtils;
 import muni.fi.cz.jobportal.configuration.constants.SearchProperties;
 import muni.fi.cz.jobportal.domain.Applicant;
 import muni.fi.cz.jobportal.domain.Applicant_;
 import org.hibernate.search.engine.backend.document.DocumentElement;
 import org.hibernate.search.engine.backend.document.IndexFieldReference;
-import org.hibernate.search.engine.backend.types.Sortable;
 import org.hibernate.search.mapper.pojo.bridge.TypeBridge;
 import org.hibernate.search.mapper.pojo.bridge.binding.TypeBindingContext;
-import org.hibernate.search.mapper.pojo.bridge.mapping.programmatic.TypeBinder;
 import org.hibernate.search.mapper.pojo.bridge.runtime.TypeBridgeWriteContext;
 
-public class ApplicantBinder implements TypeBinder {
+public class ApplicantBinder extends AbstractBinder {
 
   @Override
   public void bind(TypeBindingContext typeBindingContext) {
@@ -27,28 +18,10 @@ public class ApplicantBinder implements TypeBinder {
       .use(Applicant_.USER)
       .use(Applicant_.APPLICATIONS);
 
-    final var fullName = typeBindingContext.indexSchemaElement()
-      .field(SearchProperties.NAME, f -> f.asString()
-        .analyzer(FULLTEXT_ANALYZER)
-        .searchAnalyzer(SUGGESTER)
-      )
-      .toReference();
-    final var fullNameSort = typeBindingContext.indexSchemaElement()
-      .field(SearchProperties.NAME + SORT_SUFFIX, f -> f.asString()
-        .sortable(Sortable.YES).normalizer(SORT_NORMALIZER)
-      ).toReference();
-    final var jobPosition = typeBindingContext.indexSchemaElement()
-      .field(JOB_POSITION, f -> f.asString()
-        .analyzer(KEYWORD_ANALYZER)
-        .searchAnalyzer(KEYWORD_ANALYZER))
-      .multiValued()
-      .toReference();
-    final var jobPositionSort = typeBindingContext.indexSchemaElement()
-      .field(JOB_POSITION + SORT_SUFFIX, f -> f.asString()
-        .sortable(Sortable.YES)
-        .normalizer(SORT_NORMALIZER))
-      .multiValued()
-      .toReference();
+    final var fullName = fulltext(typeBindingContext, SearchProperties.NAME, String.class);
+    final var fullNameSort = sort(typeBindingContext, SearchProperties.NAME, String.class);
+    final var jobPosition = keywordCollection(typeBindingContext, SearchProperties.JOB_POSITION, String.class);
+    final var jobPositionSort = sortCollection(typeBindingContext, SearchProperties.JOB_POSITION, String.class);
 
     typeBindingContext.bridge(Applicant.class, new Bridge(fullName, fullNameSort, jobPosition, jobPositionSort));
   }

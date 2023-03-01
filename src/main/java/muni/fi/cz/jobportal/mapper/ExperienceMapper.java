@@ -15,6 +15,7 @@ public interface ExperienceMapper {
   @Mapping(target = "company.companyName", source = "companyName")
   ExperienceDto map(Experience source);
 
+  @Mapping(target = "id", ignore = true)
   @Mapping(target = "company", ignore = true)
   @Mapping(target = "jobCategories", ignore = true)
   @Mapping(target = "fromDate", source = "source.dateRange.fromDate")
