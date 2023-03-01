@@ -7,6 +7,7 @@ import muni.fi.cz.jobportal.domain.Applicant;
 import muni.fi.cz.jobportal.domain.Application;
 import muni.fi.cz.jobportal.domain.Company;
 import muni.fi.cz.jobportal.domain.JobPosition;
+import muni.fi.cz.jobportal.domain.Occupation;
 import muni.fi.cz.jobportal.domain.User;
 import org.hibernate.search.mapper.orm.Search;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -30,7 +31,7 @@ public class OnApplicationStartup implements ApplicationListener<ApplicationRead
   @Transactional
   public void onApplicationEvent(@NonNull final ApplicationReadyEvent event) {
     Search.session(entityManager)
-      .massIndexer(Application.class, Applicant.class, JobPosition.class, User.class, Company.class)
+      .massIndexer(Application.class, Applicant.class, JobPosition.class, User.class, Company.class, Occupation.class)
       .start();
   }
 }
