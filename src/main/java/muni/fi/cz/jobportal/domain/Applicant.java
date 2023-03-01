@@ -56,7 +56,7 @@ public class Applicant {
 
   private String profile;
 
-  @OneToOne(fetch = FetchType.LAZY)
+  @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
   private User user;
 

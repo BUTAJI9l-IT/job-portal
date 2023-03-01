@@ -52,8 +52,7 @@ public class CompanyResource {
   @Operation(summary = "Returns all companies")
   public Page<CompanyDto> getCompanies(@Parameter(hidden = true) Pageable pageable,
     @RequestParam(required = false) String q,
-    @RequestParam(required = false) CompanyNumberOfEmployees companySize
-  ) {
+    @RequestParam(required = false) CompanyNumberOfEmployees companySize) {
     return companyService.findAll(pageable, CompanyQueryParams.builder().q(q).companySize(companySize).build());
   }
 }

@@ -102,6 +102,11 @@ public class ApplicantServiceImpl implements ApplicantService {
     return applicantMapper.map(applicant);
   }
 
+  @Override
+  public void delete(@NonNull UUID id) {
+    applicantRepository.delete(applicantRepository.getOneByIdOrThrowNotFound(id));
+  }
+
   @NonNull
   @Override
   @Transactional(readOnly = true)

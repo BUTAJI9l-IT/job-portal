@@ -52,4 +52,9 @@ public class CompanyServiceImpl implements CompanyService {
     companyRepository.saveAndFlush(companyMapper.update(company, payload));
     return companyMapper.map(company);
   }
+
+  @Override
+  public void delete(@NonNull UUID id) {
+    companyRepository.delete(companyRepository.getOneByIdOrThrowNotFound(id));
+  }
 }

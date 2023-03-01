@@ -1,5 +1,6 @@
 package muni.fi.cz.jobportal.repository;
 
+import java.util.UUID;
 import muni.fi.cz.jobportal.domain.RefreshToken;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -12,6 +13,8 @@ public interface RefreshTokenRepository extends JobPortalRepository<RefreshToken
   @Modifying
   @Query("DELETE FROM RefreshToken t WHERE t.expires <= CURRENT_TIMESTAMP")
   void deleteExpired();
+
+  void deleteAllByUserId(UUID userId);
 
   @Override
   default Class<RefreshToken> getBaseClass() {

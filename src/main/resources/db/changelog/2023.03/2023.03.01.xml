@@ -1,0 +1,9 @@
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+  <changeSet id="2023.03.01.01" author="vitalii.bortsov" context="default">
+    <dropForeignKeyConstraint baseTableName="jp_users" constraintName="user_applicant_fk"/>
+    <dropForeignKeyConstraint baseTableName="jp_users" constraintName="user_company_fk"/>
+  </changeSet>
+</databaseChangeLog>

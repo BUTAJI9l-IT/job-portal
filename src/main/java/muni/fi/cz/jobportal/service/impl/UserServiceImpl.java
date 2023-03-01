@@ -15,6 +15,7 @@ import muni.fi.cz.jobportal.mapper.CompanyMapper;
 import muni.fi.cz.jobportal.mapper.UserMapper;
 import muni.fi.cz.jobportal.repository.ApplicantRepository;
 import muni.fi.cz.jobportal.repository.CompanyRepository;
+import muni.fi.cz.jobportal.repository.RefreshTokenRepository;
 import muni.fi.cz.jobportal.repository.UserRepository;
 import muni.fi.cz.jobportal.service.ApplicantService;
 import muni.fi.cz.jobportal.service.CompanyService;
@@ -33,6 +34,7 @@ public class UserServiceImpl implements UserService {
   private final UserRepository userRepository;
   private final ApplicantRepository applicantRepository;
   private final CompanyRepository companyRepository;
+  private final RefreshTokenRepository refreshTokenRepository;
   private final UserMapper userMapper;
   private final CompanyMapper companyMapper;
   private final ApplicantService applicantService;
@@ -79,7 +81,9 @@ public class UserServiceImpl implements UserService {
   @Override
   @PreAuthorize("@authorityValidator.isAdmin() || @authorityValidator.isCurrentUser(#id)")
   public void delete(@NonNull UUID id) {
-    userRepository.delete(userRepository.getOneByIdOrThrowNotFound(id));
+    final var user = userRepository.getOneByIdOrThrowNotFound(id);
+    refreshTokenRepository.deleteAllByUserId(id);
+    userRepository.delete(user);
   }
 
   @NonNull

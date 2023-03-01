@@ -24,4 +24,5 @@ COPY --from=build ${DEPENDENCY}/BOOT-INF/classes /app
 # run up the application
 ENTRYPOINT ["java","-cp","app:app/lib/*","muni.fi.cz.jobportal.JobPortalApplication"]
 
+# It is necessary to build with build kit on account of a mount use
 # DOCKER_BUILDKIT=1 docker build -t myorg/myapp .

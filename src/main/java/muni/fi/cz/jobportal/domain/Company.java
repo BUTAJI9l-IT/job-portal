@@ -11,6 +11,7 @@ import static org.hibernate.search.engine.backend.types.Sortable.YES;
 
 import java.util.List;
 import java.util.UUID;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -54,10 +55,10 @@ public class Company {
   @GenericField(name = COMPANY_SIZE)
   private CompanyNumberOfEmployees companySize;
 
-  @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
+  @OneToMany(mappedBy = "company", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
   private List<JobPosition> jobPositions;
 
-  @OneToOne(fetch = FetchType.LAZY)
+  @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
   private User user;
 }
