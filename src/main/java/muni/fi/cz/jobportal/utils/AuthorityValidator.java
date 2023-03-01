@@ -13,6 +13,7 @@ import muni.fi.cz.jobportal.api.request.JobPositionCreateDto;
 import muni.fi.cz.jobportal.repository.ApplicantRepository;
 import muni.fi.cz.jobportal.repository.ApplicationRepository;
 import muni.fi.cz.jobportal.repository.CompanyRepository;
+import muni.fi.cz.jobportal.repository.UserRepository;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Component;
 public class AuthorityValidator {
 
   private final CompanyRepository companyRepository;
+  private final UserRepository userRepository;
   private final ApplicantRepository applicantRepository;
   private final ApplicationRepository applicationRepository;
 
@@ -58,8 +60,8 @@ public class AuthorityValidator {
     return isCompany() && isCurrentUser(getUserFromCompany(company));
   }
 
-  public static boolean isAdmin() {
-    return hasScope(ADMIN.toString());
+  public boolean isAdmin() {
+    return hasScope(ADMIN.toString()) && userRepository.isAdmin(getCurrentUser());
   }
 
   public static boolean isRegularUser() {

@@ -69,9 +69,10 @@ public class UserServiceImpl implements UserService {
   @PreAuthorize("@authorityValidator.isAdmin() || @authorityValidator.isCurrentUser(#id)")
   public UserDto update(@NonNull UUID id, @NonNull UserUpdateDto payload) {
     final var user = userRepository.getOneByIdOrThrowNotFound(id);
-    if (!passwordEncoder.matches(user.getPassword(), payload.getOldPassword())) {
+    if (!passwordEncoder.matches(payload.getOldPassword(), user.getPassword())) {
       throw new OldPasswordMismatchException();
     }
+    user.setPassword(passwordEncoder.encode(payload.getPassword().getPassword()));
     return userMapper.map(userRepository.saveAndFlush(user));
   }
 

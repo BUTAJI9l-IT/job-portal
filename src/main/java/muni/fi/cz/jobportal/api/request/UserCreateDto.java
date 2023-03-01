@@ -1,5 +1,6 @@
 package muni.fi.cz.jobportal.api.request;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
@@ -18,6 +19,7 @@ public class UserCreateDto {
   private String email;
   private String name;
   private String lastName;
+  @Valid
   @RepeatPassword
   private RepeatPasswordDto password;
 

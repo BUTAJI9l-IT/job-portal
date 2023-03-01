@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.UUID;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import muni.fi.cz.jobportal.annotation.JobPortalSecuredController;
 import muni.fi.cz.jobportal.api.common.UserDto;
 import muni.fi.cz.jobportal.api.request.UserUpdateDto;
 import muni.fi.cz.jobportal.api.search.UserQueryParams;
@@ -24,10 +25,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = USER)
-@RestController
+@JobPortalSecuredController
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserResource {
@@ -37,7 +37,7 @@ public class UserResource {
   @PutMapping("/{userId}")
   @Operation(summary = "Updates user's password")
   public ResponseEntity<UserDto> updatePassword(@PathVariable("userId") UUID userId,
-    @Valid @RequestBody UserUpdateDto payload) {
+    @RequestBody @Valid UserUpdateDto payload) {
     return ResponseEntity.ok(userService.update(userId, payload));
   }
 

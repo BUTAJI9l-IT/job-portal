@@ -10,7 +10,7 @@ public class RepeatPasswordValidator implements ConstraintValidator<RepeatPasswo
 
   @Override
   public boolean isValid(RepeatPasswordDto value, ConstraintValidatorContext cxt) {
-    return Objects.equals(value.getPassword(), value.getRepeatPassword());
+    return value != null && Objects.equals(value.getPassword(), value.getRepeatPassword());
   }
 
 }
