@@ -49,7 +49,7 @@ public class ApplicationServiceImpl implements ApplicationService {
   public ApplicationDto update(@NonNull UUID id, @NonNull ApplicationUpdateDto payload) {
     final var updated = applicationMapper.map(applicationRepository.saveAndFlush(
       applicationMapper.update(applicationRepository.getOneByIdOrThrowNotFound(id), payload)));
-    // todo SEND NOTIFICATION TO USER ABOUT CHANGING A STATE OF APPLICATON
+    // TODO SEND NOTIFICATION TO USER ABOUT CHANGING A STATE OF APPLICATON
     // notifyStateChangedTo(payload.getState());
     return updated;
   }
