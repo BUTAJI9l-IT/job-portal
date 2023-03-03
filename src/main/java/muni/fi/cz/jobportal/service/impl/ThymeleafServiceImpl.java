@@ -12,12 +12,15 @@ import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import muni.fi.cz.jobportal.api.common.ExperienceDto;
+import muni.fi.cz.jobportal.domain.Applicant;
 import muni.fi.cz.jobportal.enums.TemplateParameter;
 import muni.fi.cz.jobportal.exception.ConversionException;
 import muni.fi.cz.jobportal.mapper.ExperienceMapper;
@@ -42,7 +45,7 @@ public class ThymeleafServiceImpl implements ThymeleafService {
 
   @NonNull
   @Override
-  public ByteArrayInputStream generateCvPdf(@NonNull UUID applicantId) throws IOException {
+  public ByteArrayInputStream generateCvPdf(@NonNull UUID applicantId) {
     final var applicant = applicantRepository.getOneByIdOrThrowNotFound(applicantId);
     return convertToPDF(parseTemplate(Map.of(
       NAME, applicant.getUser().getName(),
@@ -51,7 +54,7 @@ public class ThymeleafServiceImpl implements ThymeleafService {
       EMAIL, applicant.getUser().getEmail(),
       PHONE, applicant.getPhone(),
       PROFILE, applicant.getProfile(),
-      EXPERIENCES, applicant.getExperiences().stream().map(experienceMapper::map).toList()
+      EXPERIENCES, getExperienceDtos(applicant)
     ), CV_TEMPLATE_NAME));
   }
 
@@ -71,5 +74,22 @@ public class ThymeleafServiceImpl implements ThymeleafService {
     context.setVariables(variables.entrySet().stream()
       .collect(Collectors.toMap(e -> e.getKey().toString(), Entry::getValue)));
     return templateEngine.process(template, context);
+  }
+
+  private List<ExperienceDto> getExperienceDtos(Applicant applicant) {
+    final var experiences = new ArrayList<>(applicant.getExperiences().stream().map(experienceMapper::map).toList());
+    experiences.sort((o1, o2) -> {
+      if (o1.getDateRange() == null || o2.getDateRange() == null) {
+        return 0;
+      }
+      if (o1.getDateRange().getFromDate() == null) {
+        return 1;
+      }
+      if (o2.getDateRange().getFromDate() == null) {
+        return -1;
+      }
+      return o2.getDateRange().getFromDate().compareTo(o1.getDateRange().getFromDate());
+    });
+    return experiences;
   }
 }
