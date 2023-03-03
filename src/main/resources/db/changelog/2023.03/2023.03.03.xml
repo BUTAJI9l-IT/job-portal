@@ -1,0 +1,27 @@
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+  <changeSet id="2023.03.03.01" author="vitalii.bortsov" context="default">
+    <addColumn tableName="files">
+      <column name="uploaded_by" type="uuid">
+        <constraints foreignKeyName="file_uploaded_by_user_fk"
+          referencedTableName="jp_users"
+          referencedColumnNames="id"/>
+      </column>
+    </addColumn>
+  </changeSet>
+  <changeSet id="2023.03.03.02" author="vitalii.bortsov" context="default">
+    <dropForeignKeyConstraint baseTableName="jp_users" constraintName="user_avatar_file_fk"/>
+    <sql>
+      UPDATE files f
+      SET uploaded_by = (select u.id from jp_users u where f.id = u.avatar_file)
+    </sql>
+    <addNotNullConstraint tableName="files" columnName="uploaded_by"/>
+    <dropColumn tableName="jp_users" columnName="avatar_file"/>
+  </changeSet>
+  <changeSet id="2023.03.03.03" author="vitalii.bortsov" context="default">
+    <dropColumn tableName="jp_users" columnName="applicant_id"/>
+    <dropColumn tableName="jp_users" columnName="company_id"/>
+  </changeSet>
+</databaseChangeLog>

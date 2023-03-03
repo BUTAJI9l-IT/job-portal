@@ -2,6 +2,7 @@ package muni.fi.cz.jobportal.service.impl;
 
 import static muni.fi.cz.jobportal.utils.AuthenticationUtils.getCurrentUser;
 
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import muni.fi.cz.jobportal.annotation.JobPortalService;
@@ -44,6 +45,14 @@ public class JobPositionServiceImpl implements JobPositionService {
   @Override
   @PreAuthorize("@authorityValidator.canCreateJobPosition(#payload)")
   public JobPositionDetailDto create(@NonNull JobPositionCreateDto payload) {
+    jobCategoryRepository.findByOccupationName(payload.getPositionName())
+      .ifPresent(cat -> {
+        if (payload.getJobCategories() == null) {
+          payload.setJobCategories(List.of(cat.getId()));
+        } else if (payload.getJobCategories().stream().noneMatch(id -> id.equals(cat.getId()))) {
+          payload.getJobCategories().add(cat.getId());
+        }
+      });
     return jobPositionMapper.map(jobPositionRepository.save(jobPositionMapper.map(payload)));
   }
 

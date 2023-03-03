@@ -86,8 +86,8 @@ public class ApplicantResource {
     );
   }
 
-  @GetMapping(value = "/generate-cv", produces = MediaType.APPLICATION_PDF_VALUE)
-  @Operation(summary = "Generates CV for authorized user")
+  @GetMapping(value = "/{applicantId}/generate-cv", produces = MediaType.APPLICATION_PDF_VALUE)
+  @Operation(summary = "Generates CV for given applicant")
   @ApiResponse(
     responseCode = "200",
     content = @Content(mediaType = MediaType.APPLICATION_PDF_VALUE, schema = @Schema(type = "string", format = "binary")),
@@ -100,8 +100,8 @@ public class ApplicantResource {
         )
       )
     })
-  public ResponseEntity<Resource> generateCV() {
-    final var resource = new InputStreamResource(applicantService.generateCV());
+  public ResponseEntity<Resource> generateCV(@PathVariable("applicantId") UUID applicantId) {
+    final var resource = new InputStreamResource(applicantService.generateCV(applicantId));
     final var cd = ContentDisposition.builder("attachment")
       .name("Job_Portal_CV.pdf")
       .filename("Job_Portal_CV.pdf")

@@ -14,7 +14,7 @@ public interface ApplicantService extends
   CRUDService<ApplicantCreateDto, ApplicantDto, ApplicantUpdateDto, ApplicantDetailDto, ApplicantQueryParams> {
 
   @NonNull
-  ByteArrayInputStream generateCV();
+  ByteArrayInputStream generateCV(UUID applicantId);
 
   @NonNull
   ApplicantDetailDto addExperience(@NonNull UUID applicantId, @NonNull ExperienceDto payload);

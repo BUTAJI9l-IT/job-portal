@@ -41,6 +41,7 @@ public class UserServiceImpl implements UserService {
   private final CompanyService companyService;
   private final PasswordEncoder passwordEncoder;
 
+
   @NonNull
   @Override
   public UserDto create(@NonNull UserCreateDto payload) {

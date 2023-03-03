@@ -54,6 +54,7 @@ public class Applicant {
   @FullTextField(name = CITY, analyzer = FULLTEXT_ANALYZER, searchAnalyzer = SUGGESTER)
   private String city;
 
+  private String phone;
   private String profile;
 
   @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)

@@ -11,6 +11,7 @@ public class ApplicantUpdateDto {
   private String country;
   private String state;
   private String city;
+  private String phone;
   private String profile;
 
 }

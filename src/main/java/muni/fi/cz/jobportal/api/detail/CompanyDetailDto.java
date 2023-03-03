@@ -10,6 +10,7 @@ import muni.fi.cz.jobportal.enums.CompanyNumberOfEmployees;
 public class CompanyDetailDto {
 
   private UUID id;
+  private UUID userId;
   private String email;
   private String companyName;
   private String companyLink;

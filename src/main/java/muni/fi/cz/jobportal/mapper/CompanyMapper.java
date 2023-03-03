@@ -19,8 +19,10 @@ public interface CompanyMapper {
   Company map(CompanyCreateDto request);
 
   @Mapping(target = "email", source = "user.email")
+  @Mapping(target = "userId", source = "user.id")
   CompanyDetailDto map(Company source);
 
+  @Mapping(target = "userId", source = "user.id")
   CompanyDto mapDto(Company source);
 
   Company update(@MappingTarget Company target, CompanyUpdateDto source);

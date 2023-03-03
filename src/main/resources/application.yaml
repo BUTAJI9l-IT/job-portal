@@ -23,6 +23,12 @@ spring:
     url: jdbc:postgresql://localhost:5432/jobportal
     username: jobportal
     password: jobportal
+  servlet:
+    multipart:
+      enabled: true
+      location: ./tmp/img
+      max-file-size: 128KB
+      max-request-size: 128KB
 
 springdoc:
   packages-to-scan:

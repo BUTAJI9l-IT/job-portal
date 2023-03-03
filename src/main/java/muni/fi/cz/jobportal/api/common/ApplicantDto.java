@@ -7,7 +7,7 @@ import lombok.Data;
 public class ApplicantDto {
 
   private UUID id;
-
+  private UUID userId;
   private String name;
   private String lastName;
   private String email;

@@ -3,6 +3,7 @@ package muni.fi.cz.jobportal.service.impl;
 import static muni.fi.cz.jobportal.utils.AuthenticationUtils.getCurrentUser;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import muni.fi.cz.jobportal.annotation.JobPortalService;
@@ -13,6 +14,7 @@ import muni.fi.cz.jobportal.api.request.ApplicantCreateDto;
 import muni.fi.cz.jobportal.api.request.ApplicantUpdateDto;
 import muni.fi.cz.jobportal.api.search.ApplicantQueryParams;
 import muni.fi.cz.jobportal.domain.Experience;
+import muni.fi.cz.jobportal.exception.DocumentGenerationException;
 import muni.fi.cz.jobportal.exception.EntityNotFoundException;
 import muni.fi.cz.jobportal.mapper.ApplicantMapper;
 import muni.fi.cz.jobportal.mapper.ExperienceMapper;
@@ -21,6 +23,7 @@ import muni.fi.cz.jobportal.repository.CompanyRepository;
 import muni.fi.cz.jobportal.repository.ExperienceRepository;
 import muni.fi.cz.jobportal.repository.UserRepository;
 import muni.fi.cz.jobportal.service.ApplicantService;
+import muni.fi.cz.jobportal.service.ThymeleafService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.NonNull;
@@ -32,6 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ApplicantServiceImpl implements ApplicantService {
 
+  private final ThymeleafService thymeleafService;
   private final ApplicantRepository applicantRepository;
   private final CompanyRepository companyRepository;
   private final UserRepository userRepository;
@@ -110,7 +114,12 @@ public class ApplicantServiceImpl implements ApplicantService {
   @NonNull
   @Override
   @Transactional(readOnly = true)
-  public ByteArrayInputStream generateCV() {
-    throw new UnsupportedOperationException();
+  @PreAuthorize("@authorityValidator.isAdmin() || @authorityValidator.isCurrentApplicant(#applicantId)")
+  public ByteArrayInputStream generateCV(UUID applicantId) {
+    try {
+      return thymeleafService.generateCvPdf(applicantId);
+    } catch (IOException ignore) {
+      throw new DocumentGenerationException();
+    }
   }
 }

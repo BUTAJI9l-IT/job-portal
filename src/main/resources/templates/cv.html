@@ -1,0 +1,327 @@
+<!--source: https://codepen.io/jayveejacob/pen/abmrQzJ-->
+<!DOCTYPE html>
+<html lang="et" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Portfolio</title>
+  <meta charset="UTF-8" th:charset="UTF-8">
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    th:rel="stylesheet"
+    th:href="@{../static/css/font-awesome.min.css}"
+  >
+  <style th:inline="css">
+    body {
+      background: rgb(204, 204, 204);
+    }
+
+    page {
+      background: #fff;
+      display: block;
+      margin: 5mm auto;
+      /*padding: 30px;*/
+    }
+
+    page[size="A4"] {
+      width: 210mm;
+      height: 297mm;
+    }
+
+    @page {
+      size: A4;
+      margin: 0;
+    }
+
+    html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary, time, mark, audio, video {
+      border: 0;
+      font: inherit;
+      font-size: 100%;
+      margin: 0;
+      padding: 0;
+      vertical-align: baseline;
+    }
+
+    html, body {
+      font-family: 'Lato', helvetica, arial, sans-serif;
+      font-size: 11pt;
+      color: #222;
+    }
+
+    /*
+      This css property is not supported by IText, so it was necessary to rewrite the code in "more table" approach
+
+      .clear {
+        clear: both;
+      }
+    */
+
+
+    p {
+      line-height: 15pt;
+      margin-bottom: 4mm;
+      color: #444;
+      word-break: break-word;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    a {
+      color: #da2d2d;
+    }
+
+    .cv {
+      width: 210mm;
+      height: 297mm;
+      background: #fff;
+    }
+
+    .table-container {
+      display: table;
+    }
+
+    .table-cell {
+      display: table-caption;
+    }
+
+    .table-cell2 {
+      display: table-column;
+      min-height: 200mm;
+    }
+
+    .mainDetails {
+      padding: 8mm 0 0 8mm;
+      background: #fff;
+    }
+
+    #name {
+      float: left;
+      text-transform: uppercase;
+      padding: 8.5mm 0 0 7mm;
+    }
+
+    #name h1 {
+      font-size: 33pt;
+      font-weight: 400;
+      font-family: 'Oswald', Helvetica, Arial, sans-serif;
+      line-height: 38pt;
+      color: #da2d2d;
+    }
+
+    #name h2 {
+      font-size: 18pt;
+      font-family: 'Oswald', Helvetica, Arial, sans-serif;
+      line-height: 20pt;
+    }
+
+    #mainArea {
+      padding: 0 8mm;
+    }
+
+    #headshot {
+      width: 46mm;
+      float: left;
+      margin-top: 10mm;
+      margin-left: -.5mm;
+    }
+
+    #headshot img {
+      width: 175px;
+      height: auto;
+      border-radius: 50%;
+    }
+
+    .contactDetails {
+      float: right;
+      margin: 10mm 8mm 0 0;
+    }
+
+    .contactDetails ul {
+      list-style-type: none;
+      font-family: 'Oswald', Helvetica, Arial, sans-serif;
+    }
+
+    .contactDetails ul li {
+      line-height: 24pt;
+      color: #444;
+    }
+
+    .contactDetails ul li a {
+      color: #444;
+      padding: 4px 8px;
+    }
+
+    .contactDetails ul li a:hover {
+      box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+      color: #da2d2d;
+    }
+
+    .icon {
+      font-size: 14pt;
+    }
+
+    section {
+      border-top: 1mm dotted #444;
+      padding: 4mm 0 0 0;
+    }
+
+    section:first-child {
+      border-top: 0;
+      padding: 8mm 0 0 0;
+    }
+
+    section:last-child {
+      padding: 4mm 0 0 0;
+    }
+
+    .sectionTitle {
+      float: left;
+      width: 50mm;
+      margin-bottom: 6mm;
+    }
+
+    .sectionContent {
+      width: 190mm;
+    }
+
+    .sectionContent2 {
+      width: 150mm;
+    }
+
+    .sectionTitle h1 {
+      font-family: 'Oswald', Helvetica, Arial, sans-serif;
+      font-weight: 400;
+      text-transform: uppercase;
+      font-size: 18pt;
+      color: #da2d2d;
+    }
+
+    .sectionContent h2 {
+      font-family: 'Oswald', Helvetica, Arial, sans-serif;
+      text-transform: uppercase;
+      font-size: 18pt;
+    }
+
+    .subDetails {
+      font-family: 'Lato', Helvetica, Arial, sans-serif;
+      font-size: 11pt;
+      line-height: 160%;
+      color: #444;
+      font-weight: bold;
+    }
+
+    .subDetailsBold {
+      font-family: 'Lato', Helvetica, Arial, sans-serif;
+      font-size: 13pt;
+      line-height: 160%;
+      color: #444;
+      font-weight: bold;
+    }
+
+    .nameDetails {
+      font-size: 11pt;
+      font-family: 'Lato', Helvetica, Arial, sans-serif;
+      color: #444;
+      text-transform: lowercase;
+    }
+
+    .list {
+      list-style-type: none;
+      column-count: 1;
+      margin-bottom: 4mm;
+      font-size: 11pt;
+      color: #444;
+      line-height: 15pt;
+    }
+
+  </style>
+</head>
+<body id="top" th:id="top">
+<!--Page 1-->
+<page size="A4" th:size="A4">
+  <div class="cv table-container" th:classappend="${'cv table-container'}">
+    <div class="table-cell" th:class="table-cell">
+      <div id="header" th:id="header">
+        <div class="contactDetails" th:class="contactDetails">
+          <ul>
+            <li class="icon" th:class="icon" th:if="${EMAIL} != null and ${EMAIL.length()} != 0">
+              <i th:classappend="${'fa fa-envelope'}" class="fa fa-envelope" th:text="'&nbsp;&nbsp;'"></i>
+              <span th:text='${EMAIL}'>jayvee_jacob@yahoo.com</span>
+            </li>
+            <li class="icon" th:class="icon" th:if="${PHONE} != null and ${PHONE.length()} != 0">
+              <i th:class="${'fa fa-phone'}" class="fa fa-phone" aria-hidden="true" th:aria-hidden="true"></i>
+              <span th:text="'&nbsp;&nbsp;' + ${PHONE}"/>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="mainDetails" th:class="mainDetails">
+        <div id="headshot" th:id="headshot">
+          <img
+            id="avatar"
+            src="https://visualangle.ee/delivery/temp_image/icon.png"
+            alt="Margus Lillemagi"
+            th:id="avatar"
+            th:src="'data:image/png;base64,' + ${AVATAR}"
+            th:alt="alt"
+          />
+        </div>
+        <div id="name" th:id="name">
+          <h1 th:utext="${LAST_NAME} + '<br>' + ${NAME}">Jayvee Shima<br>Jacob
+            <span class="nameDetails" th:class="nameDetails" th:text="'&nbsp;&nbsp;'">&nbsp;&nbsp;</span>
+          </h1>
+        </div>
+      </div>
+    </div>
+    <div id="mainArea" th:id="mainArea">
+      <section>
+        <article>
+          <div class="sectionTitle" th:class="sectionTitle" th:utext="'<h1></h1>'">
+            <h1></h1>
+          </div>
+          <div class="sectionContent" th:class="sectionContent">
+            <p th:text="${PROFILE}">I am a 20 year old aspiring photographer and digital artist I am currently studying
+              at Far Eastern University - Institute of Technology taking Bachelor of Science in Information Technology
+              Major in Digital
+              Arts.</p>
+          </div>
+        </article>
+        <!--        <div class="clear" th:class="clear"></div>-->
+      </section>
+      <section th:if="${EXPERIENCES} != null and !${EXPERIENCES.isEmpty()}">
+        <div class="sectionTitle table-cell2" th:classappend="${'sectionTitle table-cell2'}">
+          <h1 th:text="Experience">Experience</h1>
+        </div>
+        <div class="sectionContent2" th:class="sectionContent2">
+          <ul class="list" th:class="list">
+            <li th:each="experience : ${EXPERIENCES}">
+              <div class="subDetails" th:class="subDetails" th:text="${experience.occupation}">Freelance Graphic</div>
+              <div class="subDetails" th:class="subDetails">
+                <span
+                  th:text="(${experience.dateRange} != null and ${experience.dateRange.fromDate} != null ? ${#temporals.format(experience.dateRange.fromDate, 'dd/MM/yyyy')} : '?') + ' - ' + (${experience.dateRange} != null and ${experience.dateRange.toDate} != null ? ${#temporals.format(experience.dateRange.toDate, 'dd/MM/yyyy')} : 'Present')">01/01/2022 - 01/01/2023</span>
+              </div>
+              <div class="subDetailsBold" th:class="subDetailsBold"
+                   th:if="${experience.company.companyName} != null and ${experience.company.companyName.length()} != 0"
+                   th:utext="${'at ' + '<b>' +experience.company.companyName + '</b>'}">at Company
+              </div>
+              <div th:utext="'<p></p>'"><p></p></div>
+            </li>
+          </ul>
+        </div>
+        <!--        <div class="clear" th:class="clear"></div>-->
+      </section>
+    </div>
+  </div>
+</page>
+</body>
+<html>
+
+
+
+
+

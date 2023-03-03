@@ -19,11 +19,13 @@ public interface ApplicantMapper {
   @Mapping(target = "name", source = "user.name")
   @Mapping(target = "lastName", source = "user.lastName")
   @Mapping(target = "email", source = "user.email")
+  @Mapping(target = "userId", source = "user.id")
   ApplicantDetailDto map(Applicant source);
 
   @Mapping(target = "name", source = "user.name")
   @Mapping(target = "lastName", source = "user.lastName")
   @Mapping(target = "email", source = "user.email")
+  @Mapping(target = "userId", source = "user.id")
   ApplicantDto mapDto(Applicant source);
 
   @Mapping(source = "name", target = "user.name")

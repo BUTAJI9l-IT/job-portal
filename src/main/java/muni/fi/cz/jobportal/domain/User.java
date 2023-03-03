@@ -14,6 +14,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -53,6 +54,10 @@ public class User {
 
   private String name;
   private String lastName;
+
+  @OneToOne(mappedBy = "uploadedBy", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+  @JoinColumn(name = "avatar_file")
+  private File avatar;
 
   @Enumerated(EnumType.STRING)
   @Column(name = "scope")

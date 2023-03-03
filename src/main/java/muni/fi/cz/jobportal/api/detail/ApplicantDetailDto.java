@@ -9,7 +9,7 @@ import muni.fi.cz.jobportal.api.common.ExperienceDto;
 public class ApplicantDetailDto {
 
   private UUID id;
-
+  private UUID userId;
   private String name;
   private String lastName;
   private String email;
@@ -18,6 +18,7 @@ public class ApplicantDetailDto {
   private String state;
   private String city;
   private String profile;
+  private String phone;
 
   private List<ExperienceDto> experiences;
 }
