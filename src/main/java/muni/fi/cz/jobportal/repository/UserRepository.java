@@ -13,8 +13,15 @@ public interface UserRepository extends UserSearchRepository, JobPortalRepositor
 
   @Query("SELECT CASE WHEN COUNT(u) > 0 THEN TRUE ELSE FALSE END FROM User u WHERE u.email = :email")
   boolean existsByEmail(String email);
+
   @Query("SELECT CASE WHEN COUNT(u) > 0 THEN TRUE ELSE FALSE END FROM User u WHERE u.id = :id AND u.scope = 'ADMIN'")
   boolean isAdmin(UUID id);
+
+  @Query("SELECT CASE WHEN COUNT(u) > 0 THEN TRUE ELSE FALSE END FROM User u WHERE u.id = :id AND u.scope = 'REGULAR_USER'")
+  boolean isRegularUser(UUID id);
+
+  @Query("SELECT CASE WHEN COUNT(u) > 0 THEN TRUE ELSE FALSE END FROM User u WHERE u.id = :id AND u.scope = 'COMPANY'")
+  boolean isCompany(UUID id);
 
   @Override
   default Class<User> getBaseClass() {

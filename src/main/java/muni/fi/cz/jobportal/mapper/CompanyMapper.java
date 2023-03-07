@@ -12,7 +12,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-@Mapper(uses = CompanyFactory.class)
+@Mapper(uses = {CompanyFactory.class, JobPositionMapper.class})
 public interface CompanyMapper {
 
   @Mapping(target = "user", ignore = true)

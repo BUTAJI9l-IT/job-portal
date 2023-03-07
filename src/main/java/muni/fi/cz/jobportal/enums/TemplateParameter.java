@@ -7,5 +7,9 @@ public enum TemplateParameter {
   EMAIL,
   PHONE,
   PROFILE,
-  EXPERIENCES
+  EXPERIENCES,
+  STATUS,
+  COMPANY,
+  JOB_POSITION,
+  URI
 }

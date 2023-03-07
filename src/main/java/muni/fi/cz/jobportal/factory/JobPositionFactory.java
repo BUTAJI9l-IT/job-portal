@@ -28,7 +28,7 @@ public class JobPositionFactory {
   public JobPositionDetailDto prepare(JobPosition source) {
     final var detail = new JobPositionDetailDto();
     setFields(source, detail);
-    detail.setAppliedCount(source.getApplications().size());
+    detail.setAppliedCount(jobPositionRepository.countApplied(source.getId()));
     return detail;
   }
 

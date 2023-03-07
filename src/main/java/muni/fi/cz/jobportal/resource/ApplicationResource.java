@@ -11,6 +11,7 @@ import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import muni.fi.cz.jobportal.annotation.JobPortalSecuredController;
 import muni.fi.cz.jobportal.api.common.ApplicationDto;
+import muni.fi.cz.jobportal.api.detail.ApplicationDetailDto;
 import muni.fi.cz.jobportal.api.request.ApplicationUpdateDto;
 import muni.fi.cz.jobportal.api.search.ApplicationQueryParams;
 import muni.fi.cz.jobportal.enums.ApplicationState;
@@ -34,6 +35,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ApplicationResource {
 
   private final ApplicationService applicationService;
+
+  @GetMapping("/{applicationId}")
+  @Operation(summary = "Returns an application by given id")
+  public ResponseEntity<ApplicationDetailDto> getApplication(@PathVariable("applicationId") UUID applicationId) {
+    return ResponseEntity.ok(applicationService.findOne(applicationId));
+  }
 
   @GetMapping
   @PageableAsQueryParam
@@ -60,7 +67,7 @@ public class ApplicationResource {
 
   @PutMapping("/{applicationId}/state")
   @Operation(summary = "Change a state of an application", description = "Company can change a state an application")
-  public ResponseEntity<ApplicationDto> changeApplicationState(@PathVariable("applicationId") UUID applicationId,
+  public ResponseEntity<ApplicationDetailDto> changeApplicationState(@PathVariable("applicationId") UUID applicationId,
     @Valid @RequestBody ApplicationUpdateDto payload) {
     return ResponseEntity.ok(applicationService.update(applicationId, payload));
   }

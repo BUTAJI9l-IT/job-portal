@@ -1,8 +1,16 @@
 package muni.fi.cz.jobportal.enums;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 public enum ApplicationState {
-  OPEN,
-  SEEN,
-  APPROVED,
-  DECLINED
+  OPEN(0),
+  SEEN(1),
+  APPROVED(2),
+  DECLINED(2),
+  CLOSED(3);
+
+  @Getter
+  private final int state;
 }

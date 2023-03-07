@@ -10,10 +10,19 @@ services:
     depends_on:
       - db
     environment:
+      - PORT=8080
+      - BASE_URI=https://localhost:fe-app
+      - ACCESS_TOKEN_DURATION=1H
+      - REFRESH_TOKEN_DURATION=1D
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/jobportal
       - SPRING_DATASOURCE_USERNAME=jobportal
       - SPRING_DATASOURCE_PASSWORD=jobportal
       - SPRING_JPA_HIBERNATE_DDL_AUTO=validate
+      - EMAIL_STMP_HOST=smtp.gmail.com #specify another stmp in case you do not use gmail
+      - EMAIL_PORT=587
+      - EMAIL_NOTIFICATION_APP_USERNAME=your_email #add your email (according to stmp)
+      - EMAIL_NOTIFICATION_APP_PASSWORD=your_password #generate password for application in gmail
+      - NOTIFICATIONS_ENABLED=true #enable notifications
     volumes:
       - app-data:/tmp
 

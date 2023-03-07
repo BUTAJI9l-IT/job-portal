@@ -5,7 +5,7 @@ import lombok.Data;
 import muni.fi.cz.jobportal.enums.CompanyNumberOfEmployees;
 
 @Data
-public class CompanyUpdateDto extends UserUpdateDto {
+public class CompanyUpdateDto {
 
   private String name;
   private String lastName;

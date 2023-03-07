@@ -1,6 +1,7 @@
 package muni.fi.cz.jobportal.service.impl;
 
 import static muni.fi.cz.jobportal.api.JwtClaims.EMAIL_CLAIM;
+import static muni.fi.cz.jobportal.api.JwtClaims.NON_USER_UUID_CLAIM;
 import static muni.fi.cz.jobportal.api.JwtClaims.SCOPE_CLAIM;
 
 import java.time.Instant;
@@ -14,6 +15,7 @@ import muni.fi.cz.jobportal.api.request.RefreshTokenRequest;
 import muni.fi.cz.jobportal.configuration.properties.JobPortalApplicationProperties;
 import muni.fi.cz.jobportal.domain.RefreshToken;
 import muni.fi.cz.jobportal.domain.User;
+import muni.fi.cz.jobportal.enums.JobPortalScope;
 import muni.fi.cz.jobportal.exception.EmptyScopesException;
 import muni.fi.cz.jobportal.exception.EntityNotFoundException;
 import muni.fi.cz.jobportal.mapper.UserMapper;
@@ -112,6 +114,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     final var authorities = authentication.getAuthorities();
     claims.subject(user.getId().toString());
     claims.claim(EMAIL_CLAIM, user.getEmail());
+    if (user.getScope().equals(JobPortalScope.COMPANY)) {
+      claims.claim(NON_USER_UUID_CLAIM, user.getCompany().getId().toString());
+    } else if (user.getScope().equals(JobPortalScope.REGULAR_USER)) {
+      claims.claim(NON_USER_UUID_CLAIM, user.getApplicant().getId().toString());
+    }
     claims.claim(SCOPE_CLAIM, authorities.stream()
       .map(GrantedAuthority::getAuthority)
       .findFirst()

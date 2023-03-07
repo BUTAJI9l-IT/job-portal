@@ -13,12 +13,15 @@ import muni.fi.cz.jobportal.api.request.ApplicationCreateDto;
 import muni.fi.cz.jobportal.api.request.JobPositionCreateDto;
 import muni.fi.cz.jobportal.api.request.JobPositionUpdateDto;
 import muni.fi.cz.jobportal.api.search.JobPositionQueryParams;
+import muni.fi.cz.jobportal.enums.ApplicationState;
 import muni.fi.cz.jobportal.enums.PositionState;
+import muni.fi.cz.jobportal.exception.ApplicationAlreadyExistsException;
 import muni.fi.cz.jobportal.exception.JobPositionAlreadySavedException;
 import muni.fi.cz.jobportal.exception.JobPositionNotInSavedException;
 import muni.fi.cz.jobportal.exception.PositionIsNotActiveException;
 import muni.fi.cz.jobportal.mapper.JobPositionMapper;
 import muni.fi.cz.jobportal.repository.ApplicantRepository;
+import muni.fi.cz.jobportal.repository.ApplicationRepository;
 import muni.fi.cz.jobportal.repository.JobCategoryRepository;
 import muni.fi.cz.jobportal.repository.JobPositionRepository;
 import muni.fi.cz.jobportal.repository.UserRepository;
@@ -40,6 +43,7 @@ public class JobPositionServiceImpl implements JobPositionService {
   private final JobPositionMapper jobPositionMapper;
   private final ApplicantRepository applicantRepository;
   private final JobCategoryRepository jobCategoryRepository;
+  private final ApplicationRepository applicationRepository;
 
   @NonNull
   @Override
@@ -75,6 +79,12 @@ public class JobPositionServiceImpl implements JobPositionService {
   @PreAuthorize("@authorityValidator.jobBelongsToCompany(#id)")
   public JobPositionDetailDto update(@NonNull UUID id, @NonNull JobPositionUpdateDto payload) {
     final var updated = jobPositionMapper.update(jobPositionRepository.getOneByIdOrThrowNotFound(id), payload);
+    if (payload.getStatus().equals(PositionState.INACTIVE)) {
+      updated.getApplications().forEach(application -> {
+        application.setState(ApplicationState.CLOSED);
+        applicationRepository.saveAndFlush(application);
+      });
+    }
     updated.setJobCategories(jobCategoryRepository.findAllById(payload.getJobCategories()));
     return jobPositionMapper.map(jobPositionRepository.saveAndFlush(updated));
   }
@@ -94,6 +104,9 @@ public class JobPositionServiceImpl implements JobPositionService {
       throw new PositionIsNotActiveException();
     }
     final var applicant = userRepository.getOneByIdOrThrowNotFound(getCurrentUser()).getApplicant();
+    if (applicationRepository.existsActive(applicant.getId(), jobPositionId)) {
+      throw new ApplicationAlreadyExistsException();
+    }
     applicationService.create(ApplicationCreateDto.builder().job(jobPositionId).applicant(applicant.getId()).build());
     return jobPositionMapper.map(jobPositionRepository.saveAndFlush(jobPosition));
   }

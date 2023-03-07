@@ -16,9 +16,11 @@ import muni.fi.cz.jobportal.repository.CompanyRepository;
 import muni.fi.cz.jobportal.repository.UserRepository;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component("authorityValidator")
 @RequiredArgsConstructor
+@Transactional
 public class AuthorityValidator {
 
   private final CompanyRepository companyRepository;
@@ -64,12 +66,12 @@ public class AuthorityValidator {
     return hasScope(ADMIN.toString()) && userRepository.isAdmin(getCurrentUser());
   }
 
-  public static boolean isRegularUser() {
-    return hasScope(REGULAR_USER.toString());
+  public boolean isRegularUser() {
+    return hasScope(REGULAR_USER.toString()) && userRepository.isRegularUser(getCurrentUser());
   }
 
-  public static boolean isCompany() {
-    return hasScope(COMPANY.toString());
+  public boolean isCompany() {
+    return hasScope(COMPANY.toString()) && userRepository.isCompany(getCurrentUser());
   }
 
   private UUID getUserFromApplicant(UUID id) {

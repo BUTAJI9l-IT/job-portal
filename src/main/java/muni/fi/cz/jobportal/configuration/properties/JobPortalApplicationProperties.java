@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "job-portal")
 public class JobPortalApplicationProperties {
 
+  private String baseUri;
+
   @NestedConfigurationProperty
   private KeyStoreProperties keyStore;
 
@@ -18,4 +20,7 @@ public class JobPortalApplicationProperties {
 
   @NestedConfigurationProperty
   private TokenProperties refreshToken;
+
+  @NestedConfigurationProperty
+  private EmailProperties notifications;
 }

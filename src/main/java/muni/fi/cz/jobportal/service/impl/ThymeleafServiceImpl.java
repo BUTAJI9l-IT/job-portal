@@ -55,6 +55,15 @@ public class ThymeleafServiceImpl implements ThymeleafService {
   }
 
   @NonNull
+  @Override
+  public String parseTemplate(@NonNull Map<TemplateParameter, Object> variables, @NonNull String template) {
+    final var context = new Context();
+    context.setVariables(variables.entrySet().stream()
+      .collect(Collectors.toMap(e -> e.getKey().toString(), Entry::getValue)));
+    return templateEngine.process(template, context);
+  }
+
+  @NonNull
   private ByteArrayInputStream convertToPDF(String parsed) {
     try {
       final var out = new ByteArrayOutputStream();
@@ -63,12 +72,5 @@ public class ThymeleafServiceImpl implements ThymeleafService {
     } catch (Exception ignore) {
       throw new ConversionException();
     }
-  }
-
-  private String parseTemplate(Map<TemplateParameter, Object> variables, String template) {
-    final var context = new Context();
-    context.setVariables(variables.entrySet().stream()
-      .collect(Collectors.toMap(e -> e.getKey().toString(), Entry::getValue)));
-    return templateEngine.process(template, context);
   }
 }

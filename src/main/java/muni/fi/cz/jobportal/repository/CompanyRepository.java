@@ -12,7 +12,7 @@ public interface CompanyRepository extends CompanySearchRepository, JobPortalRep
     WHEN COUNT (jp) > 0
     THEN TRUE ELSE FALSE END
     FROM JobPosition jp
-    WHERE jp.id = :jobId AND jp.company.user = :userId
+    WHERE jp.id = :jobId AND jp.company.user.id = :userId
     """)
   boolean userWithJobExists(UUID userId, UUID jobId);
 

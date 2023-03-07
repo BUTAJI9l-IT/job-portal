@@ -1,5 +1,5 @@
 server:
-  port: { $PORT:8080 }
+  port: ${PORT:8080}
 
 spring:
   application:
@@ -29,6 +29,15 @@ spring:
       location: ./tmp/img
       max-file-size: 128KB
       max-request-size: 128KB
+  mail:
+    host: ${EMAIL_STMP_HOST:smtp.gmail.com}
+    port: ${EMAIL_PORT:587}
+    username: ${EMAIL_NOTIFICATION_APP_USERNAME}
+    password: ${EMAIL_NOTIFICATION_APP_PASSWORD}
+    properties:
+      mail:
+        smtp.auth: ${NOTIFICATIONS_ENABLED:false}
+        smtp.starttls.enable: ${NOTIFICATIONS_ENABLED:false}
 
 springdoc:
   packages-to-scan:
@@ -46,6 +55,9 @@ job-portal:
     location: classpath:/keypair
     kid: kid
   access-token:
-    duration: 1H
+    duration: ${ACCESS_TOKEN_DURATION:1H}
   refresh-token:
-    duration: 1D
+    duration: ${REFRESH_TOKEN_DURATION:1D}
+  notifications:
+    enabled: ${NOTIFICATIONS_ENABLED:false}
+  base-uri: ${BASE_URI:https://localhost:8080}

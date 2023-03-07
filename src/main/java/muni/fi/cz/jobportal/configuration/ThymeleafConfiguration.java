@@ -27,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.catalina.webresources.TomcatURLStreamHandlerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.io.ResourceLoader;
 import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 import org.thymeleaf.spring5.SpringTemplateEngine;
@@ -48,6 +49,13 @@ public class ThymeleafConfiguration {
     templateEngine.addTemplateResolver(cssTemplateResolver());
     templateEngine.addDialect(new Java8TimeDialect());
     return templateEngine;
+  }
+
+  @Bean
+  public ResourceBundleMessageSource messageSource() {
+    ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+    messageSource.setBasename("templates/messages/messages");
+    return messageSource;
   }
 
   @Bean
