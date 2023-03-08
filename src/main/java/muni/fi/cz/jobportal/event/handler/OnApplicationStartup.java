@@ -1,4 +1,4 @@
-package muni.fi.cz.jobportal.event;
+package muni.fi.cz.jobportal.event.handler;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
