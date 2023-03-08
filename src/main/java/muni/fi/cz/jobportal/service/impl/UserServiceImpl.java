@@ -15,6 +15,7 @@ import muni.fi.cz.jobportal.mapper.CompanyMapper;
 import muni.fi.cz.jobportal.mapper.UserMapper;
 import muni.fi.cz.jobportal.repository.ApplicantRepository;
 import muni.fi.cz.jobportal.repository.CompanyRepository;
+import muni.fi.cz.jobportal.repository.ExperienceRepository;
 import muni.fi.cz.jobportal.repository.RefreshTokenRepository;
 import muni.fi.cz.jobportal.repository.UserRepository;
 import muni.fi.cz.jobportal.service.ApplicantService;
@@ -33,6 +34,7 @@ public class UserServiceImpl implements UserService {
 
   private final UserRepository userRepository;
   private final ApplicantRepository applicantRepository;
+  private final ExperienceRepository experienceRepository;
   private final CompanyRepository companyRepository;
   private final RefreshTokenRepository refreshTokenRepository;
   private final UserMapper userMapper;
@@ -84,6 +86,12 @@ public class UserServiceImpl implements UserService {
   public void delete(@NonNull UUID id) {
     final var user = userRepository.getOneByIdOrThrowNotFound(id);
     refreshTokenRepository.deleteAllByUserId(id);
+    if (user.getCompany() != null) {
+      experienceRepository.findExperiencesByCompany(user.getCompany().getId()).forEach(experience -> {
+        experience.setCompany(null);
+        experienceRepository.save(experience);
+      });
+    }
     userRepository.delete(user);
   }
 

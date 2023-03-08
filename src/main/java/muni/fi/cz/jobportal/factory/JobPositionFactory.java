@@ -2,6 +2,7 @@ package muni.fi.cz.jobportal.factory;
 
 import static muni.fi.cz.jobportal.utils.AuthenticationUtils.getCurrentUser;
 
+import java.util.ArrayList;
 import lombok.RequiredArgsConstructor;
 import muni.fi.cz.jobportal.api.common.JobPositionDto;
 import muni.fi.cz.jobportal.api.detail.JobPositionDetailDto;
@@ -47,6 +48,10 @@ public class JobPositionFactory {
     final var currentUser = getCurrentUser();
     detail.setApplied(jobPositionRepository.userWithIdApplied(source.getId(), currentUser));
     detail.setFavourite(jobPositionRepository.userWithIdLiked(source, currentUser));
-    detail.setJobCategories(source.getJobCategories().stream().map(JobCategory::getName).toList());
+    if (source.getJobCategories() != null) {
+      detail.setJobCategories(source.getJobCategories().stream().map(JobCategory::getName).toList());
+    } else {
+      detail.setJobCategories(new ArrayList<>());
+    }
   }
 }
