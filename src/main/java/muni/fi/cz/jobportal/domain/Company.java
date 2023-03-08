@@ -55,7 +55,7 @@ public class Company {
   @GenericField(name = COMPANY_SIZE)
   private CompanyNumberOfEmployees companySize;
 
-  @OneToMany(mappedBy = "company", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+  @OneToMany(mappedBy = "company", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)
   private List<JobPosition> jobPositions;
 
   @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)

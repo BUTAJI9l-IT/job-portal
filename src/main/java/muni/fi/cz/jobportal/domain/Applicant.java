@@ -61,15 +61,15 @@ public class Applicant {
   @JoinColumn(name = "user_id")
   private User user;
 
-  @OneToMany(mappedBy = "applicant", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+  @OneToMany(mappedBy = "applicant", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)
   private List<Experience> experiences;
 
-  @OneToMany(mappedBy = "applicant", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+  @OneToMany(mappedBy = "applicant", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)
   private List<Application> applications;
 
   @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(name = "applicant_saved_jobs",
-    joinColumns = @JoinColumn(name = "applicant", referencedColumnName = "id"),
-    inverseJoinColumns = @JoinColumn(name = "job_position", referencedColumnName = "id"))
+      joinColumns = @JoinColumn(name = "applicant", referencedColumnName = "id"),
+      inverseJoinColumns = @JoinColumn(name = "job_position", referencedColumnName = "id"))
   private List<JobPosition> savedJobs;
 }

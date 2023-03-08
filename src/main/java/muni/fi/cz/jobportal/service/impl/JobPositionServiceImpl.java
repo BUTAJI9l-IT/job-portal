@@ -27,6 +27,7 @@ import muni.fi.cz.jobportal.repository.JobPositionRepository;
 import muni.fi.cz.jobportal.repository.UserRepository;
 import muni.fi.cz.jobportal.service.ApplicationService;
 import muni.fi.cz.jobportal.service.JobPositionService;
+import muni.fi.cz.jobportal.utils.StaticObjectFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.NonNull;
@@ -44,19 +45,20 @@ public class JobPositionServiceImpl implements JobPositionService {
   private final ApplicantRepository applicantRepository;
   private final JobCategoryRepository jobCategoryRepository;
   private final ApplicationRepository applicationRepository;
+  private final StaticObjectFactory staticObjectFactory;
 
   @NonNull
   @Override
   @PreAuthorize("@authorityValidator.canCreateJobPosition(#payload)")
   public JobPositionDetailDto create(@NonNull JobPositionCreateDto payload) {
     jobCategoryRepository.findByOccupationName(payload.getPositionName())
-      .ifPresent(cat -> {
-        if (payload.getJobCategories() == null) {
-          payload.setJobCategories(List.of(cat.getId()));
-        } else if (payload.getJobCategories().stream().noneMatch(id -> id.equals(cat.getId()))) {
-          payload.getJobCategories().add(cat.getId());
-        }
-      });
+        .ifPresent(cat -> {
+          if (payload.getJobCategories() == null) {
+            payload.setJobCategories(List.of(cat.getId()));
+          } else if (payload.getJobCategories().stream().noneMatch(id -> id.equals(cat.getId()))) {
+            payload.getJobCategories().add(cat.getId());
+          }
+        });
     return jobPositionMapper.map(jobPositionRepository.save(jobPositionMapper.map(payload)));
   }
 
@@ -86,6 +88,7 @@ public class JobPositionServiceImpl implements JobPositionService {
       });
     }
     updated.setJobCategories(jobCategoryRepository.findAllById(payload.getJobCategories()));
+    updated.setLastUpdated(staticObjectFactory.getNowAsInstant());
     return jobPositionMapper.map(jobPositionRepository.saveAndFlush(updated));
   }
 
@@ -116,10 +119,10 @@ public class JobPositionServiceImpl implements JobPositionService {
   @PreAuthorize("hasAuthority('SCOPE_ADMIN') OR hasAuthority('SCOPE_REGULAR_USER')")
   public FavouritesJobsResponse getFavorites() {
     return new FavouritesJobsResponse(
-      userRepository.getOneByIdOrThrowNotFound(getCurrentUser()).getApplicant().getSavedJobs()
-        .stream()
-        .map(jp -> (JobPositionDto) jobPositionMapper.map(jp))
-        .toList()
+        userRepository.getOneByIdOrThrowNotFound(getCurrentUser()).getApplicant().getSavedJobs()
+            .stream()
+            .map(jp -> (JobPositionDto) jobPositionMapper.map(jp))
+            .toList()
     );
   }
 
@@ -135,9 +138,9 @@ public class JobPositionServiceImpl implements JobPositionService {
     user.getApplicant().getSavedJobs().add(jobPosition);
     applicantRepository.saveAndFlush(user.getApplicant());
     return new FavouritesJobsResponse(user.getApplicant().getSavedJobs()
-      .stream()
-      .map(jp -> (JobPositionDto) jobPositionMapper.map(jp))
-      .toList());
+        .stream()
+        .map(jp -> (JobPositionDto) jobPositionMapper.map(jp))
+        .toList());
   }
 
   @NonNull
@@ -152,8 +155,8 @@ public class JobPositionServiceImpl implements JobPositionService {
     user.getApplicant().getSavedJobs().removeIf(jp -> jp.getId().equals(jobPosition.getId()));
     applicantRepository.saveAndFlush(user.getApplicant());
     return new FavouritesJobsResponse(user.getApplicant().getSavedJobs()
-      .stream()
-      .map(jp -> (JobPositionDto) jobPositionMapper.map(jp))
-      .toList());
+        .stream()
+        .map(jp -> (JobPositionDto) jobPositionMapper.map(jp))
+        .toList());
   }
 }
