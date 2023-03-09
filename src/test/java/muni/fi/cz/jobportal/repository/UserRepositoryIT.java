@@ -4,12 +4,14 @@ import static muni.fi.cz.jobportal.testutils.EntityUtils.prepareUserEntity;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import muni.fi.cz.jobportal.AbstractIntegrationTest;
-import muni.fi.cz.jobportal.annotation.IntegrationTest;
 import muni.fi.cz.jobportal.enums.JobPortalScope;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.ActiveProfiles;
 
-@IntegrationTest
+@DataJpaTest
+@ActiveProfiles("it")
 class UserRepositoryIT extends AbstractIntegrationTest {
 
   @Autowired

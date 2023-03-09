@@ -8,12 +8,14 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import muni.fi.cz.jobportal.AbstractIntegrationTest;
-import muni.fi.cz.jobportal.annotation.IntegrationTest;
 import muni.fi.cz.jobportal.enums.JobPortalScope;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.ActiveProfiles;
 
-@IntegrationTest
+@DataJpaTest
+@ActiveProfiles("it")
 class RefreshTokenRepositoryIT extends AbstractIntegrationTest {
 
   @Autowired

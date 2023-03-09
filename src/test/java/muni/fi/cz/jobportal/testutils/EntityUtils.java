@@ -3,11 +3,13 @@ package muni.fi.cz.jobportal.testutils;
 import static lombok.AccessLevel.PRIVATE;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.UUID;
 import lombok.NoArgsConstructor;
 import muni.fi.cz.jobportal.domain.Applicant;
 import muni.fi.cz.jobportal.domain.Application;
 import muni.fi.cz.jobportal.domain.Company;
+import muni.fi.cz.jobportal.domain.Experience;
 import muni.fi.cz.jobportal.domain.JobCategory;
 import muni.fi.cz.jobportal.domain.JobPosition;
 import muni.fi.cz.jobportal.domain.Occupation;
@@ -87,5 +89,14 @@ public class EntityUtils {
     token.setExpires(expires);
     token.setUser(user);
     return token;
+  }
+
+  public static Experience prepareExperienceEntity(Applicant applicant) {
+    final var experience = new Experience();
+    experience.setApplicant(applicant);
+    experience.setCompanyName("some company");
+    experience.setOccupation("proffesion");
+    experience.setFromDate(LocalDate.now());
+    return experience;
   }
 }

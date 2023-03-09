@@ -5,13 +5,13 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 @Target(TYPE)
 @Retention(RUNTIME)
-@DataJpaTest
+@SpringBootTest
 @ActiveProfiles("it")
 @Transactional
 public @interface IntegrationTest {

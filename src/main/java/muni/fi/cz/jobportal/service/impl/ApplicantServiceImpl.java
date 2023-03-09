@@ -3,6 +3,7 @@ package muni.fi.cz.jobportal.service.impl;
 import static muni.fi.cz.jobportal.utils.AuthenticationUtils.getCurrentUser;
 
 import java.io.ByteArrayInputStream;
+import java.util.ArrayList;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import muni.fi.cz.jobportal.annotation.JobPortalService;
@@ -91,6 +92,9 @@ public class ApplicantServiceImpl implements ApplicantService {
   public ApplicantDetailDto addExperience(@NonNull UUID id, @NonNull ExperienceDto payload) {
     final var applicant = applicantRepository.getOneByIdOrThrowNotFound(id);
     final var experience = experienceRepository.saveAndFlush(experienceMapper.create(payload, applicant));
+    if (applicant.getExperiences() == null) {
+      applicant.setExperiences(new ArrayList<>());
+    }
     applicant.getExperiences().add(experience);
     applicantRepository.saveAndFlush(applicant);
     return applicantMapper.map(applicant);

@@ -11,13 +11,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.List;
 import java.util.UUID;
 import muni.fi.cz.jobportal.AbstractIntegrationTest;
-import muni.fi.cz.jobportal.annotation.IntegrationTest;
 import muni.fi.cz.jobportal.enums.ApplicationState;
 import muni.fi.cz.jobportal.enums.PositionState;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.ActiveProfiles;
 
-@IntegrationTest
+@DataJpaTest
+@ActiveProfiles("it")
 class JobPositionRepositoryIT extends AbstractIntegrationTest {
 
   @Autowired
