@@ -3,6 +3,11 @@ package muni.fi.cz.jobportal.configuration.constants;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+/**
+ * Class with indexed fields' names.
+ *
+ * @author Vitalii Bortsov
+ */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SearchProperties {
 

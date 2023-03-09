@@ -7,6 +7,11 @@ import muni.fi.cz.jobportal.repository.UserRepository;
 import org.mapstruct.ObjectFactory;
 import org.springframework.stereotype.Component;
 
+/**
+ * Object factory for companies
+ *
+ * @author Vitalii Bortsov
+ */
 @Component
 @RequiredArgsConstructor
 public class CompanyFactory {

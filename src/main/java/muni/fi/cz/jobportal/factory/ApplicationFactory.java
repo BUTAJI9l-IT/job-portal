@@ -9,6 +9,11 @@ import muni.fi.cz.jobportal.utils.StaticObjectFactory;
 import org.mapstruct.ObjectFactory;
 import org.springframework.stereotype.Component;
 
+/**
+ * Object factory for applications
+ *
+ * @author Vitalii Bortsov
+ */
 @Component
 @RequiredArgsConstructor
 public class ApplicationFactory {

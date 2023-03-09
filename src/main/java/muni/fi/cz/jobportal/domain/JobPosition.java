@@ -39,7 +39,11 @@ import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordField;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.TypeBinding;
 
-
+/**
+ * Job Position entity class.
+ *
+ * @author Vitalii Bortsov
+ */
 @Getter
 @Setter
 @Entity
@@ -87,7 +91,7 @@ public class JobPosition {
 
   @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(name = "position_category",
-    joinColumns = @JoinColumn(name = "job_position", referencedColumnName = "id"),
-    inverseJoinColumns = @JoinColumn(name = "category", referencedColumnName = "id"))
+      joinColumns = @JoinColumn(name = "job_position", referencedColumnName = "id"),
+      inverseJoinColumns = @JoinColumn(name = "category", referencedColumnName = "id"))
   private List<JobCategory> jobCategories;
 }

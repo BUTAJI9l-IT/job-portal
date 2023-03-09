@@ -10,13 +10,18 @@ import org.hibernate.search.mapper.pojo.bridge.TypeBridge;
 import org.hibernate.search.mapper.pojo.bridge.binding.TypeBindingContext;
 import org.hibernate.search.mapper.pojo.bridge.runtime.TypeBridgeWriteContext;
 
+/**
+ * Type binder for applicant entity.
+ *
+ * @author Vitalii Bortsov
+ */
 public class ApplicantBinder extends AbstractBinder {
 
   @Override
   public void bind(TypeBindingContext typeBindingContext) {
     typeBindingContext.dependencies()
-      .use(Applicant_.USER)
-      .use(Applicant_.APPLICATIONS);
+        .use(Applicant_.USER)
+        .use(Applicant_.APPLICATIONS);
 
     final var fullName = fulltext(typeBindingContext, SearchProperties.NAME, String.class);
     final var fullNameSort = sort(typeBindingContext, SearchProperties.NAME, String.class);
@@ -28,7 +33,7 @@ public class ApplicantBinder extends AbstractBinder {
 
   private record Bridge(IndexFieldReference<String> fullName, IndexFieldReference<String> fullNameSort,
                         IndexFieldReference<String> jobPosition, IndexFieldReference<String> jobPositionSort) implements
-    TypeBridge<Applicant> {
+      TypeBridge<Applicant> {
 
     @Override
     public void write(DocumentElement target, Applicant applicant, TypeBridgeWriteContext context) {

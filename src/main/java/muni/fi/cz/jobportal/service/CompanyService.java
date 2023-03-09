@@ -7,6 +7,6 @@ import muni.fi.cz.jobportal.api.request.CompanyUpdateDto;
 import muni.fi.cz.jobportal.api.search.CompanyQueryParams;
 
 public interface CompanyService extends
-  CRUDService<CompanyCreateDto, CompanyDto, CompanyUpdateDto, CompanyDetailDto, CompanyQueryParams> {
+    CRUDService<CompanyCreateDto, CompanyDto, CompanyUpdateDto, CompanyDetailDto, CompanyQueryParams> {
 
 }

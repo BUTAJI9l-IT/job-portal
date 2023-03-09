@@ -8,6 +8,11 @@ import muni.fi.cz.jobportal.factory.UserFactory;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+/**
+ * Mapper for users
+ *
+ * @author Vitalii Bortsov
+ */
 @Mapper(uses = UserFactory.class)
 public interface UserMapper {
 

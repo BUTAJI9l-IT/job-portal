@@ -5,12 +5,11 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.util.UUID;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestContextHolder;
 
 @Component
 public class StaticObjectFactory {
 
-  private static final ZoneId ZONE = ZoneId.of("Europe/Prague");
+  private static final ZoneId ZONE = ZoneId.systemDefault();
 
   public Instant now() {
     return Instant.now(getClock());
@@ -28,7 +27,4 @@ public class StaticObjectFactory {
     return UUID.randomUUID();
   }
 
-  public String getSession() {
-    return RequestContextHolder.currentRequestAttributes().getSessionId();
-  }
 }

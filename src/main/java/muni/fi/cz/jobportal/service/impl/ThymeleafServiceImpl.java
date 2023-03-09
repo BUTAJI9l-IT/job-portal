@@ -28,6 +28,11 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+/**
+ * {@link ThymeleafService} Implementation
+ *
+ * @author Vitalii Bortsov
+ */
 @Service
 @RequiredArgsConstructor
 public class ThymeleafServiceImpl implements ThymeleafService {
@@ -44,13 +49,13 @@ public class ThymeleafServiceImpl implements ThymeleafService {
   public ByteArrayInputStream generateCvPdf(@NonNull UUID applicantId) {
     final var applicant = applicantRepository.getOneByIdOrThrowNotFound(applicantId);
     return convertToPDF(parseTemplate(Map.of(
-      NAME, applicant.getUser().getName(),
-      LAST_NAME, applicant.getUser().getLastName(),
-      AVATAR, fileService.getAvatar(applicant.getUser().getId()).getAvatar(),
-      EMAIL, applicant.getUser().getEmail(),
-      PHONE, applicant.getPhone(),
-      PROFILE, applicant.getProfile(),
-      EXPERIENCES, experienceMapper.map(applicant.getExperiences())
+        NAME, applicant.getUser().getName(),
+        LAST_NAME, applicant.getUser().getLastName(),
+        AVATAR, fileService.getAvatar(applicant.getUser().getId()).getAvatar(),
+        EMAIL, applicant.getUser().getEmail(),
+        PHONE, applicant.getPhone(),
+        PROFILE, applicant.getProfile(),
+        EXPERIENCES, experienceMapper.map(applicant.getExperiences())
     ), CV_TEMPLATE_NAME));
   }
 
@@ -59,7 +64,7 @@ public class ThymeleafServiceImpl implements ThymeleafService {
   public String parseTemplate(@NonNull Map<TemplateParameter, Object> variables, @NonNull String template) {
     final var context = new Context();
     context.setVariables(variables.entrySet().stream()
-      .collect(Collectors.toMap(e -> e.getKey().toString(), Entry::getValue)));
+        .collect(Collectors.toMap(e -> e.getKey().toString(), Entry::getValue)));
     return templateEngine.process(template, context);
   }
 

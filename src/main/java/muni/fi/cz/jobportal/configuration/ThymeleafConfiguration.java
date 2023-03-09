@@ -34,12 +34,27 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
+/**
+ * Configuration class for Thymeleaf processor.
+ *
+ * @author Vitalii Bortsov
+ */
 @Configuration
 @RequiredArgsConstructor
 public class ThymeleafConfiguration {
 
+  /**
+   * CSS files location
+   */
   public static final String CSS_PREFIX = "static/css/";
+  /**
+   * HTML templates files location
+   */
   public static final String BASE_URI = "classpath:/templates/";
+  /**
+   * Message files location
+   */
+  public static final String MESSAGES = "templates/messages/messages";
   private final ResourceLoader resourceLoader;
 
   @Bean
@@ -54,7 +69,7 @@ public class ThymeleafConfiguration {
   @Bean
   public ResourceBundleMessageSource messageSource() {
     ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-    messageSource.setBasename("templates/messages/messages");
+    messageSource.setBasename(MESSAGES);
     return messageSource;
   }
 

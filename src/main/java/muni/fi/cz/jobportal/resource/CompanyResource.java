@@ -26,6 +26,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+/**
+ * Controller with company entity related endpoints.
+ *
+ * @author Vitalii Bortsov
+ */
 @Tag(name = COMPANY)
 @RequestMapping("/companies")
 @JobPortalSecuredController
@@ -43,7 +48,7 @@ public class CompanyResource {
   @PutMapping("/{companyId}")
   @Operation(summary = "Updates a company by given id")
   public ResponseEntity<CompanyDetailDto> updateCompany(@PathVariable("companyId") UUID companyId,
-    @Valid @RequestBody CompanyUpdateDto payload) {
+      @Valid @RequestBody CompanyUpdateDto payload) {
     return ResponseEntity.ok(companyService.update(companyId, payload));
   }
 
@@ -51,8 +56,8 @@ public class CompanyResource {
   @PageableAsQueryParam
   @Operation(summary = "Returns all companies")
   public Page<CompanyDto> getCompanies(@Parameter(hidden = true) Pageable pageable,
-    @RequestParam(required = false) String q,
-    @RequestParam(required = false) CompanyNumberOfEmployees companySize) {
+      @RequestParam(required = false) String q,
+      @RequestParam(required = false) CompanyNumberOfEmployees companySize) {
     return companyService.findAll(pageable, CompanyQueryParams.builder().q(q).companySize(companySize).build());
   }
 }

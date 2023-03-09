@@ -13,6 +13,11 @@ import muni.fi.cz.jobportal.repository.JobCategoryRepository;
 import org.mapstruct.ObjectFactory;
 import org.springframework.stereotype.Component;
 
+/**
+ * Object factory for experiences
+ *
+ * @author Vitalii Bortsov
+ */
 @Component
 @RequiredArgsConstructor
 public class ExperienceFactory {

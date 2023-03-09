@@ -29,6 +29,11 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * {@link ApplicantService} Implementation
+ *
+ * @author Vitalii Bortsov
+ */
 @JobPortalService
 @RequiredArgsConstructor
 public class ApplicantServiceImpl implements ApplicantService {

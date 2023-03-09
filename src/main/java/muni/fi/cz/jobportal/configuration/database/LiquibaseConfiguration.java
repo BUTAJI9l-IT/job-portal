@@ -8,6 +8,11 @@ import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * LiquibaseConfiguration for the application.
+ *
+ * @author Vitalii Bortsov
+ */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnMissingBean(SpringLiquibase.class)
 @EnableConfigurationProperties({DataSourceProperties.class, LiquibaseProperties.class})

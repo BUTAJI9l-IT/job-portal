@@ -10,13 +10,18 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 
+/**
+ * Utility class for helping process class fields with {@link java.lang.reflect}.
+ *
+ * @author Vitalii Bortsov
+ */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ClassFieldsUtils {
 
   public static boolean applyToAnnotatedFieldsWithValuesPresent(Object obj, Class<? extends Annotation> annotationClass,
-    Consumer<Field> action) {
+      Consumer<Field> action) {
     final var filtered = Arrays.stream(obj.getClass().getDeclaredFields())
-      .filter(f -> isAnnotationPresent(f, annotationClass) && fieldValuePresent(obj, f)).toList();
+        .filter(f -> isAnnotationPresent(f, annotationClass) && fieldValuePresent(obj, f)).toList();
     if (filtered.isEmpty()) {
       return false;
     }

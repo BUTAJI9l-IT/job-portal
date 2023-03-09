@@ -27,6 +27,11 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * {@link ApplicationService} Implementation
+ *
+ * @author Vitalii Bortsov
+ */
 @JobPortalService
 @RequiredArgsConstructor
 public class ApplicationServiceImpl implements ApplicationService {
@@ -48,7 +53,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     final var currentUser = userRepository.getOneByIdOrThrowNotFound(getCurrentUser());
     final var application = applicationRepository.getOneByIdOrThrowNotFound(id);
     if (application.getState().equals(ApplicationState.OPEN) && currentUser.getCompany() != null
-      && currentUser.getCompany().getId().equals(application.getJobPosition().getCompany().getId())) {
+        && currentUser.getCompany().getId().equals(application.getJobPosition().getCompany().getId())) {
       application.setState(ApplicationState.SEEN);
       applicationRepository.saveAndFlush(application);
     }
@@ -73,7 +78,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
     final var isChanged = application.getState().equals(payload.getState());
     final var updated = applicationMapper.map(applicationRepository.saveAndFlush(
-      applicationMapper.update(application, payload)));
+        applicationMapper.update(application, payload)));
     if (isChanged) {
       if (updated.getState().equals(ApplicationState.APPROVED)) {
         applicationEventPublisher.publishEvent(ApplicationStateChangedEvent.toApproved(this, id));
@@ -98,16 +103,16 @@ public class ApplicationServiceImpl implements ApplicationService {
       throw new AccessDeniedException("Access denied: not allowed to browse through all applications");
     }
     if (user.getScope().equals(JobPortalScope.COMPANY) &&
-      (params.getApplicant() != null ||
-        (params.getCompany() != null && !params.getCompany().equals(user.getCompany().getId())) ||
-        (params.getJobPosition() != null && user.getCompany().getJobPositions().stream()
-          .noneMatch(jp -> jp.getId().equals(params.getJobPosition()))))) {
+        (params.getApplicant() != null ||
+            (params.getCompany() != null && !params.getCompany().equals(user.getCompany().getId())) ||
+            (params.getJobPosition() != null && user.getCompany().getJobPositions().stream()
+                .noneMatch(jp -> jp.getId().equals(params.getJobPosition()))))) {
       throw new AccessDeniedException(
-        "Access denied: Company is not allowed to filter by another company, another companies' jobs, or see all applications of users");
+          "Access denied: Company is not allowed to filter by another company, another companies' jobs, or see all applications of users");
     }
     if (user.getScope().equals(JobPortalScope.REGULAR_USER) && params.getApplicant() == null) {
       throw new AccessDeniedException(
-        "Access denied: Applicant is not allowed to see another applicants' applications");
+          "Access denied: Applicant is not allowed to see another applicants' applications");
     }
   }
 }

@@ -10,6 +10,11 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
+/**
+ * Mapper for applicants
+ *
+ * @author Vitalii Bortsov
+ */
 @Mapper(uses = {ApplicantFactory.class, ExperienceMapper.class})
 public interface ApplicantMapper {
 

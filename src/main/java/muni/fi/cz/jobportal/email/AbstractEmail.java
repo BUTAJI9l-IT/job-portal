@@ -6,6 +6,11 @@ import lombok.Getter;
 import muni.fi.cz.jobportal.api.email.EmailDetailsDto;
 import muni.fi.cz.jobportal.enums.TemplateParameter;
 
+/**
+ * Abstract {@link IEmail} interface implementation.
+ *
+ * @author Vitalii Bortsov
+ */
 @Getter
 public abstract class AbstractEmail implements IEmail {
 

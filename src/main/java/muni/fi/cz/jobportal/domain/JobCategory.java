@@ -15,6 +15,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Job Category entity class.
+ *
+ * @author Vitalii Bortsov
+ */
 @Getter
 @Setter
 @AllArgsConstructor

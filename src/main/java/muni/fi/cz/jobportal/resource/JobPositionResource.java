@@ -30,6 +30,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+/**
+ * Controller with job position entity related endpoints.
+ *
+ * @author Vitalii Bortsov
+ */
 @Tag(name = JOB_POSITION)
 @RequestMapping("/positions")
 @JobPortalSecuredController
@@ -38,10 +43,11 @@ public class JobPositionResource {
 
   private final JobPositionService jobPositionService;
 
-  @PostMapping("/{jobPositionId}")
+  @PostMapping("/applicants/{applicantId}/apply/{jobPositionId}")
   @Operation(summary = "Apply for a job position")
-  public ResponseEntity<JobPositionDetailDto> apply(@PathVariable("jobPositionId") UUID jobPositionId) {
-    return ResponseEntity.ok(jobPositionService.apply(jobPositionId));
+  public ResponseEntity<JobPositionDetailDto> apply(@PathVariable("applicantId") UUID applicantId,
+      @PathVariable("jobPositionId") UUID jobPositionId) {
+    return ResponseEntity.ok(jobPositionService.apply(applicantId, jobPositionId));
   }
 
   @PostMapping
@@ -53,7 +59,7 @@ public class JobPositionResource {
   @PutMapping("/{jobPositionId}")
   @Operation(summary = "Change a state of a job position")
   public ResponseEntity<JobPositionDetailDto> updateJobPosition(@PathVariable("jobPositionId") UUID jobPositionId,
-    @Valid @RequestBody JobPositionUpdateDto payload) {
+      @Valid @RequestBody JobPositionUpdateDto payload) {
     return ResponseEntity.ok(jobPositionService.update(jobPositionId, payload));
   }
 
@@ -61,17 +67,17 @@ public class JobPositionResource {
   @PageableAsQueryParam
   @Operation(summary = "Returns all job positions")
   public Page<JobPositionDto> getJobPositions(@Parameter(hidden = true) Pageable pageable,
-    @RequestParam(required = false) String q,
-    @RequestParam(required = false) PositionState status,
-    @RequestParam(required = false) List<UUID> categories,
-    @RequestParam(required = false) List<UUID> companies
+      @RequestParam(required = false) String q,
+      @RequestParam(required = false) PositionState status,
+      @RequestParam(required = false) List<UUID> categories,
+      @RequestParam(required = false) List<UUID> companies
   ) {
     return jobPositionService.findAll(pageable, JobPositionQueryParams.builder()
-      .q(q)
-      .category(categories)
-      .company(companies)
-      .status(status)
-      .build());
+        .q(q)
+        .category(categories)
+        .company(companies)
+        .status(status)
+        .build());
   }
 
   @GetMapping("/{jobPositionId}")
@@ -80,21 +86,23 @@ public class JobPositionResource {
     return ResponseEntity.ok(jobPositionService.findOne(jobPositionId));
   }
 
-  @GetMapping("/favorites")
+  @GetMapping("/applicants/{applicantId}/favorites")
   @Operation(summary = "Get favorite jobs of a current user")
-  public ResponseEntity<FavouritesJobsResponse> getFavorites() {
-    return ResponseEntity.ok(jobPositionService.getFavorites());
+  public ResponseEntity<FavouritesJobsResponse> getFavorites(@PathVariable("applicantId") UUID applicantId) {
+    return ResponseEntity.ok(jobPositionService.getFavorites(applicantId));
   }
 
-  @PutMapping("/favourites/{jobPositionId}/add")
+  @PutMapping("/applicants/{applicantId}/favourites/{jobPositionId}/add")
   @Operation(summary = "Add to favorite jobs of a current user")
-  public ResponseEntity<FavouritesJobsResponse> addToFavorites(@PathVariable("jobPositionId") UUID jobPositionId) {
-    return ResponseEntity.ok(jobPositionService.addToFavorites(jobPositionId));
+  public ResponseEntity<FavouritesJobsResponse> addToFavorites(@PathVariable("applicantId") UUID applicantId,
+      @PathVariable("jobPositionId") UUID jobPositionId) {
+    return ResponseEntity.ok(jobPositionService.addToFavorites(applicantId, jobPositionId));
   }
 
-  @PutMapping("/favourites/{jobPositionId}/remove")
+  @PutMapping("/applicants/{applicantId}/favourites/{jobPositionId}/remove")
   @Operation(summary = "Remove from favorite jobs of a current user")
-  public ResponseEntity<FavouritesJobsResponse> removeFromFavorites(@PathVariable("jobPositionId") UUID jobPositionId) {
-    return ResponseEntity.ok(jobPositionService.removeFromFavorites(jobPositionId));
+  public ResponseEntity<FavouritesJobsResponse> removeFromFavorites(@PathVariable("applicantId") UUID applicantId,
+      @PathVariable("jobPositionId") UUID jobPositionId) {
+    return ResponseEntity.ok(jobPositionService.removeFromFavorites(applicantId, jobPositionId));
   }
 }

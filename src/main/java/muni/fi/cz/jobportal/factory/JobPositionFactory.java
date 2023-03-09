@@ -16,6 +16,11 @@ import muni.fi.cz.jobportal.utils.StaticObjectFactory;
 import org.mapstruct.ObjectFactory;
 import org.springframework.stereotype.Component;
 
+/**
+ * Object factory for job positions
+ *
+ * @author Vitalii Bortsov
+ */
 @Component
 @RequiredArgsConstructor
 public class JobPositionFactory {
@@ -47,7 +52,7 @@ public class JobPositionFactory {
   private void setFields(JobPosition source, JobPositionDto detail) {
     final var currentUser = getCurrentUser();
     detail.setApplied(jobPositionRepository.userWithIdApplied(source.getId(), currentUser));
-    detail.setFavourite(jobPositionRepository.userWithIdLiked(source, currentUser));
+    detail.setFavourite(jobPositionRepository.applicantWithIdLiked(source, currentUser));
     if (source.getJobCategories() != null) {
       detail.setJobCategories(source.getJobCategories().stream().map(JobCategory::getName).toList());
     } else {

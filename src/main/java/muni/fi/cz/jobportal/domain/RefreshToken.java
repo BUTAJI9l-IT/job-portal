@@ -13,6 +13,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Refresh Token entity class.
+ *
+ * @author Vitalii Bortsov
+ */
 @EqualsAndHashCode(of = "token")
 @AllArgsConstructor
 @NoArgsConstructor

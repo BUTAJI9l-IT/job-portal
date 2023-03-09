@@ -18,6 +18,11 @@ import org.springframework.util.Base64Utils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * {@link FileService} Implementation
+ *
+ * @author Vitalii Bortsov
+ */
 @JobPortalService
 @RequiredArgsConstructor
 public class FileServiceImpl implements FileService {
@@ -38,7 +43,7 @@ public class FileServiceImpl implements FileService {
     final File fileDB;
     try {
       fileDB = new File(null, StringUtils.cleanPath(file.getOriginalFilename()), file.getContentType(),
-        file.getBytes(), user);
+          file.getBytes(), user);
     } catch (IOException ignored) {
       throw new UploadFailedException();
     }
@@ -66,7 +71,7 @@ public class FileServiceImpl implements FileService {
   public AvatarBase64Dto getAvatar(@NonNull UUID userId) {
     final var user = userRepository.getOneByIdOrThrowNotFound(userId);
     return user.getAvatar() == null ? new AvatarBase64Dto(getDefaultAvatar())
-      : new AvatarBase64Dto(Base64Utils.encodeToString(user.getAvatar().getData()));
+        : new AvatarBase64Dto(Base64Utils.encodeToString(user.getAvatar().getData()));
   }
 
   private String getDefaultAvatar() {

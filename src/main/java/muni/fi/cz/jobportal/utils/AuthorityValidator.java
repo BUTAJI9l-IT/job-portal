@@ -18,6 +18,12 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Authority validator class contains methods for validating permissions of current authorized user to perform certain
+ * operations in the system.
+ *
+ * @author Vitalii Bortsov
+ */
 @Component("authorityValidator")
 @RequiredArgsConstructor
 @Transactional
@@ -34,12 +40,12 @@ public class AuthorityValidator {
 
   public boolean canCreateJobPosition(@NonNull JobPositionCreateDto payload) {
     return isAdmin() || (isCompany() && isCurrentUser(
-      companyRepository.getOneByIdOrThrowNotFound(payload.getCompany()).getUser().getId()));
+        companyRepository.getOneByIdOrThrowNotFound(payload.getCompany()).getUser().getId()));
   }
 
   public boolean canManageApplication(@NonNull UUID id) {
     return isAdmin() || (isCompany() && isCurrentUser(
-      applicationRepository.getOneByIdOrThrowNotFound(id).getJobPosition().getCompany().getUser().getId()));
+        applicationRepository.getOneByIdOrThrowNotFound(id).getJobPosition().getCompany().getUser().getId()));
   }
 
   public boolean canDeleteApplication(@NonNull UUID id) {

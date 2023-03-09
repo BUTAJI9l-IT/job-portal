@@ -3,6 +3,11 @@ package muni.fi.cz.jobportal.configuration.constants;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+/**
+ * Class with application constants
+ *
+ * @author Vitalii Bortsov
+ */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ApplicationConstants {
 

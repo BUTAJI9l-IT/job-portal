@@ -41,7 +41,7 @@ class JobPositionFactoryTest extends AbstractTest {
     final var source = preparePositionEntity(new Company(), PositionState.ACTIVE);
 
     when(jobPositionRepository.countApplied(any())).thenReturn(0);
-    when(jobPositionRepository.userWithIdLiked(any(), any())).thenReturn(true);
+    when(jobPositionRepository.applicantWithIdLiked(any(), any())).thenReturn(true);
     when(jobPositionRepository.userWithIdApplied(any(), any())).thenReturn(true);
 
     final var result = jobPositionFactory.prepare(source);

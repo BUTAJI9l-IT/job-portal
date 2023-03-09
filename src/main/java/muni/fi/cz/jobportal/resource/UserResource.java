@@ -32,6 +32,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * Controller with user entity related endpoints.
+ *
+ * @author Vitalii Bortsov
+ */
 @Tag(name = USER)
 @JobPortalSecuredController
 @RequestMapping("/users")
@@ -44,7 +49,7 @@ public class UserResource {
   @PutMapping("/{userId}")
   @Operation(summary = "Updates user's password")
   public ResponseEntity<UserDto> updatePassword(@PathVariable("userId") UUID userId,
-    @RequestBody @Valid UserUpdateDto payload) {
+      @RequestBody @Valid UserUpdateDto payload) {
     return ResponseEntity.ok(userService.update(userId, payload));
   }
 
@@ -65,20 +70,20 @@ public class UserResource {
   @PageableAsQueryParam
   @Operation(summary = "Returns all users")
   public Page<UserDto> getUsers(@Parameter(hidden = true) Pageable pageable,
-    @RequestParam(required = false) String q,
-    @RequestParam(required = false) JobPortalScope scope
+      @RequestParam(required = false) String q,
+      @RequestParam(required = false) JobPortalScope scope
   ) {
     return userService.findAll(pageable, UserQueryParams.builder()
-      .q(q)
-      .scope(scope)
-      .build()
+        .q(q)
+        .scope(scope)
+        .build()
     );
   }
 
   @PostMapping(value = "/{userId}/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   @Operation(summary = "Upload new user avatar")
   public ResponseEntity<AvatarBase64Dto> uploadAvatar(@PathVariable UUID userId,
-    @RequestPart("file") MultipartFile file) {
+      @RequestPart("file") MultipartFile file) {
     return ResponseEntity.ok(fileService.uploadAvatar(userId, file));
   }
 

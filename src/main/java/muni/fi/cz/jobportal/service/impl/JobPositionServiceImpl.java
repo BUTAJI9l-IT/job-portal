@@ -1,7 +1,5 @@
 package muni.fi.cz.jobportal.service.impl;
 
-import static muni.fi.cz.jobportal.utils.AuthenticationUtils.getCurrentUser;
-
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +22,6 @@ import muni.fi.cz.jobportal.repository.ApplicantRepository;
 import muni.fi.cz.jobportal.repository.ApplicationRepository;
 import muni.fi.cz.jobportal.repository.JobCategoryRepository;
 import muni.fi.cz.jobportal.repository.JobPositionRepository;
-import muni.fi.cz.jobportal.repository.UserRepository;
 import muni.fi.cz.jobportal.service.ApplicationService;
 import muni.fi.cz.jobportal.service.JobPositionService;
 import muni.fi.cz.jobportal.utils.StaticObjectFactory;
@@ -34,13 +31,17 @@ import org.springframework.lang.NonNull;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * {@link JobPositionService} Implementation
+ *
+ * @author Vitalii Bortsov
+ */
 @JobPortalService
 @RequiredArgsConstructor
 public class JobPositionServiceImpl implements JobPositionService {
 
   private final ApplicationService applicationService;
   private final JobPositionRepository jobPositionRepository;
-  private final UserRepository userRepository;
   private final JobPositionMapper jobPositionMapper;
   private final ApplicantRepository applicantRepository;
   private final JobCategoryRepository jobCategoryRepository;
@@ -100,13 +101,13 @@ public class JobPositionServiceImpl implements JobPositionService {
 
   @NonNull
   @Override
-  @PreAuthorize("hasAuthority('SCOPE_ADMIN') OR hasAuthority('SCOPE_REGULAR_USER')")
-  public JobPositionDetailDto apply(@NonNull UUID jobPositionId) {
+  @PreAuthorize("@authorityValidator.isAdmin() OR @authorityValidator.isCurrentApplicant(#applicantId)")
+  public JobPositionDetailDto apply(@NonNull UUID applicantId, @NonNull UUID jobPositionId) {
     final var jobPosition = jobPositionRepository.getOneByIdOrThrowNotFound(jobPositionId);
     if (jobPosition.getStatus() == PositionState.INACTIVE) {
       throw new PositionIsNotActiveException();
     }
-    final var applicant = userRepository.getOneByIdOrThrowNotFound(getCurrentUser()).getApplicant();
+    final var applicant = applicantRepository.getOneByIdOrThrowNotFound(applicantId);
     if (applicationRepository.existsActive(applicant.getId(), jobPositionId)) {
       throw new ApplicationAlreadyExistsException();
     }
@@ -116,10 +117,10 @@ public class JobPositionServiceImpl implements JobPositionService {
 
   @NonNull
   @Override
-  @PreAuthorize("hasAuthority('SCOPE_ADMIN') OR hasAuthority('SCOPE_REGULAR_USER')")
-  public FavouritesJobsResponse getFavorites() {
+  @PreAuthorize("@authorityValidator.isAdmin() OR @authorityValidator.isCurrentApplicant(#applicantId)")
+  public FavouritesJobsResponse getFavorites(@NonNull UUID applicantId) {
     return new FavouritesJobsResponse(
-        userRepository.getOneByIdOrThrowNotFound(getCurrentUser()).getApplicant().getSavedJobs()
+        applicantRepository.getOneByIdOrThrowNotFound(applicantId).getSavedJobs()
             .stream()
             .map(jp -> (JobPositionDto) jobPositionMapper.map(jp))
             .toList()
@@ -128,16 +129,16 @@ public class JobPositionServiceImpl implements JobPositionService {
 
   @NonNull
   @Override
-  @PreAuthorize("hasAuthority('SCOPE_ADMIN') OR hasAuthority('SCOPE_REGULAR_USER')")
-  public FavouritesJobsResponse addToFavorites(@NonNull UUID jobPositionId) {
-    final var user = userRepository.getOneByIdOrThrowNotFound(getCurrentUser());
+  @PreAuthorize("@authorityValidator.isAdmin() OR @authorityValidator.isCurrentApplicant(#applicantId)")
+  public FavouritesJobsResponse addToFavorites(@NonNull UUID applicantId, @NonNull UUID jobPositionId) {
+    final var applicant = applicantRepository.getOneByIdOrThrowNotFound(applicantId);
     final var jobPosition = jobPositionRepository.getOneByIdOrThrowNotFound(jobPositionId);
-    if (jobPositionRepository.userWithIdLiked(jobPosition, user.getId())) {
+    if (jobPositionRepository.applicantWithIdLiked(jobPosition, applicant.getId())) {
       throw new JobPositionAlreadySavedException();
     }
-    user.getApplicant().getSavedJobs().add(jobPosition);
-    applicantRepository.saveAndFlush(user.getApplicant());
-    return new FavouritesJobsResponse(user.getApplicant().getSavedJobs()
+    applicant.getSavedJobs().add(jobPosition);
+    applicantRepository.saveAndFlush(applicant);
+    return new FavouritesJobsResponse(applicant.getSavedJobs()
         .stream()
         .map(jp -> (JobPositionDto) jobPositionMapper.map(jp))
         .toList());
@@ -145,16 +146,16 @@ public class JobPositionServiceImpl implements JobPositionService {
 
   @NonNull
   @Override
-  @PreAuthorize("hasAuthority('SCOPE_ADMIN') OR hasAuthority('SCOPE_REGULAR_USER')")
-  public FavouritesJobsResponse removeFromFavorites(@NonNull UUID jobPositionId) {
-    final var user = userRepository.getOneByIdOrThrowNotFound(getCurrentUser());
+  @PreAuthorize("@authorityValidator.isAdmin() OR @authorityValidator.isCurrentApplicant(#applicantId)")
+  public FavouritesJobsResponse removeFromFavorites(@NonNull UUID applicantId, @NonNull UUID jobPositionId) {
+    final var applicant = applicantRepository.getOneByIdOrThrowNotFound(applicantId);
     final var jobPosition = jobPositionRepository.getOneByIdOrThrowNotFound(jobPositionId);
-    if (!jobPositionRepository.userWithIdLiked(jobPosition, user.getId())) {
+    if (!jobPositionRepository.applicantWithIdLiked(jobPosition, applicant.getId())) {
       throw new JobPositionNotInSavedException();
     }
-    user.getApplicant().getSavedJobs().removeIf(jp -> jp.getId().equals(jobPosition.getId()));
-    applicantRepository.saveAndFlush(user.getApplicant());
-    return new FavouritesJobsResponse(user.getApplicant().getSavedJobs()
+    applicant.getSavedJobs().removeIf(jp -> jp.getId().equals(jobPosition.getId()));
+    applicantRepository.saveAndFlush(applicant);
+    return new FavouritesJobsResponse(applicant.getSavedJobs()
         .stream()
         .map(jp -> (JobPositionDto) jobPositionMapper.map(jp))
         .toList());

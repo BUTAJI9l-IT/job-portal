@@ -31,6 +31,11 @@ import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericFie
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordField;
 
+/**
+ * Company entity class.
+ *
+ * @author Vitalii Bortsov
+ */
 @Indexed
 @Getter
 @Setter

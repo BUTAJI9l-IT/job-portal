@@ -15,13 +15,18 @@ import org.hibernate.search.mapper.pojo.bridge.TypeBridge;
 import org.hibernate.search.mapper.pojo.bridge.binding.TypeBindingContext;
 import org.hibernate.search.mapper.pojo.bridge.runtime.TypeBridgeWriteContext;
 
+/**
+ * Type binder for application entity.
+ *
+ * @author Vitalii Bortsov
+ */
 public class ApplicationBinder extends AbstractBinder {
 
   @Override
   public void bind(TypeBindingContext typeBindingContext) {
     typeBindingContext.dependencies()
-      .use(Application_.APPLICANT)
-      .use(Application_.JOB_POSITION);
+        .use(Application_.APPLICANT)
+        .use(Application_.JOB_POSITION);
 
     final var company = keyword(typeBindingContext, COMPANY, String.class);
     final var companySort = sort(typeBindingContext, COMPANY, String.class);
@@ -34,8 +39,8 @@ public class ApplicationBinder extends AbstractBinder {
     final var applicantName = fulltext(typeBindingContext, APPLICANT_NAME, String.class);
 
     typeBindingContext.bridge(Application.class,
-      new Bridge(company, companySort, jobPosition, jobPositionSort, applicant, applicantSort, companyName,
-        jobPositionName, applicantName));
+        new Bridge(company, companySort, jobPosition, jobPositionSort, applicant, applicantSort, companyName,
+            jobPositionName, applicantName));
   }
 
   private record Bridge(IndexFieldReference<String> company, IndexFieldReference<String> companySort,

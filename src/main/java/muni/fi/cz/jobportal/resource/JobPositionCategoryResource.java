@@ -24,6 +24,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+/**
+ * Controller with job category entity related endpoints.
+ *
+ * @author Vitalii Bortsov
+ */
 @Tag(name = JOB_POSITION_CATEGORY)
 @RequestMapping("/job-categories")
 @JobPortalSecuredController
@@ -61,7 +66,7 @@ public class JobPositionCategoryResource {
   @PageableAsQueryParam
   @Operation(summary = "Search for occupation")
   public Page<ReferenceDto> getOccupations(@Parameter(hidden = true) Pageable pageable,
-    @RequestParam(required = false) String q) {
+      @RequestParam(required = false) String q) {
     return jobPositionCategoryService.searchOccupations(pageable, OccupationQueryParams.builder().q(q).build());
   }
 

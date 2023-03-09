@@ -3,6 +3,11 @@ package muni.fi.cz.jobportal.api;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+/**
+ * Class with controllers' tags.
+ *
+ * @author Vitalii Bortsov
+ */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ApiTags {
 

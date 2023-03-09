@@ -12,13 +12,18 @@ import org.hibernate.search.mapper.pojo.bridge.TypeBridge;
 import org.hibernate.search.mapper.pojo.bridge.binding.TypeBindingContext;
 import org.hibernate.search.mapper.pojo.bridge.runtime.TypeBridgeWriteContext;
 
+/**
+ * Type binder for job position entity.
+ *
+ * @author Vitalii Bortsov
+ */
 public class JobPositionBinder extends AbstractBinder {
 
   @Override
   public void bind(TypeBindingContext typeBindingContext) {
     typeBindingContext.dependencies()
-      .use(JobPosition_.COMPANY)
-      .use(JobPosition_.JOB_CATEGORIES);
+        .use(JobPosition_.COMPANY)
+        .use(JobPosition_.JOB_CATEGORIES);
 
     final var company = keyword(typeBindingContext, COMPANY, String.class);
     final var companySort = sort(typeBindingContext, COMPANY, String.class);

@@ -14,18 +14,23 @@ import org.springframework.boot.info.BuildProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Configuration class for Swagger OpenAPI.
+ *
+ * @author Vitalii Bortsov
+ */
 @Configuration
 public class SwaggerConfiguration {
 
   @Bean
   public OpenAPI openAPI(BuildProperties buildProperties) {
     final var component = new Components()
-      .addSecuritySchemes(BEARER_AUTH, new SecurityScheme().type(Type.HTTP).scheme("Bearer"));
+        .addSecuritySchemes(BEARER_AUTH, new SecurityScheme().type(Type.HTTP).scheme("Bearer"));
 
     final var info = new Info().title(buildProperties.getArtifact()).version(buildProperties.getVersion());
 
     return new OpenAPI().info(info).components(component)
-      .addServersItem(new Server().url("/").description("xx"));
+        .addServersItem(new Server().url("/").description("xx"));
   }
 
   @Bean

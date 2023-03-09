@@ -16,6 +16,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * File entity class.
+ *
+ * @author Vitalii Bortsov
+ */
 @Getter
 @Setter
 @Table(name = "files")

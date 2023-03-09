@@ -3,6 +3,11 @@ package muni.fi.cz.jobportal.configuration;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+/**
+ * Constants with application fonts locations
+ *
+ * @author Vitalii Bortsov
+ */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ApplicationFonts {
 

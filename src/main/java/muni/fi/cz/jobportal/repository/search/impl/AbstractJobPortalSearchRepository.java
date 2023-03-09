@@ -31,6 +31,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.lang.NonNull;
 
+/**
+ * {@link SearchRepository} abstract implementation class.
+ *
+ * @param <T> Type of base repository class.
+ * @param <Q> Type of search parameters class.
+ * @author Vitalii Bortsov
+ */
 @RequiredArgsConstructor
 public abstract class AbstractJobPortalSearchRepository<T, Q extends QueryParams> implements SearchRepository<T, Q> {
 
@@ -42,13 +49,13 @@ public abstract class AbstractJobPortalSearchRepository<T, Q extends QueryParams
     final var searchSession = Search.session(entityManager);
     final var scope = searchSession.scope(getBaseClass());
     var luceneQuery = searchSession.search(scope)
-      .where(getPredicate(params, scope, scope.predicate().bool()));
+        .where(getPredicate(params, scope, scope.predicate().bool()));
     if (pageable.getSort() != Sort.unsorted()) {
       luceneQuery = luceneQuery.sort(sort ->
-        sort.composite(c ->
-          pageable.getSort().forEach(o ->
-            c.add(sort.field(o.getProperty() + SORT_SUFFIX).order(sort(o))))
-        )
+          sort.composite(c ->
+              pageable.getSort().forEach(o ->
+                  c.add(sort.field(o.getProperty() + SORT_SUFFIX).order(sort(o))))
+          )
       );
     }
     final var result = luceneQuery.fetch((int) pageable.getOffset(), pageable.getPageSize());
@@ -67,8 +74,8 @@ public abstract class AbstractJobPortalSearchRepository<T, Q extends QueryParams
   private boolean addFulltext(Q params, SearchScope<T> scope, BooleanPredicateClausesStep<?> rootPredicate) {
     if (params.getQ() != null && params.queryIndices().length != 0) {
       rootPredicate.must(
-        scope.predicate().bool().should(
-          scope.predicate().match().fields(params.queryIndices()).matching(params.getQ()))
+          scope.predicate().bool().should(
+              scope.predicate().match().fields(params.queryIndices()).matching(params.getQ()))
       );
       return true;
     }
@@ -76,13 +83,13 @@ public abstract class AbstractJobPortalSearchRepository<T, Q extends QueryParams
   }
 
   private boolean addKeywords(@NonNull Q queryParams, @NonNull SearchScope<T> scope,
-    @NonNull BooleanPredicateClausesStep<?> rootPredicate) {
+      @NonNull BooleanPredicateClausesStep<?> rootPredicate) {
     return applyToAnnotatedFieldsWithValuesPresent(queryParams, KeywordQueryField.class,
-      processQueryField(queryParams, scope, rootPredicate));
+        processQueryField(queryParams, scope, rootPredicate));
   }
 
   private Consumer<Field> processQueryField(Q queryParams, SearchScope<T> scope,
-    BooleanPredicateClausesStep<?> rootPredicate) {
+      BooleanPredicateClausesStep<?> rootPredicate) {
     return field -> {
       final var value = getFieldValue(field, queryParams);
       final var annotation = findAnnotation(field, KeywordQueryField.class);
@@ -97,11 +104,11 @@ public abstract class AbstractJobPortalSearchRepository<T, Q extends QueryParams
       } else if (isCollectionType(field) && value instanceof Collection<?> collection) {
         final var colPredicate = scope.predicate().bool();
         collection.forEach(
-          colValue -> colPredicate.should(scope.predicate().match().field(indexField).matching(colValue.toString())));
+            colValue -> colPredicate.should(scope.predicate().match().field(indexField).matching(colValue.toString())));
         rootPredicate.must(colPredicate);
       } else {
         rootPredicate.must(
-          scope.predicate().match().field(indexField).matching(annotation.generic() ? value : value.toString()));
+            scope.predicate().match().field(indexField).matching(annotation.generic() ? value : value.toString()));
       }
     };
   }

@@ -5,6 +5,11 @@ import javax.validation.ConstraintValidatorContext;
 import muni.fi.cz.jobportal.annotation.DateRange;
 import muni.fi.cz.jobportal.api.common.DateRangeDto;
 
+/**
+ * Validator for {@link DateRange} annotation.
+ *
+ * @author Vitalii Bortsov
+ */
 public class DateRangeValidator implements ConstraintValidator<DateRange, DateRangeDto> {
 
   @Override

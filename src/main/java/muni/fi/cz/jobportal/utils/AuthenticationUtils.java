@@ -10,14 +10,19 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtClaimAccessor;
 
+/**
+ * Utility class for handling authorization header with access token.
+ *
+ * @author Vitalii Bortsov
+ */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AuthenticationUtils {
 
   public static UUID getCurrentUser() {
     return Optional.ofNullable(getAccessToken())
-      .map(JwtClaimAccessor::getSubject)
-      .map(UUID::fromString)
-      .orElse(null);
+        .map(JwtClaimAccessor::getSubject)
+        .map(UUID::fromString)
+        .orElse(null);
   }
 
   public static Jwt getAccessToken() {

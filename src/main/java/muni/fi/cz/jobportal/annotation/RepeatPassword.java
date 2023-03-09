@@ -9,6 +9,11 @@ import javax.validation.Constraint;
 import javax.validation.Payload;
 import muni.fi.cz.jobportal.utils.validation.RepeatPasswordValidator;
 
+/**
+ * Constraint annotation for validating password input.
+ *
+ * @author Vitalii Bortsov
+ */
 @Constraint(validatedBy = RepeatPasswordValidator.class)
 @Target(FIELD)
 @Retention(RUNTIME)

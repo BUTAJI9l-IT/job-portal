@@ -3,6 +3,11 @@ package muni.fi.cz.jobportal.api;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+/**
+ * Class with JWT claims.
+ *
+ * @author Vitalii Bortsov
+ */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class JwtClaims {
 

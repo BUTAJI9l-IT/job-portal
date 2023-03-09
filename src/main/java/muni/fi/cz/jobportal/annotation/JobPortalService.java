@@ -8,6 +8,11 @@ import java.lang.annotation.Target;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Annotation for the application service classes.
+ *
+ * @author Vitalii Bortsov
+ */
 @Target(TYPE)
 @Retention(RUNTIME)
 @Service

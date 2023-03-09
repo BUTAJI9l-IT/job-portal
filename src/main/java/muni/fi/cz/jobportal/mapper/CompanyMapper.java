@@ -12,6 +12,11 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
+/**
+ * Mapper for companies
+ *
+ * @author Vitalii Bortsov
+ */
 @Mapper(uses = {CompanyFactory.class, JobPositionMapper.class})
 public interface CompanyMapper {
 

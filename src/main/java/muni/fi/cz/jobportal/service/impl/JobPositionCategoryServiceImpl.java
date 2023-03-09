@@ -19,6 +19,11 @@ import org.springframework.lang.NonNull;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * {@link JobPositionCategoryService} Implementation
+ *
+ * @author Vitalii Bortsov
+ */
 @JobPortalService
 @RequiredArgsConstructor
 public class JobPositionCategoryServiceImpl implements JobPositionCategoryService {
@@ -40,7 +45,7 @@ public class JobPositionCategoryServiceImpl implements JobPositionCategoryServic
   @Transactional(readOnly = true)
   public ListOfCategoriesResponse findAll() {
     return new ListOfCategoriesResponse(jobPositionCategoryRepository.findAll().stream()
-      .map(jpc -> ReferenceDto.builder().name(jpc.getName()).id(jpc.getId()).build()).toList());
+        .map(jpc -> ReferenceDto.builder().name(jpc.getName()).id(jpc.getId()).build()).toList());
   }
 
   @NonNull
@@ -48,7 +53,7 @@ public class JobPositionCategoryServiceImpl implements JobPositionCategoryServic
   @Transactional(readOnly = true)
   public Page<ReferenceDto> searchOccupations(@NonNull Pageable pageable, @NonNull OccupationQueryParams params) {
     return occupationRepository.search(pageable, params)
-      .map(o -> ReferenceDto.builder().id(o.getId()).name(o.getName()).build());
+        .map(o -> ReferenceDto.builder().id(o.getId()).name(o.getName()).build());
   }
 
   @Override

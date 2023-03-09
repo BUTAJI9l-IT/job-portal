@@ -27,6 +27,11 @@ import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordField;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.TypeBinding;
 
+/**
+ * Application entity class.
+ *
+ * @author Vitalii Bortsov
+ */
 @Indexed
 @Getter
 @Setter

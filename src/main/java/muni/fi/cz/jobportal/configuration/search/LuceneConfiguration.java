@@ -9,6 +9,11 @@ import org.hibernate.search.backend.lucene.analysis.LuceneAnalysisConfigurationC
 import org.hibernate.search.backend.lucene.analysis.LuceneAnalysisConfigurer;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Custom LuceneAnalysisConfigurer for the application
+ *
+ * @author Vitalii Bortsov
+ */
 @Configuration
 public class LuceneConfiguration implements LuceneAnalysisConfigurer {
 
@@ -20,32 +25,32 @@ public class LuceneConfiguration implements LuceneAnalysisConfigurer {
   @Override
   public void configure(LuceneAnalysisConfigurationContext luceneAnalysisConfigurationContext) {
     luceneAnalysisConfigurationContext
-      .analyzer(FULLTEXT_ANALYZER)
-      .custom()
-      .tokenizer(StandardTokenizerFactory.class)
-      .tokenFilter(LowerCaseFilterFactory.class)
-      .tokenFilter(ASCIIFoldingFilterFactory.class)
-      .tokenFilter(EdgeNGramFilterFactory.class)
-      .param("minGramSize", "1")
-      .param("maxGramSize", "10");
+        .analyzer(FULLTEXT_ANALYZER)
+        .custom()
+        .tokenizer(StandardTokenizerFactory.class)
+        .tokenFilter(LowerCaseFilterFactory.class)
+        .tokenFilter(ASCIIFoldingFilterFactory.class)
+        .tokenFilter(EdgeNGramFilterFactory.class)
+        .param("minGramSize", "1")
+        .param("maxGramSize", "10");
 
-//    https://stackoverflow.com/questions/43044350/hibernate-search-ngram-analyzer-with-mingramsize-1
+//    source: https://stackoverflow.com/questions/43044350/hibernate-search-ngram-analyzer-with-mingramsize-1
     luceneAnalysisConfigurationContext
-      .analyzer(SUGGESTER)
-      .custom()
-      .tokenizer(StandardTokenizerFactory.class)
-      .tokenFilter(LowerCaseFilterFactory.class)
-      .tokenFilter(ASCIIFoldingFilterFactory.class);
-
-    luceneAnalysisConfigurationContext
-      .analyzer(KEYWORD_ANALYZER)
-      .custom()
-      .tokenizer(KeywordTokenizerFactory.class);
+        .analyzer(SUGGESTER)
+        .custom()
+        .tokenizer(StandardTokenizerFactory.class)
+        .tokenFilter(LowerCaseFilterFactory.class)
+        .tokenFilter(ASCIIFoldingFilterFactory.class);
 
     luceneAnalysisConfigurationContext
-      .normalizer(SORT_NORMALIZER)
-      .custom()
-      .tokenFilter(LowerCaseFilterFactory.class)
-      .tokenFilter(ASCIIFoldingFilterFactory.class);
+        .analyzer(KEYWORD_ANALYZER)
+        .custom()
+        .tokenizer(KeywordTokenizerFactory.class);
+
+    luceneAnalysisConfigurationContext
+        .normalizer(SORT_NORMALIZER)
+        .custom()
+        .tokenFilter(LowerCaseFilterFactory.class)
+        .tokenFilter(ASCIIFoldingFilterFactory.class);
   }
 }

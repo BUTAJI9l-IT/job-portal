@@ -9,6 +9,11 @@ import javax.validation.Constraint;
 import javax.validation.Payload;
 import muni.fi.cz.jobportal.utils.validation.DateRangeValidator;
 
+/**
+ * Constraint annotation for validating date range (from-to) input.
+ *
+ * @author Vitalii Bortsov
+ */
 @Constraint(validatedBy = DateRangeValidator.class)
 @Target(FIELD)
 @Retention(RUNTIME)

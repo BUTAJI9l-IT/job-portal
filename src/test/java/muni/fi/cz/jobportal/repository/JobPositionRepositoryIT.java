@@ -73,8 +73,8 @@ class JobPositionRepositoryIT extends AbstractIntegrationTest {
       final var userApplicant = userRepository.saveAndFlush(prepareApplicantEntity("email" + i));
       userApplicant.getApplicant().setSavedJobs(List.of(jp));
       userRepository.save(userApplicant);
-      assertTrue(jobPositionRepository.userWithIdLiked(jp, userApplicant.getId()));
+      assertTrue(jobPositionRepository.applicantWithIdLiked(jp, userApplicant.getApplicant().getId()));
     }
-    assertFalse(jobPositionRepository.userWithIdLiked(jp, UUID.randomUUID()));
+    assertFalse(jobPositionRepository.applicantWithIdLiked(jp, UUID.randomUUID()));
   }
 }

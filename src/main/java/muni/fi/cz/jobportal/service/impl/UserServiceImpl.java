@@ -28,6 +28,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * {@link UserService} Implementation
+ *
+ * @author Vitalii Bortsov
+ */
 @JobPortalService
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -53,10 +58,10 @@ public class UserServiceImpl implements UserService {
     final var user = userRepository.save(userMapper.map(payload));
     if (payload.getScope().equals(JobPortalScope.REGULAR_USER)) {
       user.setApplicant(applicantRepository.getOneByIdOrThrowNotFound(
-        applicantService.create(new ApplicantCreateDto(user.getId())).getId()));
+          applicantService.create(new ApplicantCreateDto(user.getId())).getId()));
     } else if (payload.getScope().equals(JobPortalScope.COMPANY)) {
       user.setCompany(
-        companyRepository.getOneByIdOrThrowNotFound(companyService.create(companyMapper.map(payload, user)).getId()));
+          companyRepository.getOneByIdOrThrowNotFound(companyService.create(companyMapper.map(payload, user)).getId()));
     }
     return userMapper.map(user);
   }

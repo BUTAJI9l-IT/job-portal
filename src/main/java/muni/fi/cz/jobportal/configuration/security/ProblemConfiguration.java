@@ -17,12 +17,20 @@ import org.zalando.problem.spring.web.advice.ProblemHandling;
 import org.zalando.problem.spring.web.advice.security.SecurityAdviceTrait;
 import org.zalando.problem.violations.ConstraintViolationProblemModule;
 
+/**
+ * Configuration class for application exceptions
+ *
+ * @author Vitalii Bortsov
+ */
 @Configuration
 public class ProblemConfiguration {
 
   @ControllerAdvice
   public static class SecurityExceptionHandling implements ProblemHandling, SecurityAdviceTrait {
 
+    /**
+     * Handler for unauthorized requests
+     */
     @ExceptionHandler(JwtValidationException.class)
     public ResponseEntity<Problem> handleJwtException(final JwtValidationException ex, final NativeWebRequest request) {
       if (!ex.getErrors().isEmpty()) {

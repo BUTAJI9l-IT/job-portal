@@ -9,13 +9,18 @@ import org.hibernate.search.mapper.pojo.bridge.TypeBridge;
 import org.hibernate.search.mapper.pojo.bridge.binding.TypeBindingContext;
 import org.hibernate.search.mapper.pojo.bridge.runtime.TypeBridgeWriteContext;
 
+/**
+ * Type binder for user entity.
+ *
+ * @author Vitalii Bortsov
+ */
 public class UserBinder extends AbstractBinder {
 
   @Override
   public void bind(TypeBindingContext typeBindingContext) {
     typeBindingContext.dependencies()
-      .use(User_.NAME)
-      .use(User_.LAST_NAME);
+        .use(User_.NAME)
+        .use(User_.LAST_NAME);
 
     final var fullName = fulltext(typeBindingContext, SearchProperties.NAME, String.class);
     final var fullNameSort = sort(typeBindingContext, SearchProperties.NAME, String.class);
@@ -24,7 +29,7 @@ public class UserBinder extends AbstractBinder {
   }
 
   private record Bridge(IndexFieldReference<String> fullNameField, IndexFieldReference<String> fullNameSort) implements
-    TypeBridge<User> {
+      TypeBridge<User> {
 
     @Override
     public void write(DocumentElement target, User user, TypeBridgeWriteContext context) {

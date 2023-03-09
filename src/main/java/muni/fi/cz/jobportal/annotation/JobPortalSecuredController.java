@@ -9,6 +9,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Annotation for the application controller classes.
+ *
+ * @author Vitalii Bortsov
+ */
 @Target(TYPE)
 @Retention(RUNTIME)
 @SecurityRequirement(name = BEARER_AUTH)

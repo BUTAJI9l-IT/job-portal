@@ -5,6 +5,11 @@ import lombok.Getter;
 import muni.fi.cz.jobportal.enums.ApplicationState;
 import org.springframework.context.ApplicationEvent;
 
+/**
+ * Event for application status changes.
+ *
+ * @author Vitalii Bortsov
+ */
 @Getter
 public class ApplicationStateChangedEvent extends ApplicationEvent {
 

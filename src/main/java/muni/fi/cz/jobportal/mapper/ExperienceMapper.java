@@ -10,6 +10,11 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
+/**
+ * Mapper for experiences
+ *
+ * @author Vitalii Bortsov
+ */
 @Mapper(uses = ExperienceFactory.class)
 public interface ExperienceMapper {
 

@@ -8,6 +8,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import org.springframework.core.annotation.AliasFor;
 
+/**
+ * Annotation for processing search parameters fields that contain date range parts (from-to).
+ *
+ * @author Vitalii Bortsov
+ */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 @KeywordQueryField

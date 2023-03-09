@@ -7,6 +7,11 @@ import org.mapstruct.ObjectFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+/**
+ * Object factory for users
+ *
+ * @author Vitalii Bortsov
+ */
 @Component
 @RequiredArgsConstructor
 public class UserFactory {

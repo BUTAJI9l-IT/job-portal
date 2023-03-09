@@ -16,6 +16,11 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Experience entity class.
+ *
+ * @author Vitalii Bortsov
+ */
 @Getter
 @Setter
 @Table(name = "experiences")
@@ -42,8 +47,8 @@ public class Experience {
 
   @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(name = "experience_category",
-    joinColumns = @JoinColumn(name = "experience", referencedColumnName = "id"),
-    inverseJoinColumns = @JoinColumn(name = "category", referencedColumnName = "id"))
+      joinColumns = @JoinColumn(name = "experience", referencedColumnName = "id"),
+      inverseJoinColumns = @JoinColumn(name = "category", referencedColumnName = "id"))
   private List<JobCategory> jobCategories;
 
 }

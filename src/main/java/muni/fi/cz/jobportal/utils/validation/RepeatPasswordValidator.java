@@ -6,6 +6,11 @@ import javax.validation.ConstraintValidatorContext;
 import muni.fi.cz.jobportal.annotation.RepeatPassword;
 import muni.fi.cz.jobportal.api.common.RepeatPasswordDto;
 
+/**
+ * Validator for {@link RepeatPassword} annotation.
+ *
+ * @author Vitalii Bortsov
+ */
 public class RepeatPasswordValidator implements ConstraintValidator<RepeatPassword, RepeatPasswordDto> {
 
   @Override

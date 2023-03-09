@@ -42,21 +42,27 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.zalando.problem.spring.web.advice.security.SecurityProblemSupport;
 
+/**
+ * Configuration class for security settings of the application
+ *
+ * @author Vitalii Bortsov
+ */
 @Configuration
 @EnableGlobalMethodSecurity(
-  prePostEnabled = true
+    prePostEnabled = true
 )
 @Import(SecurityProblemSupport.class)
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 
   private static final String[] SWAGGER_PUBLIC_ENDPOINTS = {
-    "/swagger-ui.html",
-    "/swagger-ui/**",
-    "/v3/api-docs/**",
+      "/swagger-ui.html",
+      "/swagger-ui/**",
+      "/v3/api-docs/**",
   };
-  private static final List<String> ALLOWED_CORS_HEADERS = List.of("x-requested-with", "authorization", "origin", "content-type", "version",
-    "content-disposition", "location");
+  private static final List<String> ALLOWED_CORS_HEADERS = List.of("x-requested-with", "authorization", "origin",
+      "content-type", "version",
+      "content-disposition", "location");
   private final JobPortalApplicationProperties applicationProperties;
   private final SecurityProblemSupport securityProblemSupport;
 
@@ -82,20 +88,20 @@ public class SecurityConfiguration {
 
     http.cors().configurationSource(corsFilter());
     http
-      .authorizeHttpRequests()
-      .antMatchers(HttpMethod.POST, "/auth/**").permitAll()
-      .antMatchers(HttpMethod.GET, "/auth/**").permitAll()
-      .antMatchers(HttpMethod.GET, SWAGGER_PUBLIC_ENDPOINTS).permitAll()
-      .anyRequest()
-      .authenticated();
+        .authorizeHttpRequests()
+        .antMatchers(HttpMethod.POST, "/auth/**").permitAll()
+        .antMatchers(HttpMethod.GET, "/auth/**").permitAll()
+        .antMatchers(HttpMethod.GET, SWAGGER_PUBLIC_ENDPOINTS).permitAll()
+        .anyRequest()
+        .authenticated();
 
     http.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
 
     http.httpBasic(Customizer.withDefaults());
 
     http.exceptionHandling()
-      .authenticationEntryPoint(securityProblemSupport)
-      .accessDeniedHandler(securityProblemSupport);
+        .authenticationEntryPoint(securityProblemSupport)
+        .accessDeniedHandler(securityProblemSupport);
 
     return http.build();
   }
@@ -113,13 +119,14 @@ public class SecurityConfiguration {
         final var cert = ks.getCertificate(instance);
         final var publicKey = cert.getPublicKey();
         return new RSAKey.Builder((RSAPublicKey) publicKey)
-          .privateKey(pk)
-          .keyID(storeProperties.getKid())
-          .build();
+            .privateKey(pk)
+            .keyID(storeProperties.getKid())
+            .build();
       } else {
         throw new BeanInitializationException("Failed to initialize KeyPair provider. Create key is not private");
       }
-    } catch (KeyStoreException | NoSuchAlgorithmException | UnrecoverableKeyException | IOException | CertificateException ex) {
+    } catch (KeyStoreException | NoSuchAlgorithmException | UnrecoverableKeyException | IOException |
+             CertificateException ex) {
       throw new BeanInitializationException(ex.getMessage(), ex);
     }
   }
@@ -146,7 +153,8 @@ public class SecurityConfiguration {
   }
 
   @Bean
-  public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
+  public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+      throws Exception {
     return authenticationConfiguration.getAuthenticationManager();
   }
 

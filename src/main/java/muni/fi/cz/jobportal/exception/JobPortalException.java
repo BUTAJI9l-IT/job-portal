@@ -6,6 +6,11 @@ import org.springframework.http.HttpStatus;
 import org.zalando.problem.AbstractThrowableProblem;
 import org.zalando.problem.spring.common.HttpStatusAdapter;
 
+/**
+ * Abstract exception class.
+ *
+ * @author Vitalii Bortsov
+ */
 @Getter
 public abstract class JobPortalException extends AbstractThrowableProblem {
 

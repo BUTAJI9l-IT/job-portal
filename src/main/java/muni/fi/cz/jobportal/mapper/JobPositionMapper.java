@@ -9,6 +9,11 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
+/**
+ * Mapper for job positions
+ *
+ * @author Vitalii Bortsov
+ */
 @Mapper(uses = JobPositionFactory.class)
 public interface JobPositionMapper {
 
