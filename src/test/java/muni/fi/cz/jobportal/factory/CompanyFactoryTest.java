@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-import java.util.UUID;
+import muni.fi.cz.jobportal.AbstractTest;
 import muni.fi.cz.jobportal.api.request.CompanyCreateDto;
 import muni.fi.cz.jobportal.domain.User;
 import muni.fi.cz.jobportal.repository.UserRepository;
@@ -15,7 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class CompanyFactoryTest {
+class CompanyFactoryTest  extends AbstractTest {
 
   @Mock
   private UserRepository userRepository;
@@ -24,8 +24,7 @@ class CompanyFactoryTest {
 
   @Test
   void prepareCompanyTest() {
-    final var request = new CompanyCreateDto();
-    request.setUser(UUID.randomUUID());
+    final var request = loadResource("company_create_request.json", CompanyCreateDto.class);
 
     when(userRepository.getOneByIdOrThrowNotFound(any())).thenReturn(new User());
 

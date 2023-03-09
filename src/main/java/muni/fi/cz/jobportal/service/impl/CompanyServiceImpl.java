@@ -10,6 +10,7 @@ import muni.fi.cz.jobportal.api.request.CompanyUpdateDto;
 import muni.fi.cz.jobportal.api.search.CompanyQueryParams;
 import muni.fi.cz.jobportal.mapper.CompanyMapper;
 import muni.fi.cz.jobportal.repository.CompanyRepository;
+import muni.fi.cz.jobportal.repository.UserRepository;
 import muni.fi.cz.jobportal.service.CompanyService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CompanyServiceImpl implements CompanyService {
 
   private final CompanyRepository companyRepository;
+  private final UserRepository userRepository;
   private final CompanyMapper companyMapper;
 
   @NonNull
@@ -49,7 +51,7 @@ public class CompanyServiceImpl implements CompanyService {
   @PreAuthorize("@authorityValidator.isAdmin() || @authorityValidator.isCurrentCompany(#id)")
   public CompanyDetailDto update(@NonNull UUID id, @NonNull CompanyUpdateDto payload) {
     final var company = companyRepository.getOneByIdOrThrowNotFound(id);
-    companyRepository.saveAndFlush(companyMapper.update(company, payload));
+    userRepository.saveAndFlush(companyMapper.update(company, payload).getUser());
     return companyMapper.map(company);
   }
 

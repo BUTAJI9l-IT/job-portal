@@ -5,7 +5,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import muni.fi.cz.jobportal.api.common.RepeatPasswordDto;
+import muni.fi.cz.jobportal.AbstractTest;
 import muni.fi.cz.jobportal.api.request.UserCreateDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @ExtendWith(MockitoExtension.class)
-class UserFactoryTest {
+class UserFactoryTest extends AbstractTest {
 
   @Mock
   private PasswordEncoder encoder;
@@ -28,16 +28,12 @@ class UserFactoryTest {
 
   @Test
   void prepareUserTest() {
-    final var request = new UserCreateDto();
-    final var repeatPasswordDto = new RepeatPasswordDto();
-    repeatPasswordDto.setPassword("qwerty");
-    repeatPasswordDto.setRepeatPassword("qwerty");
-    request.setPassword(repeatPasswordDto);
+    final var request = loadResource("user_create_request.json", UserCreateDto.class);
 
     when(encoder.encode(anyString())).thenReturn("encoded");
 
     assertThat(userFactory.prepare(request).getPassword()).isEqualTo("encoded");
     verify(encoder).encode(stringCaptor.capture());
-    assertThat(stringCaptor.getValue()).isEqualTo("qwerty");
+    assertThat(stringCaptor.getValue()).isEqualTo(request.getPassword().getPassword());
   }
 }

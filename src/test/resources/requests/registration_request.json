@@ -1,0 +1,13 @@
+{
+  "scope":  "COMPANY",
+  "email": "email striing",
+  "name":  "name",
+  "lastName": "namovic",
+  "password":  {
+    "password": "qwertty",
+    "repeatPassword": "qwertty"
+  },
+  "companyName": "Company Oracle",
+  "companyLink":  "www.http.cz",
+  "companySize": "CORPORATION"
+}

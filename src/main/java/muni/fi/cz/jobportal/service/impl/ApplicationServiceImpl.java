@@ -39,7 +39,7 @@ public class ApplicationServiceImpl implements ApplicationService {
   @NonNull
   @Override
   public ApplicationDetailDto create(@NonNull ApplicationCreateDto payload) {
-    return applicationMapper.mapDetail(applicationRepository.saveAndFlush(applicationMapper.map(payload)));
+    return applicationMapper.map(applicationRepository.saveAndFlush(applicationMapper.map(payload)));
   }
 
   @NonNull
@@ -52,7 +52,7 @@ public class ApplicationServiceImpl implements ApplicationService {
       application.setState(ApplicationState.SEEN);
       applicationRepository.saveAndFlush(application);
     }
-    return applicationMapper.mapDetail(application);
+    return applicationMapper.map(application);
   }
 
   @NonNull
@@ -60,7 +60,7 @@ public class ApplicationServiceImpl implements ApplicationService {
   @Transactional(readOnly = true)
   public Page<ApplicationDto> findAll(Pageable pageable, ApplicationQueryParams params) {
     checkParamPermissions(params, userRepository.getOneByIdOrThrowNotFound(getCurrentUser()));
-    return applicationRepository.search(pageable, params).map(applicationMapper::map);
+    return applicationRepository.search(pageable, params).map(applicationMapper::mapDto);
   }
 
   @NonNull
@@ -72,7 +72,7 @@ public class ApplicationServiceImpl implements ApplicationService {
       throw new IllegalStateChangeException();
     }
     final var isChanged = application.getState().equals(payload.getState());
-    final var updated = applicationMapper.mapDetail(applicationRepository.saveAndFlush(
+    final var updated = applicationMapper.map(applicationRepository.saveAndFlush(
       applicationMapper.update(application, payload)));
     if (isChanged) {
       if (updated.getState().equals(ApplicationState.APPROVED)) {

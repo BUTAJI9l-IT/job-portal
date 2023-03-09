@@ -1,0 +1,13 @@
+{
+  "scope": null,
+  "email": "user@email.mail",
+  "name": "User",
+  "lastName": "Userovic",
+  "password": {
+    "password": "qwerty",
+    "repeatPassword": "qwerty"
+  },
+  "companyName": null,
+  "companyLink": null,
+  "companySize": null
+}

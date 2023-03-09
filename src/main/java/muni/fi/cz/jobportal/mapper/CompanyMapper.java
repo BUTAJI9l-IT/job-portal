@@ -25,6 +25,8 @@ public interface CompanyMapper {
   @Mapping(target = "userId", source = "user.id")
   CompanyDto mapDto(Company source);
 
+  @Mapping(source = "name", target = "user.name")
+  @Mapping(source = "lastName", target = "user.lastName")
   Company update(@MappingTarget Company target, CompanyUpdateDto source);
 
   @Mapping(target = "user", source = "created.id")

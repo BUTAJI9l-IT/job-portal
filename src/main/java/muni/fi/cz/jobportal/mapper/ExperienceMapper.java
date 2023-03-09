@@ -10,12 +10,12 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-@Mapper(uses = {ExperienceFactory.class, CompanyMapper.class})
+@Mapper(uses = ExperienceFactory.class)
 public interface ExperienceMapper {
 
   @Mapping(target = "dateRange.fromDate", source = "fromDate")
   @Mapping(target = "dateRange.toDate", source = "toDate")
-  @Mapping(target = "company.companyName", source = "companyName")
+  @Mapping(target = "company", ignore = true)
   ExperienceDto map(Experience source);
 
   List<ExperienceDto> map(List<Experience> source);

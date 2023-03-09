@@ -5,7 +5,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import java.time.Instant;
-import java.util.UUID;
+import muni.fi.cz.jobportal.AbstractTest;
 import muni.fi.cz.jobportal.api.request.ApplicationCreateDto;
 import muni.fi.cz.jobportal.domain.Applicant;
 import muni.fi.cz.jobportal.domain.JobPosition;
@@ -19,7 +19,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class ApplicationFactoryTest {
+class ApplicationFactoryTest extends AbstractTest {
 
   @Mock
   private StaticObjectFactory staticObjectFactory;
@@ -32,7 +32,7 @@ class ApplicationFactoryTest {
 
   @Test
   void prepareApplicationTest() {
-    final var request = ApplicationCreateDto.builder().applicant(UUID.randomUUID()).job(UUID.randomUUID()).build();
+    final var request = loadResource("application_create_request.json", ApplicationCreateDto.class);
 
     when(applicantRepository.getOneByIdOrThrowNotFound(any())).thenReturn(new Applicant());
     when(jobPositionRepository.getOneByIdOrThrowNotFound(any())).thenReturn(new JobPosition());

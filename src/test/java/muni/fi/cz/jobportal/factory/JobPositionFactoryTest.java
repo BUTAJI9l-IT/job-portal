@@ -7,7 +7,7 @@ import static org.mockito.Mockito.when;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.UUID;
+import muni.fi.cz.jobportal.AbstractTest;
 import muni.fi.cz.jobportal.api.request.JobPositionCreateDto;
 import muni.fi.cz.jobportal.domain.Company;
 import muni.fi.cz.jobportal.domain.JobCategory;
@@ -23,7 +23,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class JobPositionFactoryTest {
+class JobPositionFactoryTest extends AbstractTest {
 
   @Mock
   private JobPositionRepository jobPositionRepository;
@@ -55,9 +55,7 @@ class JobPositionFactoryTest {
   @Test
   void prepareJobPositionTest() {
     final var now = Instant.now();
-    final var request = new JobPositionCreateDto();
-    request.setCompany(UUID.randomUUID());
-    request.setJobCategories(List.of(UUID.randomUUID()));
+    final var request = loadResource("jop_position_create_request.json", JobPositionCreateDto.class);
 
     when(companyRepository.getOneByIdOrThrowNotFound(any())).thenReturn(new Company());
     when(jobCategoryRepository.findAllById(any())).thenReturn(List.of(new JobCategory()));

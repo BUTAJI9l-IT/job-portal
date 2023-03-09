@@ -1,0 +1,10 @@
+{
+  "company": "00000000-0000-0000-0000-000000000000",
+  "positionName": "SW Developer",
+  "country": "USA",
+  "state": "New York",
+  "city": "New York City",
+  "contactEmail": "job_contact@mail.mail",
+  "detail": "Job detail",
+  "jobCategories": ["00000000-0000-0000-0000-000000000003"]
+}

@@ -20,9 +20,9 @@ public interface ApplicationMapper {
 
   @Mapping(target = "applicant.name", source = "applicant.user.fullName")
   @Mapping(target = "jobPosition.name", source = "jobPosition.positionName")
-  ApplicationDto map(Application source);
+  ApplicationDto mapDto(Application source);
 
-  ApplicationDetailDto mapDetail(Application source);
+  ApplicationDetailDto map(Application source);
 
   Application update(@MappingTarget Application target, ApplicationUpdateDto source);
 

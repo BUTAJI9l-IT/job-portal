@@ -1,0 +1,49 @@
+{
+  "state":"OPEN",
+  "date": "2020-01-01T00:00:00Z",
+  "applicant": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "country": "USA",
+    "state": "USA State",
+    "city": "USA city",
+    "phone": "1234567890",
+    "profile": "Hello World",
+    "user": {
+      "id": "00000000-0000-0000-0000-000000000000",
+      "email": "user@email",
+      "name": "Name",
+      "lastName": "LastName"
+    },
+    "experiences": [],
+    "applications": [],
+    "savedJobs": []
+  },
+  "jobPosition": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "status": "ACTIVE",
+    "positionName": "my job",
+    "country": "USA",
+    "state": "USA state",
+    "city": "USA city",
+    "contactEmail": "email-kontakt@kontakt.cz",
+    "detail": "job details",
+    "created": "2020-01-01T00:00:00Z",
+    "lastUpdated": "2020-01-01T00:00:00Z",
+    "company": {
+      "id": "00000000-0000-0000-0000-000000000000",
+      "companyName": "Company Corp.",
+      "companyLink": "www/www//www",
+      "description": "company desc",
+      "companySize": "CORPORATION",
+      "jobPositions": [],
+      "user": {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "email": "user@email",
+        "name": "Name",
+        "lastName": "LastName"
+      }
+    },
+    "applications": [],
+    "jobCategories": []
+  }
+}
