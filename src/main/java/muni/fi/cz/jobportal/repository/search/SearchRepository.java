@@ -1,6 +1,7 @@
 package muni.fi.cz.jobportal.repository.search;
 
 import muni.fi.cz.jobportal.api.search.QueryParams;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -9,7 +10,7 @@ import org.springframework.data.domain.Pageable;
  *
  * @author Vitalii Bortsov
  */
-public interface SearchRepository<T, Q extends QueryParams> {
+public interface SearchRepository<T, Q extends QueryParams> extends InitializingBean {
 
   /**
    * Searches for entities based on search parameters.

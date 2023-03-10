@@ -1,7 +1,5 @@
 package muni.fi.cz.jobportal.service.impl;
 
-import static muni.fi.cz.jobportal.utils.AuthenticationUtils.getCurrentUser;
-
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import muni.fi.cz.jobportal.annotation.JobPortalService;
@@ -19,6 +17,7 @@ import muni.fi.cz.jobportal.mapper.ApplicationMapper;
 import muni.fi.cz.jobportal.repository.ApplicationRepository;
 import muni.fi.cz.jobportal.repository.UserRepository;
 import muni.fi.cz.jobportal.service.ApplicationService;
+import muni.fi.cz.jobportal.utils.AuthorityValidator;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,6 +39,7 @@ public class ApplicationServiceImpl implements ApplicationService {
   private final UserRepository userRepository;
   private final ApplicationMapper applicationMapper;
   private final ApplicationEventPublisher applicationEventPublisher;
+  private final AuthorityValidator authorityValidator;
 
   @NonNull
   @Override
@@ -50,12 +50,19 @@ public class ApplicationServiceImpl implements ApplicationService {
   @NonNull
   @Override
   public ApplicationDetailDto findOne(@NonNull UUID id) {
-    final var currentUser = userRepository.getOneByIdOrThrowNotFound(getCurrentUser());
+    final var currentUser = userRepository.getOneByIdOrThrowNotFound(authorityValidator.getCurrentUser());
     final var application = applicationRepository.getOneByIdOrThrowNotFound(id);
-    if (application.getState().equals(ApplicationState.OPEN) && currentUser.getCompany() != null
-        && currentUser.getCompany().getId().equals(application.getJobPosition().getCompany().getId())) {
-      application.setState(ApplicationState.SEEN);
-      applicationRepository.saveAndFlush(application);
+    if (currentUser.getScope().equals(JobPortalScope.COMPANY)) {
+      if (!application.getJobPosition().getCompany().getUser().getId().equals(currentUser.getId())) {
+        throw new AccessDeniedException("Access denied: Cannot see an application for another company's job position");
+      }
+      if (application.getState().equals(ApplicationState.OPEN)) {
+        application.setState(ApplicationState.SEEN);
+        applicationRepository.saveAndFlush(application);
+      }
+    } else if (currentUser.getScope().equals(JobPortalScope.REGULAR_USER) && (!application.getApplicant().getUser()
+      .getId().equals(currentUser.getId()))) {
+      throw new AccessDeniedException("Access denied: Cannot see another applicant's application");
     }
     return applicationMapper.map(application);
   }
@@ -64,7 +71,7 @@ public class ApplicationServiceImpl implements ApplicationService {
   @Override
   @Transactional(readOnly = true)
   public Page<ApplicationDto> findAll(Pageable pageable, ApplicationQueryParams params) {
-    checkParamPermissions(params, userRepository.getOneByIdOrThrowNotFound(getCurrentUser()));
+    checkParamPermissions(params, userRepository.getOneByIdOrThrowNotFound(authorityValidator.getCurrentUser()));
     return applicationRepository.search(pageable, params).map(applicationMapper::mapDto);
   }
 
@@ -73,12 +80,13 @@ public class ApplicationServiceImpl implements ApplicationService {
   @PreAuthorize("@authorityValidator.canManageApplication(#id)")
   public ApplicationDetailDto update(@NonNull UUID id, @NonNull ApplicationUpdateDto payload) {
     final var application = applicationRepository.getOneByIdOrThrowNotFound(id);
-    if (application.getState().getState() > payload.getState().getState()) {
+    if (application.getState().getState() > payload.getState().getState() || payload.getState()
+      .equals(ApplicationState.SEEN) || payload.getState().equals(ApplicationState.CLOSED)) {
       throw new IllegalStateChangeException();
     }
-    final var isChanged = application.getState().equals(payload.getState());
-    final var updated = applicationMapper.map(applicationRepository.saveAndFlush(
-        applicationMapper.update(application, payload)));
+    final var isChanged = !application.getState().equals(payload.getState());
+    final var updated = applicationMapper.map(
+      applicationRepository.saveAndFlush(applicationMapper.update(application, payload)));
     if (isChanged) {
       if (updated.getState().equals(ApplicationState.APPROVED)) {
         applicationEventPublisher.publishEvent(ApplicationStateChangedEvent.toApproved(this, id));
@@ -103,16 +111,18 @@ public class ApplicationServiceImpl implements ApplicationService {
       throw new AccessDeniedException("Access denied: not allowed to browse through all applications");
     }
     if (user.getScope().equals(JobPortalScope.COMPANY) &&
-        (params.getApplicant() != null ||
-            (params.getCompany() != null && !params.getCompany().equals(user.getCompany().getId())) ||
-            (params.getJobPosition() != null && user.getCompany().getJobPositions().stream()
-                .noneMatch(jp -> jp.getId().equals(params.getJobPosition()))))) {
+      (params.getApplicant() != null ||
+        (params.getCompany() != null && !params.getCompany().equals(user.getCompany().getId())) ||
+        (params.getJobPosition() != null &&
+          (user.getCompany().getJobPositions() == null || user.getCompany().getJobPositions().stream()
+            .noneMatch(jp -> jp.getId().equals(params.getJobPosition())))))) {
       throw new AccessDeniedException(
-          "Access denied: Company is not allowed to filter by another company, another companies' jobs, or see all applications of users");
+        "Access denied: Company is not allowed to filter by another company, another companies' jobs, or see all applications of users");
     }
-    if (user.getScope().equals(JobPortalScope.REGULAR_USER) && params.getApplicant() == null) {
+    if (user.getScope().equals(JobPortalScope.REGULAR_USER) && !user.getApplicant().getId()
+      .equals(params.getApplicant())) {
       throw new AccessDeniedException(
-          "Access denied: Applicant is not allowed to see another applicants' applications");
+        "Access denied: Applicant is not allowed to see another applicants' applications");
     }
   }
 }

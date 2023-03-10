@@ -123,6 +123,25 @@ class ApplicantServiceIT extends AbstractIntegrationTest {
   }
 
   @Test
+  void deleteTest() {
+    final var applicant = userRepository.save(prepareApplicantEntity("email")).getApplicant();
+    final var jp = jobPositionRepository.saveAndFlush(
+      preparePositionEntity(userRepository.saveAndFlush(prepareCompanyEntity("name", "company email")).getCompany(),
+        PositionState.ACTIVE));
+    applicant.setApplications(new ArrayList<>(
+      List.of(applicationRepository.saveAndFlush(prepareApplicationEntity(applicant, jp, ApplicationState.OPEN)))));
+    applicant.setExperiences(
+      new ArrayList<>(List.of(experienceRepository.saveAndFlush(prepareExperienceEntity(applicant)))));
+
+    applicantService.delete(applicantRepository.saveAndFlush(applicant).getId());
+
+    assertThat(applicationRepository.findAll()).isEmpty();
+    assertThat(experienceRepository.findAll()).isEmpty();
+    assertThat(applicantRepository.findAll()).isEmpty();
+    assertThat(userRepository.findAll()).hasSize(1);
+  }
+
+  @Test
   void addExperienceTest() {
     final var request = loadResource("experience_dto.json", ExperienceDto.class);
     request.setJobCategories(new ArrayList<>());
@@ -137,7 +156,7 @@ class ApplicantServiceIT extends AbstractIntegrationTest {
     assertThat(experienceRepository.findAll()).hasSize(1).map(e -> e.getApplicant().getId()).containsExactly(id);
     final var applicant = applicantRepository.findById(id).get();
     assertThat(applicant.getExperiences()).hasSize(1).map(Experience::getOccupation)
-        .containsExactly(request.getOccupation());
+      .containsExactly(request.getOccupation());
   }
 
   @Test
@@ -155,25 +174,6 @@ class ApplicantServiceIT extends AbstractIntegrationTest {
     assertThat(experienceRepository.findAll()).isEmpty();
     final var applicantDb = applicantRepository.findById(applicant.getId()).get();
     assertThat(applicantDb.getExperiences()).isEmpty();
-  }
-
-  @Test
-  void deleteTest() {
-    final var applicant = userRepository.save(prepareApplicantEntity("email")).getApplicant();
-    final var jp = jobPositionRepository.saveAndFlush(
-        preparePositionEntity(userRepository.saveAndFlush(prepareCompanyEntity("name", "company email")).getCompany(),
-            PositionState.ACTIVE));
-    applicant.setApplications(new ArrayList<>(
-        List.of(applicationRepository.saveAndFlush(prepareApplicationEntity(applicant, jp, ApplicationState.OPEN)))));
-    applicant.setExperiences(
-        new ArrayList<>(List.of(experienceRepository.saveAndFlush(prepareExperienceEntity(applicant)))));
-
-    applicantService.delete(applicantRepository.saveAndFlush(applicant).getId());
-
-    assertThat(applicationRepository.findAll()).isEmpty();
-    assertThat(experienceRepository.findAll()).isEmpty();
-    assertThat(applicantRepository.findAll()).isEmpty();
-    assertThat(userRepository.findAll()).hasSize(1);
   }
 
   @Test

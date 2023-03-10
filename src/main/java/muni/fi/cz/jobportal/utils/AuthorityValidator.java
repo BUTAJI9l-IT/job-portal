@@ -5,7 +5,6 @@ import static muni.fi.cz.jobportal.enums.JobPortalScope.ADMIN;
 import static muni.fi.cz.jobportal.enums.JobPortalScope.COMPANY;
 import static muni.fi.cz.jobportal.enums.JobPortalScope.REGULAR_USER;
 import static muni.fi.cz.jobportal.utils.AuthenticationUtils.getClaim;
-import static muni.fi.cz.jobportal.utils.AuthenticationUtils.getCurrentUser;
 
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -38,14 +37,18 @@ public class AuthorityValidator {
     return isAdmin() || (isCompany() && companyRepository.userWithJobExists(getCurrentUser(), id));
   }
 
+  public UUID getCurrentUser() {
+    return AuthenticationUtils.getCurrentUser();
+  }
+
   public boolean canCreateJobPosition(@NonNull JobPositionCreateDto payload) {
     return isAdmin() || (isCompany() && isCurrentUser(
-        companyRepository.getOneByIdOrThrowNotFound(payload.getCompany()).getUser().getId()));
+      companyRepository.getOneByIdOrThrowNotFound(payload.getCompany()).getUser().getId()));
   }
 
   public boolean canManageApplication(@NonNull UUID id) {
     return isAdmin() || (isCompany() && isCurrentUser(
-        applicationRepository.getOneByIdOrThrowNotFound(id).getJobPosition().getCompany().getUser().getId()));
+      applicationRepository.getOneByIdOrThrowNotFound(id).getJobPosition().getCompany().getUser().getId()));
   }
 
   public boolean canDeleteApplication(@NonNull UUID id) {
@@ -56,7 +59,7 @@ public class AuthorityValidator {
     return getClaim(SCOPE_CLAIM).map(s -> s.equals(scope)).orElse(false);
   }
 
-  public static boolean isCurrentUser(UUID user) {
+  public boolean isCurrentUser(UUID user) {
     return getCurrentUser().equals(user);
   }
 

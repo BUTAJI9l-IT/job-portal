@@ -28,10 +28,10 @@ public abstract class AbstractIntegrationTest extends AbstractTest {
     @Override
     public void initialize(@NonNull ConfigurableApplicationContext applicationContext) {
       TestPropertySourceUtils.addInlinedPropertiesToEnvironment(applicationContext,
-          "spring.test.database.replace=none",
-          "spring.datasource.url=" + postgresContainer.getJdbcUrl(),
-          "spring.datasource.username=" + postgresContainer.getUsername(),
-          "spring.datasource.password=" + postgresContainer.getPassword()
+        "spring.test.database.replace=none",
+        "spring.datasource.url=" + postgresContainer.getJdbcUrl(),
+        "spring.datasource.username=" + postgresContainer.getUsername(),
+        "spring.datasource.password=" + postgresContainer.getPassword()
       );
     }
   }
