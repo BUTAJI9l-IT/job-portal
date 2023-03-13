@@ -10,7 +10,7 @@
   </parent>
   <groupId>muni.fi.cz.jobportal</groupId>
   <artifactId>jobportal</artifactId>
-  <version>0.0.2-SNAPSHOT</version>
+  <version>0.0.3-SNAPSHOT</version>
   <name>jobportal</name>
   <description>Bachelor Thesis Web Application Job Portal</description>
 

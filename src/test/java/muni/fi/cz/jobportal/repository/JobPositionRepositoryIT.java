@@ -15,11 +15,7 @@ import muni.fi.cz.jobportal.enums.ApplicationState;
 import muni.fi.cz.jobportal.enums.PositionState;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.ActiveProfiles;
 
-@DataJpaTest
-@ActiveProfiles("it")
 class JobPositionRepositoryIT extends AbstractIntegrationTest {
 
   @Autowired
@@ -34,7 +30,7 @@ class JobPositionRepositoryIT extends AbstractIntegrationTest {
     final var userApplicant = userRepository.saveAndFlush(prepareApplicantEntity("email1"));
     final var userCompany = userRepository.saveAndFlush(prepareCompanyEntity("Name", "email2"));
     final var jp = jobPositionRepository.saveAndFlush(
-        preparePositionEntity(userCompany.getCompany(), PositionState.ACTIVE));
+      preparePositionEntity(userCompany.getCompany(), PositionState.ACTIVE));
     applicationRepository.save(prepareApplicationEntity(userApplicant.getApplicant(), jp, ApplicationState.OPEN));
 
     assertTrue(jobPositionRepository.userWithIdApplied(jp.getId(), userApplicant.getId()));
@@ -46,7 +42,7 @@ class JobPositionRepositoryIT extends AbstractIntegrationTest {
     final var userApplicantZeroApplied = userRepository.saveAndFlush(prepareApplicantEntity("email2"));
     final var userCompany = userRepository.saveAndFlush(prepareCompanyEntity("Name", "emailCompany"));
     final var jp = jobPositionRepository.saveAndFlush(
-        preparePositionEntity(userCompany.getCompany(), PositionState.ACTIVE));
+      preparePositionEntity(userCompany.getCompany(), PositionState.ACTIVE));
     applicationRepository.save(prepareApplicationEntity(userApplicant.getApplicant(), jp, ApplicationState.CLOSED));
 
     assertFalse(jobPositionRepository.userWithIdApplied(jp.getId(), userApplicant.getId()));
@@ -57,11 +53,11 @@ class JobPositionRepositoryIT extends AbstractIntegrationTest {
   void countAppliedTest() {
     final var userCompany = userRepository.saveAndFlush(prepareCompanyEntity("Name", "emailCompany"));
     final var jp = jobPositionRepository.saveAndFlush(
-        preparePositionEntity(userCompany.getCompany(), PositionState.ACTIVE));
+      preparePositionEntity(userCompany.getCompany(), PositionState.ACTIVE));
     for (var status : ApplicationState.values()) {
       applicationRepository.save(prepareApplicationEntity(
-          userRepository.saveAndFlush(prepareApplicantEntity("applicant" + status.toString())).getApplicant(), jp,
-          status));
+        userRepository.saveAndFlush(prepareApplicantEntity("applicant" + status.toString())).getApplicant(), jp,
+        status));
     }
     assertEquals(ApplicationState.values().length - 1, jobPositionRepository.countApplied(jp.getId()));
   }
@@ -70,7 +66,7 @@ class JobPositionRepositoryIT extends AbstractIntegrationTest {
   void userWithIdLikedTest() {
     final var userCompany = userRepository.saveAndFlush(prepareCompanyEntity("Name", "emailCompany"));
     final var jp = jobPositionRepository.saveAndFlush(
-        preparePositionEntity(userCompany.getCompany(), PositionState.ACTIVE));
+      preparePositionEntity(userCompany.getCompany(), PositionState.ACTIVE));
     for (int i = 0; i < 3; i++) {
       final var userApplicant = userRepository.saveAndFlush(prepareApplicantEntity("email" + i));
       userApplicant.getApplicant().setSavedJobs(List.of(jp));

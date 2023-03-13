@@ -11,11 +11,7 @@ import muni.fi.cz.jobportal.AbstractIntegrationTest;
 import muni.fi.cz.jobportal.enums.JobPortalScope;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.ActiveProfiles;
 
-@DataJpaTest
-@ActiveProfiles("it")
 class RefreshTokenRepositoryIT extends AbstractIntegrationTest {
 
   @Autowired
@@ -28,11 +24,11 @@ class RefreshTokenRepositoryIT extends AbstractIntegrationTest {
     final var expired = Instant.now().minus(1L, ChronoUnit.DAYS);
     final var valid = Instant.now().plus(1L, ChronoUnit.DAYS);
     refreshTokenRepository.saveAll(List.of(
-        prepareRefreshTokenEntity(userRepository.save(prepareUserEntity("user1", JobPortalScope.COMPANY)), valid),
-        prepareRefreshTokenEntity(userRepository.save(prepareUserEntity("user2", JobPortalScope.COMPANY)), valid),
-        prepareRefreshTokenEntity(userRepository.save(prepareUserEntity("user3", JobPortalScope.COMPANY)), valid),
-        prepareRefreshTokenEntity(userRepository.save(prepareUserEntity("user4", JobPortalScope.COMPANY)), expired),
-        prepareRefreshTokenEntity(userRepository.save(prepareUserEntity("user5", JobPortalScope.COMPANY)), expired)
+      prepareRefreshTokenEntity(userRepository.save(prepareUserEntity("user1", JobPortalScope.COMPANY)), valid),
+      prepareRefreshTokenEntity(userRepository.save(prepareUserEntity("user2", JobPortalScope.COMPANY)), valid),
+      prepareRefreshTokenEntity(userRepository.save(prepareUserEntity("user3", JobPortalScope.COMPANY)), valid),
+      prepareRefreshTokenEntity(userRepository.save(prepareUserEntity("user4", JobPortalScope.COMPANY)), expired),
+      prepareRefreshTokenEntity(userRepository.save(prepareUserEntity("user5", JobPortalScope.COMPANY)), expired)
     ));
     refreshTokenRepository.deleteExpired();
     assertThat(refreshTokenRepository.findAll()).isNotEmpty().hasSize(3);
@@ -41,7 +37,7 @@ class RefreshTokenRepositoryIT extends AbstractIntegrationTest {
   @Test
   void existsTest() {
     final var token = prepareRefreshTokenEntity(userRepository.save(prepareUserEntity("user1", JobPortalScope.COMPANY)),
-        Instant.now());
+      Instant.now());
     final var tokenId = "123";
     token.setToken(tokenId);
     refreshTokenRepository.save(token);
@@ -54,11 +50,11 @@ class RefreshTokenRepositoryIT extends AbstractIntegrationTest {
     final var user1 = userRepository.save(prepareUserEntity("user1", JobPortalScope.COMPANY));
     final var user2 = userRepository.save(prepareUserEntity("user2", JobPortalScope.COMPANY));
     refreshTokenRepository.saveAll(List.of(
-        prepareRefreshTokenEntity(user1, Instant.now()),
-        prepareRefreshTokenEntity(user2, Instant.now()),
-        prepareRefreshTokenEntity(user2, Instant.now()),
-        prepareRefreshTokenEntity(user2, Instant.now()),
-        prepareRefreshTokenEntity(user1, Instant.now())
+      prepareRefreshTokenEntity(user1, Instant.now()),
+      prepareRefreshTokenEntity(user2, Instant.now()),
+      prepareRefreshTokenEntity(user2, Instant.now()),
+      prepareRefreshTokenEntity(user2, Instant.now()),
+      prepareRefreshTokenEntity(user1, Instant.now())
     ));
     assertThat(refreshTokenRepository.findAll()).hasSize(5);
     refreshTokenRepository.deleteAllByUserId(user1.getId());

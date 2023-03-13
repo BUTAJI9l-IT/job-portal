@@ -1,39 +1,43 @@
 package muni.fi.cz.jobportal;
 
-import org.springframework.context.ApplicationContextInitializer;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.lang.NonNull;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.support.TestPropertySourceUtils;
+
+import muni.fi.cz.jobportal.annotation.IntegrationTest;
+import org.junit.jupiter.api.BeforeAll;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.TestcontainersConfiguration;
 
 /**
  * Abstract Integration Test
- * <p>
- * source: <a
- * href="https://jschmitz.dev/posts/testcontainers_how_to_use_them_in_your_spring_boot_integration_tests/">...</a>
- * </p>
+ *
+ * @author Vitalii Bortsov
  */
-@Testcontainers
-@ContextConfiguration(initializers = AbstractIntegrationTest.DataSourceInitializer.class)
+@IntegrationTest
 public abstract class AbstractIntegrationTest extends AbstractTest {
 
-  @Container
-  private static final PostgreSQLContainer<?> postgresContainer = new PostgreSQLContainer<>("postgres:13.1-alpine");
+  private static final PostgreSQLContainer<?> POSTGRESQL_CONTAINER;
 
-  public static class DataSourceInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
-
-    @Override
-    public void initialize(@NonNull ConfigurableApplicationContext applicationContext) {
-      TestPropertySourceUtils.addInlinedPropertiesToEnvironment(applicationContext,
-        "spring.test.database.replace=none",
-        "spring.datasource.url=" + postgresContainer.getJdbcUrl(),
-        "spring.datasource.username=" + postgresContainer.getUsername(),
-        "spring.datasource.password=" + postgresContainer.getPassword()
-      );
+  static {
+    try (PostgreSQLContainer<?> container = new PostgreSQLContainer<>("postgres:13.1-alpine")) {
+      POSTGRESQL_CONTAINER = container
+        .withReuse(true)
+        .withDatabaseName("integration-tests-db")
+        .withUsername("test-database")
+        .withPassword("test-database-pwd");
     }
   }
 
+  @BeforeAll
+  public static void beforeAll() {
+    POSTGRESQL_CONTAINER.start();
+  }
+
+  @DynamicPropertySource
+  private static void initialize(DynamicPropertyRegistry registry) {
+    registry.add("spring.datasource.url", POSTGRESQL_CONTAINER::getJdbcUrl);
+    registry.add("spring.datasource.username", POSTGRESQL_CONTAINER::getUsername);
+    registry.add("spring.datasource.password", POSTGRESQL_CONTAINER::getPassword);
+    TestcontainersConfiguration.getInstance().updateUserConfig("testcontainers.reuse.enable", "true");
+  }
 }

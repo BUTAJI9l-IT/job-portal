@@ -14,9 +14,10 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import muni.fi.cz.jobportal.AbstractIntegrationTest;
-import muni.fi.cz.jobportal.annotation.IntegrationTest;
 import muni.fi.cz.jobportal.api.request.ApplicationCreateDto;
 import muni.fi.cz.jobportal.api.request.ApplicationUpdateDto;
 import muni.fi.cz.jobportal.api.search.ApplicationQueryParams;
@@ -31,17 +32,12 @@ import muni.fi.cz.jobportal.repository.JobPositionRepository;
 import muni.fi.cz.jobportal.repository.UserRepository;
 import muni.fi.cz.jobportal.utils.AuthorityValidator;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.test.context.support.WithMockUser;
 
-@IntegrationTest
-@WithMockUser
-@ExtendWith(MockitoExtension.class)
+
 class ApplicationServiceIT extends AbstractIntegrationTest {
 
   @Autowired
@@ -142,6 +138,8 @@ class ApplicationServiceIT extends AbstractIntegrationTest {
     final var ownerApplicant = userRepository.save(prepareApplicantEntity("email124")).getApplicant();
     final var application = prepareApplicationEntity(ownerApplicant,
       jobPositionRepository.save(preparePositionEntity(ownerCompany, PositionState.ACTIVE)), ApplicationState.OPEN);
+    ownerCompany.setJobPositions(new ArrayList<>(List.of(application.getJobPosition())));
+    userRepository.save(ownerCompany.getUser());
     final var paramsCompanyHappy = ApplicationQueryParams.builder().applicant(null).company(ownerCompany.getId())
       .jobPosition(application.getJobPosition().getId()).build();
     final var paramsApplicantHappy = ApplicationQueryParams.builder().applicant(ownerApplicant.getId()).build();

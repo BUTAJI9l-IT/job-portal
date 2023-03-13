@@ -8,11 +8,7 @@ import muni.fi.cz.jobportal.AbstractIntegrationTest;
 import muni.fi.cz.jobportal.domain.JobCategory;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.ActiveProfiles;
 
-@DataJpaTest
-@ActiveProfiles("it")
 class JobCategoryRepositoryIT extends AbstractIntegrationTest {
 
   @Autowired
@@ -27,14 +23,14 @@ class JobCategoryRepositoryIT extends AbstractIntegrationTest {
     final var catName2 = "Category2";
     final var occupationName2 = "Occupation2";
     occupationRepository.saveAndFlush(
-        prepareOccupationEntity(jobCategoryRepository.saveAndFlush(prepareCategoryEntity(catName1)), occupationName1));
+      prepareOccupationEntity(jobCategoryRepository.saveAndFlush(prepareCategoryEntity(catName1)), occupationName1));
     occupationRepository.saveAndFlush(
-        prepareOccupationEntity(jobCategoryRepository.saveAndFlush(prepareCategoryEntity(catName2)), occupationName2));
+      prepareOccupationEntity(jobCategoryRepository.saveAndFlush(prepareCategoryEntity(catName2)), occupationName2));
 
     assertThat(jobCategoryRepository.findByOccupationName(occupationName1)).isPresent().map(JobCategory::getName).get()
-        .isEqualTo(catName1);
+      .isEqualTo(catName1);
     assertThat(jobCategoryRepository.findByOccupationName(occupationName2)).isPresent().map(JobCategory::getName).get()
-        .isEqualTo(catName2);
+      .isEqualTo(catName2);
   }
 
 }

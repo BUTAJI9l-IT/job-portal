@@ -8,7 +8,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.ArrayList;
 import java.util.List;
 import muni.fi.cz.jobportal.AbstractIntegrationTest;
-import muni.fi.cz.jobportal.annotation.IntegrationTest;
 import muni.fi.cz.jobportal.api.request.CompanyCreateDto;
 import muni.fi.cz.jobportal.domain.Company;
 import muni.fi.cz.jobportal.enums.JobPortalScope;
@@ -17,14 +16,8 @@ import muni.fi.cz.jobportal.repository.CompanyRepository;
 import muni.fi.cz.jobportal.repository.JobPositionRepository;
 import muni.fi.cz.jobportal.repository.UserRepository;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.test.context.support.WithMockUser;
 
-@IntegrationTest
-@WithMockUser
-@ExtendWith(MockitoExtension.class)
 class CompanyServiceIT extends AbstractIntegrationTest {
 
   @Autowired

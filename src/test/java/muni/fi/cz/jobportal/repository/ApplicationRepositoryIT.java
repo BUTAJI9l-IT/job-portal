@@ -12,11 +12,7 @@ import muni.fi.cz.jobportal.enums.ApplicationState;
 import muni.fi.cz.jobportal.enums.PositionState;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.ActiveProfiles;
 
-@DataJpaTest
-@ActiveProfiles("it")
 class ApplicationRepositoryIT extends AbstractIntegrationTest {
 
   @Autowired
@@ -31,7 +27,7 @@ class ApplicationRepositoryIT extends AbstractIntegrationTest {
     final var userApplicant = userRepository.saveAndFlush(prepareApplicantEntity("email1"));
     final var userCompany = userRepository.saveAndFlush(prepareCompanyEntity("Name", "email2"));
     final var jp = jobPositionRepository.saveAndFlush(
-        preparePositionEntity(userCompany.getCompany(), PositionState.ACTIVE));
+      preparePositionEntity(userCompany.getCompany(), PositionState.ACTIVE));
     applicationRepository.save(prepareApplicationEntity(userApplicant.getApplicant(), jp, ApplicationState.OPEN));
 
     assertTrue(applicationRepository.existsActive(userApplicant.getApplicant().getId(), jp.getId()));
@@ -43,7 +39,7 @@ class ApplicationRepositoryIT extends AbstractIntegrationTest {
     final var userApplicantZeroApplied = userRepository.saveAndFlush(prepareApplicantEntity("email2"));
     final var userCompany = userRepository.saveAndFlush(prepareCompanyEntity("Name", "emailCompany"));
     final var jp = jobPositionRepository.saveAndFlush(
-        preparePositionEntity(userCompany.getCompany(), PositionState.ACTIVE));
+      preparePositionEntity(userCompany.getCompany(), PositionState.ACTIVE));
     applicationRepository.save(prepareApplicationEntity(userApplicant.getApplicant(), jp, ApplicationState.CLOSED));
 
     assertFalse(applicationRepository.existsActive(userApplicant.getApplicant().getId(), jp.getId()));

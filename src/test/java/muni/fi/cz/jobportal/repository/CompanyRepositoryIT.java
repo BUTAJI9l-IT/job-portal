@@ -9,11 +9,7 @@ import muni.fi.cz.jobportal.AbstractIntegrationTest;
 import muni.fi.cz.jobportal.enums.PositionState;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.ActiveProfiles;
 
-@DataJpaTest
-@ActiveProfiles("it")
 class CompanyRepositoryIT extends AbstractIntegrationTest {
 
   @Autowired
@@ -27,12 +23,12 @@ class CompanyRepositoryIT extends AbstractIntegrationTest {
   void userWithJobExistsTest() {
     final var userCompany = userRepository.saveAndFlush(prepareCompanyEntity("Name", "emailComp"));
     final var job1 = jobPositionRepository.saveAndFlush(
-        preparePositionEntity(userCompany.getCompany(), PositionState.ACTIVE));
+      preparePositionEntity(userCompany.getCompany(), PositionState.ACTIVE));
     final var job2 = jobPositionRepository.saveAndFlush(
-        preparePositionEntity(userCompany.getCompany(), PositionState.INACTIVE));
+      preparePositionEntity(userCompany.getCompany(), PositionState.INACTIVE));
     final var job3 = jobPositionRepository.saveAndFlush(
-        preparePositionEntity(userRepository.saveAndFlush(prepareCompanyEntity("Another", "emailComp2")).getCompany(),
-            PositionState.INACTIVE));
+      preparePositionEntity(userRepository.saveAndFlush(prepareCompanyEntity("Another", "emailComp2")).getCompany(),
+        PositionState.INACTIVE));
 
     assertTrue(companyRepository.userWithJobExists(userCompany.getId(), job1.getId()));
     assertTrue(companyRepository.userWithJobExists(userCompany.getId(), job2.getId()));
