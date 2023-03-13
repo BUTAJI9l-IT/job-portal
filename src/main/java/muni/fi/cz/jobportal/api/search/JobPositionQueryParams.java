@@ -30,7 +30,7 @@ public class JobPositionQueryParams extends QueryParams {
   @Override
   public String[] queryIndices() {
     return new String[]{
-      NAME, DESCRIPTION, COUNTRY, CITY, STATE
+      NAME, DESCRIPTION, COUNTRY, CITY, STATE, COMPANY
     };
   }
 }

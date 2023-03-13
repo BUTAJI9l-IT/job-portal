@@ -22,19 +22,21 @@ public class JobPositionBinder extends AbstractBinder {
   @Override
   public void bind(TypeBindingContext typeBindingContext) {
     typeBindingContext.dependencies()
-        .use(JobPosition_.COMPANY)
-        .use(JobPosition_.JOB_CATEGORIES);
+      .use(JobPosition_.COMPANY)
+      .use(JobPosition_.JOB_CATEGORIES);
 
     final var company = keyword(typeBindingContext, COMPANY, String.class);
+    final var companyFulltext = fulltext(typeBindingContext, COMPANY, String.class);
     final var companySort = sort(typeBindingContext, COMPANY, String.class);
     final var categories = keywordCollection(typeBindingContext, CATEGORY, String.class);
     final var categoriesSort = sortCollection(typeBindingContext, CATEGORY, String.class);
 
-    typeBindingContext.bridge(JobPosition.class, new Bridge(company, companySort, categories, categoriesSort));
+    typeBindingContext.bridge(JobPosition.class,
+      new Bridge(company, companyFulltext, companySort, categories, categoriesSort));
   }
 
-  private record Bridge(IndexFieldReference<String> company, IndexFieldReference<String> companySort,
-                        IndexFieldReference<String> categories,
+  private record Bridge(IndexFieldReference<String> company, IndexFieldReference<String> companyFulltext,
+                        IndexFieldReference<String> companySort, IndexFieldReference<String> categories,
                         IndexFieldReference<String> categoriesSort) implements TypeBridge<JobPosition> {
 
     @Override
@@ -45,8 +47,10 @@ public class JobPositionBinder extends AbstractBinder {
           target.addValue(categoriesSort, jpc.getName());
         });
       }
-      target.addValue(company, jobPosition.getCompany().getId().toString());
-      target.addValue(companySort, jobPosition.getCompany().getCompanyName());
+      final var positionCompany = jobPosition.getCompany();
+      target.addValue(company, positionCompany.getId().toString());
+      target.addValue(companyFulltext, positionCompany.getCompanyName());
+      target.addValue(companySort, positionCompany.getCompanyName());
     }
   }
 }

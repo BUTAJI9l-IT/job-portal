@@ -1,5 +1,6 @@
 package muni.fi.cz.jobportal.domain;
 
+import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.FULLTEXT_SUFFIX;
 import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.NAME;
 import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.SORT_SUFFIX;
 import static muni.fi.cz.jobportal.configuration.search.LuceneConfiguration.FULLTEXT_ANALYZER;
@@ -44,7 +45,7 @@ public class Occupation {
   private UUID id;
 
   @KeywordField(name = NAME + SORT_SUFFIX, sortable = YES, normalizer = SORT_NORMALIZER)
-  @FullTextField(name = NAME, analyzer = FULLTEXT_ANALYZER, searchAnalyzer = SUGGESTER)
+  @FullTextField(name = NAME + FULLTEXT_SUFFIX, analyzer = FULLTEXT_ANALYZER, searchAnalyzer = SUGGESTER)
   private String name;
 
   @ManyToOne(fetch = FetchType.LAZY)

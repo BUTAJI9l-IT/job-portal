@@ -3,6 +3,7 @@ package muni.fi.cz.jobportal.domain;
 import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.CITY;
 import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.COUNTRY;
 import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.DESCRIPTION;
+import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.FULLTEXT_SUFFIX;
 import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.NAME;
 import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.SORT_SUFFIX;
 import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.STATE;
@@ -61,22 +62,22 @@ public class JobPosition {
   @GenericField(name = STATUS)
   private PositionState status;
   @KeywordField(name = NAME + SORT_SUFFIX, sortable = YES, normalizer = SORT_NORMALIZER)
-  @FullTextField(name = NAME, analyzer = FULLTEXT_ANALYZER, searchAnalyzer = SUGGESTER)
+  @FullTextField(name = NAME + FULLTEXT_SUFFIX, analyzer = FULLTEXT_ANALYZER, searchAnalyzer = SUGGESTER)
   private String positionName;
 
   @KeywordField(name = COUNTRY + SORT_SUFFIX, sortable = YES, normalizer = SORT_NORMALIZER)
-  @FullTextField(name = COUNTRY, analyzer = FULLTEXT_ANALYZER, searchAnalyzer = SUGGESTER)
+  @FullTextField(name = COUNTRY + FULLTEXT_SUFFIX, analyzer = FULLTEXT_ANALYZER, searchAnalyzer = SUGGESTER)
   private String country;
   @KeywordField(name = STATE + SORT_SUFFIX, sortable = YES, normalizer = SORT_NORMALIZER)
-  @FullTextField(name = STATE, analyzer = FULLTEXT_ANALYZER, searchAnalyzer = SUGGESTER)
+  @FullTextField(name = STATE + FULLTEXT_SUFFIX, analyzer = FULLTEXT_ANALYZER, searchAnalyzer = SUGGESTER)
   private String state;
   @KeywordField(name = CITY + SORT_SUFFIX, sortable = YES, normalizer = SORT_NORMALIZER)
-  @FullTextField(name = CITY, analyzer = FULLTEXT_ANALYZER, searchAnalyzer = SUGGESTER)
+  @FullTextField(name = CITY + FULLTEXT_SUFFIX, analyzer = FULLTEXT_ANALYZER, searchAnalyzer = SUGGESTER)
   private String city;
 
   private String contactEmail;
   @KeywordField(name = DESCRIPTION + SORT_SUFFIX, sortable = YES, normalizer = SORT_NORMALIZER)
-  @FullTextField(name = DESCRIPTION, analyzer = FULLTEXT_ANALYZER, searchAnalyzer = SUGGESTER)
+  @FullTextField(name = DESCRIPTION + FULLTEXT_SUFFIX, analyzer = FULLTEXT_ANALYZER, searchAnalyzer = SUGGESTER)
   private String detail;
 
   private Instant created;
@@ -91,7 +92,7 @@ public class JobPosition {
 
   @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(name = "position_category",
-      joinColumns = @JoinColumn(name = "job_position", referencedColumnName = "id"),
-      inverseJoinColumns = @JoinColumn(name = "category", referencedColumnName = "id"))
+    joinColumns = @JoinColumn(name = "job_position", referencedColumnName = "id"),
+    inverseJoinColumns = @JoinColumn(name = "category", referencedColumnName = "id"))
   private List<JobCategory> jobCategories;
 }

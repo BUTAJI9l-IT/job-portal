@@ -1,6 +1,7 @@
 package muni.fi.cz.jobportal.domain;
 
 import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.EMAIL;
+import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.FULLTEXT_SUFFIX;
 import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.SORT_SUFFIX;
 import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.USER_SCOPE;
 import static muni.fi.cz.jobportal.configuration.search.LuceneConfiguration.FULLTEXT_ANALYZER;
@@ -52,7 +53,7 @@ public class User {
 
   @Column(name = "email", unique = true)
   @KeywordField(name = EMAIL + SORT_SUFFIX, sortable = YES, normalizer = SORT_NORMALIZER)
-  @FullTextField(name = EMAIL, analyzer = FULLTEXT_ANALYZER, searchAnalyzer = SUGGESTER)
+  @FullTextField(name = EMAIL + FULLTEXT_SUFFIX, analyzer = FULLTEXT_ANALYZER, searchAnalyzer = SUGGESTER)
   private String email;
   @Column(name = "password")
   private String password;

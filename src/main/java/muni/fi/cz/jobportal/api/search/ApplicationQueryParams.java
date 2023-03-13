@@ -1,12 +1,9 @@
 package muni.fi.cz.jobportal.api.search;
 
 import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.APPLICANT;
-import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.APPLICANT_NAME;
 import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.APPLICATION_DATE;
 import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.COMPANY;
-import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.COMPANY_NAME;
 import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.JOB_POSITION;
-import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.JOB_POSITION_NAME;
 import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.STATUS;
 
 import java.time.Instant;
@@ -36,9 +33,9 @@ public class ApplicationQueryParams extends QueryParams {
   private Instant dateTo;
 
   @Override
-  public String[] queryIndices() {
+  protected String[] queryIndices() {
     return new String[]{
-      APPLICANT_NAME, JOB_POSITION_NAME, COMPANY_NAME
+      APPLICANT, JOB_POSITION, COMPANY
     };
   }
 }

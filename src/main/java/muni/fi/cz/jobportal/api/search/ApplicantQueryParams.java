@@ -21,7 +21,7 @@ public class ApplicantQueryParams extends QueryParams {
   @Override
   public String[] queryIndices() {
     return new String[]{
-      NAME, COUNTRY, STATE, CITY
+      NAME, COUNTRY, STATE, CITY, JOB_POSITION
     };
   }
 }

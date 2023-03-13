@@ -1,5 +1,6 @@
 package muni.fi.cz.jobportal.repository.search.impl;
 
+import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.FULLTEXT_SUFFIX;
 import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.SORT_SUFFIX;
 import static muni.fi.cz.jobportal.utils.ClassFieldsUtils.applyToAnnotatedFieldsWithValuesPresent;
 import static muni.fi.cz.jobportal.utils.ClassFieldsUtils.findAnnotation;
@@ -8,6 +9,7 @@ import static muni.fi.cz.jobportal.utils.ClassFieldsUtils.isCollectionType;
 
 import java.lang.reflect.Field;
 import java.time.temporal.TemporalAdjuster;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.function.Consumer;
 import javax.persistence.EntityManager;
@@ -79,10 +81,12 @@ public abstract class AbstractJobPortalSearchRepository<T, Q extends QueryParams
   }
 
   private boolean addFulltext(Q params, SearchScope<T> scope, BooleanPredicateClausesStep<?> rootPredicate) {
-    if (params.getQ() != null && params.queryIndices().length != 0) {
+    if (params.getQ() != null && params.getQueryIndices().length != 0) {
       rootPredicate.must(
         scope.predicate().bool().should(
-          scope.predicate().match().fields(params.queryIndices()).matching(params.getQ()))
+          scope.predicate().match()
+            .fields(Arrays.stream(params.getQueryIndices()).map(q -> q + FULLTEXT_SUFFIX).toArray(String[]::new))
+            .matching(params.getQ()))
       );
       return true;
     }

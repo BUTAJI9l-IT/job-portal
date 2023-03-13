@@ -1,11 +1,8 @@
 package muni.fi.cz.jobportal.configuration.search.binder;
 
 import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.APPLICANT;
-import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.APPLICANT_NAME;
 import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.COMPANY;
-import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.COMPANY_NAME;
 import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.JOB_POSITION;
-import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.JOB_POSITION_NAME;
 
 import muni.fi.cz.jobportal.domain.Application;
 import muni.fi.cz.jobportal.domain.Application_;
@@ -25,8 +22,8 @@ public class ApplicationBinder extends AbstractBinder {
   @Override
   public void bind(TypeBindingContext typeBindingContext) {
     typeBindingContext.dependencies()
-        .use(Application_.APPLICANT)
-        .use(Application_.JOB_POSITION);
+      .use(Application_.APPLICANT)
+      .use(Application_.JOB_POSITION);
 
     final var company = keyword(typeBindingContext, COMPANY, String.class);
     final var companySort = sort(typeBindingContext, COMPANY, String.class);
@@ -34,13 +31,13 @@ public class ApplicationBinder extends AbstractBinder {
     final var jobPositionSort = sort(typeBindingContext, JOB_POSITION, String.class);
     final var applicant = keyword(typeBindingContext, APPLICANT, String.class);
     final var applicantSort = sort(typeBindingContext, APPLICANT, String.class);
-    final var companyName = fulltext(typeBindingContext, COMPANY_NAME, String.class);
-    final var jobPositionName = fulltext(typeBindingContext, JOB_POSITION_NAME, String.class);
-    final var applicantName = fulltext(typeBindingContext, APPLICANT_NAME, String.class);
+    final var companyName = fulltext(typeBindingContext, COMPANY, String.class);
+    final var jobPositionName = fulltext(typeBindingContext, JOB_POSITION, String.class);
+    final var applicantName = fulltext(typeBindingContext, APPLICANT, String.class);
 
     typeBindingContext.bridge(Application.class,
-        new Bridge(company, companySort, jobPosition, jobPositionSort, applicant, applicantSort, companyName,
-            jobPositionName, applicantName));
+      new Bridge(company, companySort, jobPosition, jobPositionSort, applicant, applicantSort, companyName,
+        jobPositionName, applicantName));
   }
 
   private record Bridge(IndexFieldReference<String> company, IndexFieldReference<String> companySort,
