@@ -5,6 +5,7 @@ import static muni.fi.cz.jobportal.api.ApiTags.COMPANY;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import java.util.UUID;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -48,7 +49,7 @@ public class CompanyResource {
   @PutMapping("/{companyId}")
   @Operation(summary = "Updates a company by given id")
   public ResponseEntity<CompanyDetailDto> updateCompany(@PathVariable("companyId") UUID companyId,
-      @Valid @RequestBody CompanyUpdateDto payload) {
+    @Valid @RequestBody CompanyUpdateDto payload) {
     return ResponseEntity.ok(companyService.update(companyId, payload));
   }
 
@@ -56,8 +57,8 @@ public class CompanyResource {
   @PageableAsQueryParam
   @Operation(summary = "Returns all companies")
   public Page<CompanyDto> getCompanies(@Parameter(hidden = true) Pageable pageable,
-      @RequestParam(required = false) String q,
-      @RequestParam(required = false) CompanyNumberOfEmployees companySize) {
-    return companyService.findAll(pageable, CompanyQueryParams.builder().q(q).companySize(companySize).build());
+    @RequestParam(required = false) List<String> q,
+    @RequestParam(required = false) CompanyNumberOfEmployees companySize) {
+    return companyService.findAll(pageable, CompanyQueryParams.builder().qList(q).companySize(companySize).build());
   }
 }

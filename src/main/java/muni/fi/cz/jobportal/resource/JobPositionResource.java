@@ -46,7 +46,7 @@ public class JobPositionResource {
   @PostMapping("/applicants/{applicantId}/apply/{jobPositionId}")
   @Operation(summary = "Apply for a job position")
   public ResponseEntity<JobPositionDetailDto> apply(@PathVariable("applicantId") UUID applicantId,
-      @PathVariable("jobPositionId") UUID jobPositionId) {
+    @PathVariable("jobPositionId") UUID jobPositionId) {
     return ResponseEntity.ok(jobPositionService.apply(applicantId, jobPositionId));
   }
 
@@ -59,7 +59,7 @@ public class JobPositionResource {
   @PutMapping("/{jobPositionId}")
   @Operation(summary = "Change a state of a job position")
   public ResponseEntity<JobPositionDetailDto> updateJobPosition(@PathVariable("jobPositionId") UUID jobPositionId,
-      @Valid @RequestBody JobPositionUpdateDto payload) {
+    @Valid @RequestBody JobPositionUpdateDto payload) {
     return ResponseEntity.ok(jobPositionService.update(jobPositionId, payload));
   }
 
@@ -67,17 +67,17 @@ public class JobPositionResource {
   @PageableAsQueryParam
   @Operation(summary = "Returns all job positions")
   public Page<JobPositionDto> getJobPositions(@Parameter(hidden = true) Pageable pageable,
-      @RequestParam(required = false) String q,
-      @RequestParam(required = false) PositionState status,
-      @RequestParam(required = false) List<UUID> categories,
-      @RequestParam(required = false) List<UUID> companies
+    @RequestParam(required = false) List<String> q,
+    @RequestParam(required = false) PositionState status,
+    @RequestParam(required = false) List<UUID> categories,
+    @RequestParam(required = false) List<UUID> companies
   ) {
     return jobPositionService.findAll(pageable, JobPositionQueryParams.builder()
-        .q(q)
-        .category(categories)
-        .company(companies)
-        .status(status)
-        .build());
+      .qList(q)
+      .category(categories)
+      .company(companies)
+      .status(status)
+      .build());
   }
 
   @GetMapping("/{jobPositionId}")
@@ -95,14 +95,14 @@ public class JobPositionResource {
   @PutMapping("/applicants/{applicantId}/favourites/{jobPositionId}/add")
   @Operation(summary = "Add to favorite jobs of a current user")
   public ResponseEntity<FavouritesJobsResponse> addToFavorites(@PathVariable("applicantId") UUID applicantId,
-      @PathVariable("jobPositionId") UUID jobPositionId) {
+    @PathVariable("jobPositionId") UUID jobPositionId) {
     return ResponseEntity.ok(jobPositionService.addToFavorites(applicantId, jobPositionId));
   }
 
   @PutMapping("/applicants/{applicantId}/favourites/{jobPositionId}/remove")
   @Operation(summary = "Remove from favorite jobs of a current user")
   public ResponseEntity<FavouritesJobsResponse> removeFromFavorites(@PathVariable("applicantId") UUID applicantId,
-      @PathVariable("jobPositionId") UUID jobPositionId) {
+    @PathVariable("jobPositionId") UUID jobPositionId) {
     return ResponseEntity.ok(jobPositionService.removeFromFavorites(applicantId, jobPositionId));
   }
 }

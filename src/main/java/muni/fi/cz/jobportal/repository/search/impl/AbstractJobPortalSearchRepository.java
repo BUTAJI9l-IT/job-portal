@@ -1,6 +1,5 @@
 package muni.fi.cz.jobportal.repository.search.impl;
 
-import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.FULLTEXT_SUFFIX;
 import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.SORT_SUFFIX;
 import static muni.fi.cz.jobportal.utils.ClassFieldsUtils.applyToAnnotatedFieldsWithValuesPresent;
 import static muni.fi.cz.jobportal.utils.ClassFieldsUtils.findAnnotation;
@@ -9,7 +8,6 @@ import static muni.fi.cz.jobportal.utils.ClassFieldsUtils.isCollectionType;
 
 import java.lang.reflect.Field;
 import java.time.temporal.TemporalAdjuster;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.function.Consumer;
 import javax.persistence.EntityManager;
@@ -33,6 +31,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.lang.NonNull;
+import org.springframework.util.CollectionUtils;
 
 /**
  * {@link SearchRepository} abstract implementation class.
@@ -81,13 +80,11 @@ public abstract class AbstractJobPortalSearchRepository<T, Q extends QueryParams
   }
 
   private boolean addFulltext(Q params, SearchScope<T> scope, BooleanPredicateClausesStep<?> rootPredicate) {
-    if (params.getQ() != null && params.getQueryIndices().length != 0) {
-      rootPredicate.must(
-        scope.predicate().bool().should(
-          scope.predicate().match()
-            .fields(Arrays.stream(params.getQueryIndices()).map(q -> q + FULLTEXT_SUFFIX).toArray(String[]::new))
-            .matching(params.getQ()))
-      );
+    if (!CollectionUtils.isEmpty(params.getQList()) && params.getQueryIndices().length != 0) {
+      final var colPredicate = scope.predicate().bool();
+      params.getQList().forEach(
+        colValue -> colPredicate.should(scope.predicate().match().fields(params.getQueryIndices()).matching(colValue)));
+      rootPredicate.must(colPredicate);
       return true;
     }
     return false;

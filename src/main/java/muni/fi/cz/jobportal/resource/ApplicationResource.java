@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -51,29 +52,29 @@ public class ApplicationResource {
   @PageableAsQueryParam
   @Operation(summary = "Returns all applications")
   public Page<ApplicationDto> getApplications(@Parameter(hidden = true) Pageable pageable,
-      @RequestParam(required = false) String q,
-      @RequestParam(required = false) UUID applicant,
-      @RequestParam(required = false) UUID jobPosition,
-      @RequestParam(required = false) UUID company,
-      @RequestParam(required = false) ApplicationState status,
-      @RequestParam(required = false) Instant dateFrom,
-      @RequestParam(required = false) Instant dateTo
+    @RequestParam(required = false) List<String> q,
+    @RequestParam(required = false) UUID applicant,
+    @RequestParam(required = false) UUID jobPosition,
+    @RequestParam(required = false) UUID company,
+    @RequestParam(required = false) ApplicationState status,
+    @RequestParam(required = false) Instant dateFrom,
+    @RequestParam(required = false) Instant dateTo
   ) {
     return applicationService.findAll(pageable, ApplicationQueryParams.builder()
-        .q(q)
-        .applicant(applicant)
-        .jobPosition(jobPosition)
-        .company(company)
-        .status(status)
-        .dateFrom(dateFrom)
-        .dateTo(dateTo)
-        .build());
+      .qList(q)
+      .applicant(applicant)
+      .jobPosition(jobPosition)
+      .company(company)
+      .status(status)
+      .dateFrom(dateFrom)
+      .dateTo(dateTo)
+      .build());
   }
 
   @PutMapping("/{applicationId}/state")
   @Operation(summary = "Change a state of an application", description = "Company can change a state an application")
   public ResponseEntity<ApplicationDetailDto> changeApplicationState(@PathVariable("applicationId") UUID applicationId,
-      @Valid @RequestBody ApplicationUpdateDto payload) {
+    @Valid @RequestBody ApplicationUpdateDto payload) {
     return ResponseEntity.ok(applicationService.update(applicationId, payload));
   }
 

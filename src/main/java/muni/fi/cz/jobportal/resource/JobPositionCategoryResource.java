@@ -5,6 +5,7 @@ import static muni.fi.cz.jobportal.api.ApiTags.JOB_POSITION_CATEGORY;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import muni.fi.cz.jobportal.annotation.JobPortalSecuredController;
@@ -66,8 +67,8 @@ public class JobPositionCategoryResource {
   @PageableAsQueryParam
   @Operation(summary = "Search for occupation")
   public Page<ReferenceDto> getOccupations(@Parameter(hidden = true) Pageable pageable,
-      @RequestParam(required = false) String q) {
-    return jobPositionCategoryService.searchOccupations(pageable, OccupationQueryParams.builder().q(q).build());
+    @RequestParam(required = false) List<String> q) {
+    return jobPositionCategoryService.searchOccupations(pageable, OccupationQueryParams.builder().qList(q).build());
   }
 
 }
