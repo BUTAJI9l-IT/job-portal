@@ -44,8 +44,8 @@ public class AuthenticationResource {
 
   @PostMapping("/refresh")
   @Operation(summary = "Refresh tokens")
-  public LoginResponse refreshToken(@Valid @RequestBody RefreshTokenRequest request) {
-    return authenticationService.refresh(request);
+  public ResponseEntity<LoginResponse> refreshToken(@Valid @RequestBody RefreshTokenRequest request) {
+    return ResponseEntity.ok(authenticationService.refresh(request));
   }
 
 }

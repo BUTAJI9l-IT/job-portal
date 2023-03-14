@@ -1,0 +1,67 @@
+<app-searchbar [tags]="filters.controls.q" [inputQ]="filters.controls.inputQ"></app-searchbar>
+
+
+<div>
+  <mat-button-toggle-group [formControl]="filters.controls.status">
+    <mat-button-toggle [value]="undefined"><span [translate]="'jobs.all-statuses'"></span></mat-button-toggle>
+    <mat-button-toggle value="ACTIVE"><span [translate]="'jobs.active'"></span></mat-button-toggle>
+    <mat-button-toggle value="INACTIVE"><span [translate]="'jobs.inactive'"></span></mat-button-toggle>
+  </mat-button-toggle-group>
+
+  <div fxFlex></div>
+
+  <filter-menu [categories]="true" [categoriesSelected]="filters.controls.categories" [companies]="isGlobal"
+               [companiesSelected]="filters.controls.companies"></filter-menu>
+  <sort-menu [sortArray]="filters.controls.sort" [state]="true" [country]="true" [city]="true" [companyName]="isGlobal"
+             [name]="true" [category]="true" [relevance]="true"></sort-menu>
+
+</div>
+
+
+<div style="display:flex; justify-content: center">
+  <mat-card id="container-for-cards" [style]="
+    'width: ' + width + ';'+
+    'max-height: ' + height + ';' +
+    'overflow-y: auto ;'
+">
+    <div>
+      <div style="position: sticky; top: 0; z-index: 10">
+        <mat-card-actions *ngIf="!isGlobal" align="end">
+          <button mat-raised-button (click)="addJob()" color="accent"><span [translate]="'dialog.job.submit'"></span>
+          </button>
+        </mat-card-actions>
+      </div>
+      <div>
+
+        <mat-card-content>
+
+          <div *ngIf="jobPositions.controls.length === 0" style="display: flex; justify-content: center; color: grey">
+            <span [translate]="'jobs.not-found'"></span>
+          </div>
+
+          <mat-selection-list [disableRipple]="true">
+
+            <mat-list-item *ngFor="let jobPosition of jobPositions.controls" style="height: 100%"
+                           [routerLink]="'//jobs/' + jobPosition.controls['id'].value">
+              <job-card (onUpdate)="deleteItem()" [jobPosition]="jobPosition"></job-card>
+            </mat-list-item>
+
+          </mat-selection-list>
+
+          <div *ngIf="jobPositions.controls.length !== 0 && (!nextPageCount.value || nextPageCount.value === 0)"
+               style="display: flex; justify-content: center;">
+            <span style="display: flex; justify-content: center; color: grey"
+                  [translate]="'jobs.all-with-filters'"></span>
+          </div>
+
+        </mat-card-content>
+        <mat-card-actions align="end" class="action-buttons">
+          <app-paginator [pageIndex]="page" [pageSize]="filters.controls.size"
+                         [length]="count"></app-paginator>
+        </mat-card-actions>
+
+      </div>
+    </div>
+
+  </mat-card>
+</div>

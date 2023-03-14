@@ -27,4 +27,5 @@ public class SearchProperties {
   public static final String COMPANY_SIZE = "companySize";
   public static final String USER_SCOPE = "scope";
   public static final String APPLICATION_DATE = "date";
+  public static final String RELEVANCE = "created";
 }

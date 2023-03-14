@@ -1,0 +1,58 @@
+<app-searchbar [tags]="filters.controls.q" [inputQ]="filters.controls.inputQ"></app-searchbar>
+
+
+<div style="margin-bottom: 15px">
+  <mat-button-toggle-group [formControl]="filters.controls.scope">
+    <mat-button-toggle [value]="undefined"><span [translate]="'scope.all-scopes'"></span></mat-button-toggle>
+    <mat-button-toggle value="REGULAR_USER"><span [translate]="'scope.user'"></span></mat-button-toggle>
+    <mat-button-toggle value="COMPANY"><span [translate]="'scope.company'"></span></mat-button-toggle>
+    <mat-button-toggle value="ADMIN"><span [translate]="'scope.admin'"></span></mat-button-toggle>
+  </mat-button-toggle-group>
+
+  <div fxFlex></div>
+
+  <sort-menu [sortArray]="filters.controls.sort" [name]="true" [email]="true" ></sort-menu>
+
+</div>
+
+<div style="display:flex; justify-content: center">
+  <mat-card id="container-for-cards" [style]="
+    'width: ' + width + ';'+
+    'max-height: ' + height + ';' +
+    'overflow-y: auto ;'
+">
+    <div>
+      <div>
+
+        <mat-card-content>
+
+          <div *ngIf="users.controls.length === 0" style="display: flex; justify-content: center; color: grey">
+            <span [translate]="'users.not-found'"></span>
+          </div>
+
+          <mat-selection-list [disableRipple]="true">
+
+            <mat-list-item *ngFor="let user of users.controls" style="height: 100%"
+                           [routerLink]="'//user/' + user.controls['id'].value + '/account'">
+              <user-card (onUpdate)="deleteItem()" [user]="user"></user-card>
+            </mat-list-item>
+
+          </mat-selection-list>
+
+          <div *ngIf="users.controls.length !== 0 && (!nextPageCount.value || nextPageCount.value === 0)"
+               style="display: flex; justify-content: center;">
+            <span style="display: flex; justify-content: center; color: grey"
+                  [translate]="'users.all-with-filters'"></span>
+          </div>
+
+        </mat-card-content>
+        <mat-card-actions align="end" class="action-buttons">
+          <app-paginator [pageIndex]="page" [pageSize]="filters.controls.size"
+                         [length]="count"></app-paginator>
+        </mat-card-actions>
+
+      </div>
+    </div>
+
+  </mat-card>
+</div>

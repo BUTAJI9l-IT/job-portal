@@ -1,0 +1,34 @@
+<button style="margin-left: 2em" mat-raised-button [matMenuTriggerFor]="sortMenu">
+  <mat-icon color="primary">sort</mat-icon>
+  {{'button.sort' | translate}}
+</button>
+
+<mat-menu class="my-menu" #sortMenu="matMenu">
+  <div (click)="$event.stopPropagation()">
+    <mat-selection-list>
+      <sort-item [enabled]="relevance" [name]="'sort.relevance' | translate" [value]="'created'"
+                 [array]="sortArray"></sort-item>
+      <sort-item [enabled]="country" [name]="'sort.country' | translate" [value]="'country'"
+                 [array]="sortArray"></sort-item>
+      <sort-item [enabled]="state" [name]="'sort.state' | translate" [value]="'state'"
+                 [array]="sortArray"></sort-item>
+      <sort-item [enabled]="city" [name]="'sort.city' | translate" [value]="'city'"
+                 [array]="sortArray"></sort-item>
+      <sort-item [enabled]="applicationDate" [name]="'sort.applicationDate' | translate" [value]="'date'"
+                 [array]="sortArray"></sort-item>
+      <sort-item [enabled]="name" [name]="'sort.name' | translate" [value]="'name'"
+                 [array]="sortArray"></sort-item>
+      <sort-item [enabled]="companySize" [name]="'sort.companySize' | translate" [value]="'companySize'"
+                 [array]="sortArray"></sort-item>
+      <sort-item [enabled]="email" [name]="'sort.email' | translate" [value]="'email'"
+                 [array]="sortArray"></sort-item>
+      <sort-item [enabled]="applicantName" [name]="'sort.applicantName' | translate" [value]="'applicant'"
+                 [array]="sortArray"></sort-item>
+      <sort-item [enabled]="companyName" [name]="'sort.companyName' | translate" [value]="'company'"
+                 [array]="sortArray"></sort-item>
+      <sort-item [enabled]="category" [name]="'sort.category' | translate" [value]="'category'"
+                 [array]="sortArray"></sort-item>
+    </mat-selection-list>
+  </div>
+</mat-menu>
+<!--COUNTRY STATE CITY APPLICATION_DATE NAME COMPANY_SIZE EMAIL JOB_POSITION APPLICANT COMPANY CATEGORY-->

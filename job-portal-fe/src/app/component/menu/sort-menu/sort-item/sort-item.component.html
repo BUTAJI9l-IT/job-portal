@@ -1,0 +1,6 @@
+<mat-list-item *ngIf="enabled" (click)="changeSort()">
+  <span matListItemTitle style="user-select: none">{{name}}</span>
+  <div matListItemMeta>
+    <mat-icon *ngIf="!!sorted">{{sorted === 'asc' ? 'arrow_upward' : 'arrow_downward'}}</mat-icon>
+  </div>
+</mat-list-item>

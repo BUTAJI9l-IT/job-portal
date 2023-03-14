@@ -1,0 +1,7 @@
+<div style="margin: 2rem">
+  <div>
+    <job-card-list *ngIf="filters.controls.companies.value!.length !== 0" [filters]="filters" [page]="page"
+                   [isGlobal]="false" [height]="'620px'" [nui]="companyId"></job-card-list>
+  </div>
+</div>
+

@@ -1,0 +1,18 @@
+<mat-card-content>
+
+  <div *ngIf="jobPositions.controls.length === 0"
+       style="display: flex; height: 700px; justify-content: center; vertical-align:center; color: grey">
+    <span style="margin: auto" [translate]="'jobs.no-saved'"></span>
+  </div>
+
+  <mat-selection-list [disableRipple]="true">
+
+    <mat-list-item *ngFor="let jobPosition of jobPositions.controls" style="height: 100%"
+                   [routerLink]="'//jobs/' + jobPosition.controls['id'].value">
+      <job-card (savedChange)="deleteItem(jobPosition.get('id')?.value!)" [jobPosition]="jobPosition"
+                [nui]="applicantId"></job-card>
+    </mat-list-item>
+
+  </mat-selection-list>
+
+</mat-card-content>

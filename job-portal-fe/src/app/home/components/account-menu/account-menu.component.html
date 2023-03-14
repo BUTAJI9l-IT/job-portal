@@ -1,0 +1,19 @@
+<button mat-button [matMenuTriggerFor]="menu" (click)="open=true">
+  <mat-icon>{{open ? 'arrow_drop_up' : 'arrow_drop_down'}}</mat-icon>
+  {{username}}
+</button>
+
+<mat-menu #menu="matMenu" xPosition="after" (closed)="open=false" >
+  <button mat-menu-item [routerLink]="'/user/' + userId">
+    <mat-icon color="primary">person_outline</mat-icon>
+    <div [translate]="'account.common.my-account'"></div>
+  </button>
+  <button mat-menu-item [routerLink]="'/user/' + userId + '/settings'">
+    <mat-icon color="primary">settings</mat-icon>
+    <div [translate]="'account.common.tabs.settings'"></div>
+  </button>
+  <button mat-menu-item (click)="logout()">
+    <mat-icon color="primary">exit_to_app</mat-icon>
+    {{'account.common.sign-out' | translate}}
+  </button>
+</mat-menu>

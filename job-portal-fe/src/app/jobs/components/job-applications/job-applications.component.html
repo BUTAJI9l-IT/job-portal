@@ -1,0 +1,73 @@
+<mat-sidenav-container class="container" [hasBackdrop]="false">
+
+  <mat-sidenav #sidenav class="sidenav" [mode]="'side'" disableClose="true">
+    <div style="height: 695px;">
+      <app-searchbar [tags]="filters.controls.q" [inputQ]="filters.controls.inputQ"></app-searchbar>
+
+      <div>
+        <div style="display: flex; justify-content: end; width: 100%; margin-bottom: 15px;">
+          <filter-menu [dates]="true" [dateRange]="filters.controls.dateRange"></filter-menu>
+          <sort-menu [sortArray]="filters.controls.sort" [applicationDate]="true" [applicantName]="true"></sort-menu>
+        </div>
+
+        <mat-button-toggle-group [formControl]="filters.controls.status">
+          <mat-button-toggle value="OPEN"><span [translate]="'application.open'"></span></mat-button-toggle>
+          <mat-button-toggle style="background: lightgoldenrodyellow" value="SEEN"><span
+            [translate]="'application.seen'"></span></mat-button-toggle>
+          <mat-button-toggle style="background: darkseagreen" value="APPROVED"><span
+            [translate]="'application.approved'"></span></mat-button-toggle>
+          <mat-button-toggle style="background: indianred" value="DECLINED"><span
+            [translate]="'application.declined'"></span></mat-button-toggle>
+        </mat-button-toggle-group>
+
+      </div>
+      <div style="overflow-y: auto; height: 90%; border: black solid 1px">
+        <mat-nav-list #list>
+          <mat-list-item *ngFor="let a of applications.controls" [routerLink]="a.controls['id'].value"
+                         routerLinkActive="" #rlaSettings="routerLinkActive" [activated]="rlaSettings.isActive"
+                         class="settings"
+                         (click)="contentElement.scrollTo({bottom: 0, behavior: 'smooth'}); selected.setValue(true)">
+            <div matListItemTitle>{{a.controls['name'].value}}</div>
+            <div matListItemLine>{{getApplicationDate(a)}}</div>
+          </mat-list-item>
+        </mat-nav-list>
+
+      </div>
+      <div>
+        <app-paginator [pageIndex]="page" [pageSize]="filters.controls.size" [length]="count"></app-paginator>
+      </div>
+    </div>
+
+  </mat-sidenav>
+
+  <mat-sidenav-content #contentElement style="overflow-y: hidden">
+    <div style="position: sticky; top: 0; z-index: 10000">
+      <div style="position:relative;">
+        <div
+          style="position:absolute; transform-origin: left; transform: translateX(182px) translateY(380px) rotate(-0.25turn);">
+          <button [disabled]="!selected.value" mat-stroked-button
+                  (click)="contentElement.scrollTo({bottom: 0, behavior: 'smooth'})">{{'button.applicant' | translate}}</button>
+          <button mat-stroked-button
+                  (click)="contentElement.scrollTo({top: 0, behavior: 'smooth'})">{{'button.job-position' | translate}}</button>
+        </div>
+      </div>
+    </div>
+
+
+    <div style="position: sticky; top: 0; height: 100%">
+      <div style="position: static; height: 100%">
+        <app-job-detail [fromApplications]="true"></app-job-detail>
+      </div>
+    </div>
+
+    <div class="center-content">
+
+      <mat-card class="card">
+
+        <router-outlet></router-outlet>
+
+      </mat-card>
+    </div>
+
+  </mat-sidenav-content>
+</mat-sidenav-container>

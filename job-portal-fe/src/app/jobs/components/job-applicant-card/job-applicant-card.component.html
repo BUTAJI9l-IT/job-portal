@@ -1,0 +1,79 @@
+<div>
+  <mat-card-header>
+
+    <img mat-card-avatar class="header-avatar" [src]="avatar.value" alt="">
+
+    <mat-card-title class="name">
+      <text-input [label]="'inputs.user.firstName.label'" [formControlComponent]="$any(applicantInfo).controls['name']"
+                  [editMode]="false" fieldAppearance="outline"></text-input>
+    </mat-card-title>
+    <mat-card-title class="name">
+      <text-input [label]="'inputs.user.lastName.label'"
+                  [formControlComponent]="$any(applicantInfo).controls['lastName']"
+                  [editMode]="false" fieldAppearance="outline"></text-input>
+    </mat-card-title>
+
+    <span fxFlex></span>
+
+    <div>
+      <button mat-raised-button color="accent" [disabled]="(status.value === 'APPROVED') || (status.value === 'CLOSED')"
+              (click)="approve()">
+        {{'application.change-to-approved' | translate}}
+      </button>
+      <button mat-raised-button color="warn" [disabled]="(status.value === 'DECLINED') || (status.value === 'CLOSED')"
+              (click)="decline()">
+        {{'application.change-to-declined' | translate}}
+      </button>
+    </div>
+
+  </mat-card-header>
+
+  <mat-card-subtitle>
+    <p>
+      <text-area-input [label]="'inputs.profile.label'" [formControlComponent]="$any(applicantInfo).controls['profile']"
+                       [editMode]="false" fieldAppearance="outline"></text-area-input>
+    </p>
+  </mat-card-subtitle>
+
+  <mat-divider></mat-divider>
+
+  <mat-card-content class="card-content">
+
+    <div class="form-fields">
+      <div class="form-field">
+        <h3 [translate]="'inputs.email.label'"></h3>
+        <email-input [formControlComponent]="$any(applicantInfo).controls['email']" [editMode]="false"
+                     fieldAppearance="outline"></email-input>
+      </div>
+
+      <div class="form-field">
+        <h3 [translate]="'inputs.phone.label'"></h3>
+        <phone-input [formControlComponent]="$any(applicantInfo).controls['phone']" [editMode]="false"
+                     fieldAppearance="outline"></phone-input>
+      </div>
+    </div>
+
+    <div class="form-fields">
+      <div class="form-field">
+        <h3 [translate]="'inputs.address.label'"></h3>
+        <address-input
+          [formControlCountryIn]="$any(applicantInfo).controls['country']"
+          [formControlStateIn]="$any(applicantInfo).controls['state']"
+          [formControlCityIn]="$any(applicantInfo).controls['city']"
+          [editMode]="false" fieldAppearance="outline">
+        </address-input>
+      </div>
+      <div class="form-field"></div>
+    </div>
+
+    <div>
+      <mat-divider></mat-divider>
+
+      <h3 style="margin-left: 25px" [translate]="'account.account.experiences'"></h3>
+
+      <experience-card-list [experiences]="$any(applicantInfo).controls['experiences']" [readOnly]="true" width="95%"
+                            height="500px"></experience-card-list>
+    </div>
+
+  </mat-card-content>
+</div>

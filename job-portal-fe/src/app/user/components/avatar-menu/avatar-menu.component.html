@@ -1,0 +1,12 @@
+<button mat-menu-item (click)="fileUpload.click()">
+  <input #fileUpload
+         style="display: none"
+         id="input-file-id"
+         type="file"
+         (change)="uploadNewAvatar($event)"
+         multiple="multiple"
+         accept="image/*">
+  <span [translate]="'inputs.file.avatar.upload'"></span>
+</button>
+<button mat-menu-item><span [translate]="'inputs.file.avatar.delete'" (click)="deleteAvatar()"></span></button>
+

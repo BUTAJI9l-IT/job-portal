@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @author Vitalii Bortsov
  */
+@SecurityRequirement(name = BEARER_AUTH)
 @Target(TYPE)
 @Retention(RUNTIME)
-@SecurityRequirement(name = BEARER_AUTH)
 @RestController
 public @interface JobPortalSecuredController {
 

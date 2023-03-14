@@ -3,6 +3,7 @@ package muni.fi.cz.jobportal.service.impl;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import muni.fi.cz.jobportal.annotation.JobPortalService;
+import muni.fi.cz.jobportal.api.common.PreferencesDto;
 import muni.fi.cz.jobportal.api.common.UserDto;
 import muni.fi.cz.jobportal.api.request.ApplicantCreateDto;
 import muni.fi.cz.jobportal.api.request.UserCreateDto;
@@ -12,10 +13,14 @@ import muni.fi.cz.jobportal.enums.JobPortalScope;
 import muni.fi.cz.jobportal.exception.OldPasswordMismatchException;
 import muni.fi.cz.jobportal.exception.UserAlreadyRegisteredException;
 import muni.fi.cz.jobportal.mapper.CompanyMapper;
+import muni.fi.cz.jobportal.mapper.PreferencesMapper;
 import muni.fi.cz.jobportal.mapper.UserMapper;
 import muni.fi.cz.jobportal.repository.ApplicantRepository;
 import muni.fi.cz.jobportal.repository.CompanyRepository;
 import muni.fi.cz.jobportal.repository.ExperienceRepository;
+import muni.fi.cz.jobportal.repository.JobPositionRepository;
+import muni.fi.cz.jobportal.repository.LanguageRepository;
+import muni.fi.cz.jobportal.repository.PreferencesRepository;
 import muni.fi.cz.jobportal.repository.RefreshTokenRepository;
 import muni.fi.cz.jobportal.repository.UserRepository;
 import muni.fi.cz.jobportal.service.ApplicantService;
@@ -42,8 +47,12 @@ public class UserServiceImpl implements UserService {
   private final ExperienceRepository experienceRepository;
   private final CompanyRepository companyRepository;
   private final RefreshTokenRepository refreshTokenRepository;
+  private final LanguageRepository languageRepository;
+  private final PreferencesRepository preferencesRepository;
+  private final JobPositionRepository jobPositionRepository;
   private final UserMapper userMapper;
   private final CompanyMapper companyMapper;
+  private final PreferencesMapper preferencesMapper;
   private final ApplicantService applicantService;
   private final CompanyService companyService;
   private final PasswordEncoder passwordEncoder;
@@ -58,10 +67,10 @@ public class UserServiceImpl implements UserService {
     final var user = userRepository.save(userMapper.map(payload));
     if (payload.getScope().equals(JobPortalScope.REGULAR_USER)) {
       user.setApplicant(applicantRepository.getOneByIdOrThrowNotFound(
-          applicantService.create(new ApplicantCreateDto(user.getId())).getId()));
+        applicantService.create(new ApplicantCreateDto(user.getId())).getId()));
     } else if (payload.getScope().equals(JobPortalScope.COMPANY)) {
       user.setCompany(
-          companyRepository.getOneByIdOrThrowNotFound(companyService.create(companyMapper.map(payload, user)).getId()));
+        companyRepository.getOneByIdOrThrowNotFound(companyService.create(companyMapper.map(payload, user)).getId()));
     }
     return userMapper.map(user);
   }
@@ -106,5 +115,22 @@ public class UserServiceImpl implements UserService {
   @PreAuthorize("@authorityValidator.isAdmin()")
   public Page<UserDto> findAll(@NonNull Pageable pageable, @NonNull UserQueryParams params) {
     return userRepository.search(pageable, params).map(userMapper::map);
+  }
+
+  @NonNull
+  @Override
+  @PreAuthorize("@authorityValidator.isAdmin() || @authorityValidator.isCurrentUser(#userId)")
+  public PreferencesDto updatePreferences(@NonNull UUID userId, @NonNull PreferencesDto payload) {
+    final var userPreferences = userRepository.getOneByIdOrThrowNotFound(userId).getPreferences();
+    preferencesMapper.update(userPreferences, payload);
+    userPreferences.setLanguage(languageRepository.getOneByIdOrThrowNotFound(payload.getLanguage()));
+    return preferencesMapper.map(preferencesRepository.save(userPreferences));
+  }
+
+  @NonNull
+  @Override
+  @PreAuthorize("@authorityValidator.isAdmin() || @authorityValidator.isCurrentUser(#userId)")
+  public PreferencesDto getUserPreferences(@NonNull UUID userId) {
+    return preferencesMapper.map(userRepository.getOneByIdOrThrowNotFound(userId).getPreferences());
   }
 }

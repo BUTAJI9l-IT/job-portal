@@ -1,0 +1,53 @@
+<app-searchbar [tags]="filters.controls.q" [inputQ]="filters.controls.inputQ"></app-searchbar>
+
+
+<div style="margin-bottom: 15px">
+  <div fxFlex></div>
+  <filter-menu [companySize]="true" [companySizeValue]="filters.controls.companySize"></filter-menu>
+
+  <sort-menu [sortArray]="filters.controls.sort" [name]="true"></sort-menu>
+
+</div>
+
+
+<div style="display:flex; justify-content: center">
+  <mat-card id="container-for-cards" [style]="
+    'width: ' + width + ';'+
+    'max-height: ' + height + ';' +
+    'overflow-y: auto ;'
+">
+    <div>
+      <div>
+
+        <mat-card-content>
+
+          <div *ngIf="companies.controls.length === 0" style="display: flex; justify-content: center; color: grey">
+            <span [translate]="'companies.not-found'"></span>
+          </div>
+
+          <mat-selection-list [disableRipple]="true">
+
+            <mat-list-item *ngFor="let company of companies.controls" style="height: 100%"
+                           [routerLink]="'//companies/' + company.controls['id'].value">
+              <company-card [company]="company"></company-card>
+            </mat-list-item>
+
+          </mat-selection-list>
+
+          <div *ngIf="companies.controls.length !== 0 && (!nextPageCount.value || nextPageCount.value === 0)"
+               style="display: flex; justify-content: center;">
+            <span style="display: flex; justify-content: center; color: grey"
+                  [translate]="'companies.all-with-filters'"></span>
+          </div>
+
+        </mat-card-content>
+        <mat-card-actions align="end" class="action-buttons">
+          <app-paginator [pageIndex]="page" [pageSize]="filters.controls.size"
+                         [length]="count"></app-paginator>
+        </mat-card-actions>
+
+      </div>
+    </div>
+
+  </mat-card>
+</div>

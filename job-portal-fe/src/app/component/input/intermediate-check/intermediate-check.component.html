@@ -1,0 +1,22 @@
+<section class="example-section">
+  <span class="example-list-section">
+    <mat-checkbox class="example-margin"
+                  [checked]="allComplete"
+                  [color]="'accent'"
+                  [indeterminate]="someComplete()"
+                  (change)="setAll($event.checked)">
+      {{'checkboxes.all' | translate}}
+    </mat-checkbox>
+  </span>
+  <span class="example-list-section">
+    <ul>
+      <li *ngFor="let subtask of categories.sub">
+        <mat-checkbox [(ngModel)]="subtask.selected"
+                      [color]="'accent'"
+                      (ngModelChange)="updateAllComplete()">
+          {{'categories.' + subtask.id | translate}}
+        </mat-checkbox>
+      </li>
+    </ul>
+  </span>
+</section>

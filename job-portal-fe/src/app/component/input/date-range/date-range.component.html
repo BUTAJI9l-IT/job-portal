@@ -1,0 +1,18 @@
+<mat-form-field [appearance]="fieldAppearance" style="width: 100%">
+  <mat-label><span [translate]="'inputs.date-range.label'"></span></mat-label>
+  <mat-date-range-input [formGroup]="dateRange" [rangePicker]="picker">
+    <input matStartDate [formControl]="dateRange.controls.from"
+           [placeholder]="'inputs.date-range.placeholder.start' | translate">
+    <input matEndDate [formControl]="dateRange.controls.to"
+           [placeholder]="'inputs.date-range.placeholder.end' | translate">
+  </mat-date-range-input>
+  <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-date-range-picker #picker></mat-date-range-picker>
+
+  <mat-error
+    *ngIf="dateRange.controls.from.hasError('matStartDateInvalid')">{{'inputs.date-range.error.start' | translate}}
+  </mat-error>
+  <mat-error
+    *ngIf="dateRange.controls.to.hasError('matEndDateInvalid')">{{'inputs.date-range.error.end' | translate}}
+  </mat-error>
+</mat-form-field>

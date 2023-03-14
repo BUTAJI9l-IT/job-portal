@@ -1,0 +1,21 @@
+
+section {
+  display: table;
+}
+
+.button-full {
+  width: fit-content;
+  display: inline-block;
+  font-size: 15pt;
+  height: 64px;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.img-fluid {
+  max-width: 15% !important;
+  margin-right: 2% !important;
+  cursor: pointer;
+}

@@ -1,0 +1,30 @@
+<ng-select
+  [items]="countries"
+  [(ngModel)]="selectedCountry"
+  bindValue="isoCode"
+  bindLabel="name"
+  placeholder="Select country"
+  (change)="onCountryChange()"
+>
+</ng-select>
+
+<ng-select
+  [items]="states"
+  [(ngModel)]="selectedState"
+  bindValue="isoCode"
+  bindLabel="name"
+  placeholder="Select state"
+  [disabled]="!statesEnabled"
+  (change)="onStateChange()"
+>
+</ng-select>
+
+<ng-select
+  [items]="cities"
+  [(ngModel)]="selectedCity"
+  bindValue="name"
+  bindLabel="name"
+  placeholder="Select city"
+  [disabled]="!citiesEnabled"
+>
+</ng-select>

@@ -1,0 +1,33 @@
+<button mat-icon-button [matMenuTriggerFor]="menu">
+  <mat-icon svgIcon="jp_icon"></mat-icon>
+</button>
+<mat-menu #menu="matMenu" class="my-menu">
+
+  <div *ngIf="jobPositions.controls.length === 0"
+       style="color: grey; height: 30px; width: 250px; text-align: center">
+    <span style="margin: auto" [translate]="'jobs.no-saved'"></span>
+  </div>
+
+  <mat-selection-list [disableRipple]="true">
+
+    <mat-list-item *ngFor="let jobPosition of jobPositions.controls" style="height: 100%; width: 100%;"
+                   [routerLink]="'//jobs/' + jobPosition.controls['id'].value">
+
+      <div matListItemTitle style="font-size: 10pt">
+        {{jobPosition.controls['positionName'].value}}
+      </div>
+      <div matListItemMeta>
+        <button mat-icon-button
+                (click)="deleteFromFavorite(jobPosition.controls['id'].value!); $event.stopPropagation();">
+          <mat-icon color="accent">favorite</mat-icon>
+        </button>
+      </div>
+
+    </mat-list-item>
+  </mat-selection-list>
+  <div *ngIf="jobPositions.controls.length !== 0"
+       [routerLink]="'//user/' + userId + '/saved-jobs'" class="primaryColorBg all-jobs">
+    {{'jobs.go-to-saved' | translate}}
+  </div>
+
+</mat-menu>

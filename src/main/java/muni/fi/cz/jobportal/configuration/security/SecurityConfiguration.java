@@ -1,7 +1,5 @@
 package muni.fi.cz.jobportal.configuration.security;
 
-import static muni.fi.cz.jobportal.configuration.constants.ApplicationConstants.AUTOWIRE_IGNORE;
-
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -49,20 +47,22 @@ import org.zalando.problem.spring.web.advice.security.SecurityProblemSupport;
  */
 @Configuration
 @EnableGlobalMethodSecurity(
-    prePostEnabled = true
+  prePostEnabled = true
 )
 @Import(SecurityProblemSupport.class)
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 
   private static final String[] SWAGGER_PUBLIC_ENDPOINTS = {
-      "/swagger-ui.html",
-      "/swagger-ui/**",
-      "/v3/api-docs/**",
+    "/swagger-ui.html",
+    "/swagger-ui/**",
+    "/v3/api-docs/**",
   };
+
+  private static final String UUID_REGEX = "[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}";
   private static final List<String> ALLOWED_CORS_HEADERS = List.of("x-requested-with", "authorization", "origin",
-      "content-type", "version",
-      "content-disposition", "location");
+    "content-type", "version",
+    "content-disposition", "location");
   private final JobPortalApplicationProperties applicationProperties;
   private final SecurityProblemSupport securityProblemSupport;
 
@@ -81,27 +81,28 @@ public class SecurityConfiguration {
   }
 
   @Bean
-  @SuppressWarnings(AUTOWIRE_IGNORE)
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.csrf().disable();
     http.headers().cacheControl().disable();
 
     http.cors().configurationSource(corsFilter());
     http
-        .authorizeHttpRequests()
-        .antMatchers(HttpMethod.POST, "/auth/**").permitAll()
-        .antMatchers(HttpMethod.GET, "/auth/**").permitAll()
-        .antMatchers(HttpMethod.GET, SWAGGER_PUBLIC_ENDPOINTS).permitAll()
-        .anyRequest()
-        .authenticated();
+      .authorizeHttpRequests()
+      .antMatchers(HttpMethod.POST, "/auth/**").permitAll()
+      .antMatchers(HttpMethod.GET, "/auth/**", "/companies/**", "/job-categories/**", "/positions", "/positions/")
+      .permitAll()
+      .regexMatchers(HttpMethod.GET, "/positions/" + UUID_REGEX, "/users/" + UUID_REGEX + "/avatar").permitAll()
+      .antMatchers(HttpMethod.GET, SWAGGER_PUBLIC_ENDPOINTS).permitAll()
+      .anyRequest()
+      .authenticated();
 
     http.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
 
     http.httpBasic(Customizer.withDefaults());
 
     http.exceptionHandling()
-        .authenticationEntryPoint(securityProblemSupport)
-        .accessDeniedHandler(securityProblemSupport);
+      .authenticationEntryPoint(securityProblemSupport)
+      .accessDeniedHandler(securityProblemSupport);
 
     return http.build();
   }
@@ -119,9 +120,9 @@ public class SecurityConfiguration {
         final var cert = ks.getCertificate(instance);
         final var publicKey = cert.getPublicKey();
         return new RSAKey.Builder((RSAPublicKey) publicKey)
-            .privateKey(pk)
-            .keyID(storeProperties.getKid())
-            .build();
+          .privateKey(pk)
+          .keyID(storeProperties.getKid())
+          .build();
       } else {
         throw new BeanInitializationException("Failed to initialize KeyPair provider. Create key is not private");
       }
@@ -154,7 +155,7 @@ public class SecurityConfiguration {
 
   @Bean
   public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
-      throws Exception {
+    throws Exception {
     return authenticationConfiguration.getAuthenticationManager();
   }
 

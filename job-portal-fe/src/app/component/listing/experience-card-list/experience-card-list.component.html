@@ -1,0 +1,33 @@
+<div style="display:flex; justify-content: center">
+  <mat-card id="container-for-cards" [style]="
+    'width: ' + width + ';'+
+    'height: ' + height + ';' +
+    'overflow-y: auto ;'
+">
+    <div>
+      <div style="position: sticky; top: 0; z-index: 10">
+        <mat-card-actions *ngIf="!readOnly" align="end">
+          <button mat-raised-button (click)="addExperience()"><span [translate]="'dialog.experience.submit'"></span>
+          </button>
+        </mat-card-actions>
+      </div>
+      <div>
+
+        <mat-card-content>
+
+          <mat-list [disableRipple]="true">
+
+            <mat-list-item *ngFor="let experience of experiences.controls" style="height: 100%">
+              <experience-card (onDelete)="updateExperiences.emit()" [experience]="experience"
+                               [readOnly]="readOnly" [userId]="userId"></experience-card>
+            </mat-list-item>
+
+          </mat-list>
+
+        </mat-card-content>
+
+      </div>
+    </div>
+
+  </mat-card>
+</div>

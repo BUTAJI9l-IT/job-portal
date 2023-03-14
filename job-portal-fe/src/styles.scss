@@ -1,0 +1,72 @@
+/* You can add global styles to this file, and also import other style files */
+@use "@angular/material" as mat;
+
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+@import '@angular/material/theming';
+@import '~quill/dist/quill.core.css';
+@import '~quill/dist/quill.snow.css';
+
+@include mat.core();
+
+$my-app-primary: mat.define-palette(mat.$deep-orange-palette);
+$my-app-accent: mat.define-palette(mat.$indigo-palette, A200, A100, A400);
+$my-app-warn: mat.define-palette(mat.$red-palette);
+$my-app-typography: mat.define-typography-config();
+
+$my-app-theme: mat.define-light-theme(
+    (
+      color: (
+        primary: $my-app-primary,
+        accent: $my-app-accent,
+        warn: $my-app-warn,
+      ),
+      typography: $my-app-typography
+    )
+);
+
+@mixin theme-color-grabber($my-app-theme) {
+  $primary: map-get($my-app-theme, primary);
+  $accent: map-get($my-app-theme, accent);
+  $warn: map-get($my-app-theme, warn);
+  .primaryColor {
+    color: mat-color($primary);
+  }
+  .accentColor {
+    color: mat-color($accent);
+  }
+  .warnColor {
+    color: mat-color($warn);
+  }
+  .primaryColorBg {
+    background-color: mat-color($primary);
+  }
+  .accentColorBg {
+    background-color: mat-color($accent);
+  }
+  .warnColorBg {
+    background-color: mat-color($warn);
+  }
+}
+
+
+@include mat.all-component-themes($my-app-theme);
+@include theme-color-grabber($my-app-theme);
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}

@@ -14,11 +14,9 @@ import org.zalando.problem.spring.common.HttpStatusAdapter;
 @Getter
 public abstract class JobPortalException extends AbstractThrowableProblem {
 
-  private final transient Object originalProblem;
   public static final String ROOT = "http://job-portal/";
 
   protected JobPortalException(String title, HttpStatus status, Object detail, String code) {
-    super(URI.create(ROOT + code), title, new HttpStatusAdapter(status), null);
-    this.originalProblem = detail;
+    super(URI.create(ROOT + code), title, new HttpStatusAdapter(status), detail == null ? "" : detail.toString());
   }
 }

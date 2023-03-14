@@ -1,0 +1,26 @@
+<mat-card style="margin:0.5em;">
+  <mat-card-header>
+    <mat-card-title>{{experience.controls['occupation'].value}}</mat-card-title>
+    <mat-card-subtitle>
+      <extendable-chips [categories]="$any(experience).controls['jobCategories']"></extendable-chips>
+    </mat-card-subtitle>
+    <mat-card-subtitle
+      *ngIf="$any(experience).controls['company'].controls['companyName'].value">{{'experience.at' | translate}}
+      <a *ngIf="$any(experience).controls['company'].controls['id'].value" class="primaryColor"
+         [href]="$any(experience).controls['company'].controls['id'].value ? '/companies/' + $any(experience).controls['company'].controls['id'].value : null"
+         (click)="$event.stopPropagation()">
+        {{$any(experience).controls['company'].controls['companyName'].value}}
+      </a>
+      <span *ngIf="!$any(experience).controls['company'].controls['id'].value">
+        {{$any(experience).controls['company'].controls['companyName'].value}}
+      </span>
+    </mat-card-subtitle>
+    <mat-card-subtitle>{{getDateRange()}}</mat-card-subtitle>
+
+    <span fxFlex></span>
+
+    <button *ngIf="!readOnly" mat-icon-button (click)="deleteExperience(); $event.stopPropagation();">
+      <mat-icon color="accent">delete</mat-icon>
+    </button>
+  </mat-card-header>
+</mat-card>

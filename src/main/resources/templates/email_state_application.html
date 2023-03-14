@@ -98,7 +98,8 @@
             <table class="table2" th:class="table2">
               <tr>
                 <td class="td3" th:class="td3">
-                  <h1 class="subject" th:class="subject" th:text="'New Application Status!'">New Application
+                  <h1 class="subject" th:class="subject" th:text="#{subject.email_state_application.html}">New
+                    Application
                     Status!</h1>
                   <p class="email-content" th:class="email-content" th:if="${STATUS} == 'APPROVED'"
                      th:utext="#{email.application.state.approved(${JOB_POSITION}, ${COMPANY})}">

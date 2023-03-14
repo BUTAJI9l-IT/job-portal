@@ -1,12 +1,15 @@
 server:
   port: ${PORT:8080}
+  servlet:
+    encoding:
+      force: true
 
 spring:
   application:
     name: jobportal
   liquibase:
     enabled: true
-    contexts: default
+    contexts: default, data
     change-log: classpath:db/changelog/master.xml
     drop-first: false
   jpa:
@@ -38,7 +41,6 @@ spring:
       mail:
         smtp.auth: ${NOTIFICATIONS_ENABLED:false}
         smtp.starttls.enable: ${NOTIFICATIONS_ENABLED:false}
-
 springdoc:
   packages-to-scan:
     - muni.fi.cz.jobportal.resource
@@ -60,4 +62,4 @@ job-portal:
     duration: ${REFRESH_TOKEN_DURATION:1D}
   notifications:
     enabled: ${NOTIFICATIONS_ENABLED:false}
-  base-uri: ${BASE_URI:https://localhost:8080}
+  base-uri: ${BASE_URI:http://localhost:8080}

@@ -25,4 +25,5 @@ public class RegistrationRequest {
   private String companyName;
   private String companyLink;
   private CompanyNumberOfEmployees companySize;
+  private String language;
 }

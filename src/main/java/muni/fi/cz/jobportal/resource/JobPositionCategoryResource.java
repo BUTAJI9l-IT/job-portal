@@ -1,13 +1,16 @@
 package muni.fi.cz.jobportal.resource;
 
 import static muni.fi.cz.jobportal.api.ApiTags.JOB_POSITION_CATEGORY;
+import static muni.fi.cz.jobportal.configuration.constants.ApplicationConstants.BEARER_AUTH;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import muni.fi.cz.jobportal.annotation.JobPortalController;
 import muni.fi.cz.jobportal.annotation.JobPortalSecuredController;
 import muni.fi.cz.jobportal.api.common.CategoryDto;
 import muni.fi.cz.jobportal.api.common.ListOfCategoriesResponse;
@@ -32,7 +35,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @Tag(name = JOB_POSITION_CATEGORY)
 @RequestMapping("/job-categories")
-@JobPortalSecuredController
+@JobPortalController
 @RequiredArgsConstructor
 public class JobPositionCategoryResource {
 
@@ -40,12 +43,14 @@ public class JobPositionCategoryResource {
 
   @PostMapping("/{categoryName}")
   @Operation(summary = "Create a category")
+  @SecurityRequirement(name = BEARER_AUTH)
   public ResponseEntity<ReferenceDto> createCategory(@PathVariable("categoryName") String categoryName) {
     return ResponseEntity.ok(jobPositionCategoryService.create(categoryName));
   }
 
   @DeleteMapping("/{categoryId}")
   @Operation(summary = "Delete a category")
+  @SecurityRequirement(name = BEARER_AUTH)
   public ResponseEntity<Void> deleteCategory(@PathVariable("categoryId") UUID categoryId) {
     jobPositionCategoryService.delete(categoryId);
     return ResponseEntity.noContent().build();

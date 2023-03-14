@@ -5,6 +5,7 @@ import static muni.fi.cz.jobportal.enums.JobPortalScope.ADMIN;
 import static muni.fi.cz.jobportal.enums.JobPortalScope.COMPANY;
 import static muni.fi.cz.jobportal.enums.JobPortalScope.REGULAR_USER;
 import static muni.fi.cz.jobportal.utils.AuthenticationUtils.getClaim;
+import static muni.fi.cz.jobportal.utils.AuthenticationUtils.getJwtFromHeader;
 
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import muni.fi.cz.jobportal.repository.ApplicationRepository;
 import muni.fi.cz.jobportal.repository.CompanyRepository;
 import muni.fi.cz.jobportal.repository.UserRepository;
 import org.springframework.lang.NonNull;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,11 +32,17 @@ public class AuthorityValidator {
 
   private final CompanyRepository companyRepository;
   private final UserRepository userRepository;
+  private final JwtDecoder jwtDecoder;
   private final ApplicantRepository applicantRepository;
   private final ApplicationRepository applicationRepository;
 
   public boolean jobBelongsToCompany(UUID id) {
     return isAdmin() || (isCompany() && companyRepository.userWithJobExists(getCurrentUser(), id));
+  }
+
+  public UUID getCurrentUserFromHeader() {
+    final var token = getJwtFromHeader();
+    return token == null ? null : UUID.fromString(jwtDecoder.decode(token).getSubject());
   }
 
   public UUID getCurrentUser() {
@@ -52,7 +60,8 @@ public class AuthorityValidator {
   }
 
   public boolean canDeleteApplication(@NonNull UUID id) {
-    return isAdmin() || (isRegularUser() && isCurrentUser(getUserFromApplicant(id)));
+    return isAdmin() || (isRegularUser() && isCurrentUser(
+      applicationRepository.getOneByIdOrThrowNotFound(id).getApplicant().getUser().getId()));
   }
 
   private static boolean hasScope(String scope) {

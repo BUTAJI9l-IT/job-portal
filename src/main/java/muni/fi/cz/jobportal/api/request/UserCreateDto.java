@@ -26,4 +26,5 @@ public class UserCreateDto {
   private String companyName;
   private String companyLink;
   private CompanyNumberOfEmployees companySize;
+  private String language;
 }

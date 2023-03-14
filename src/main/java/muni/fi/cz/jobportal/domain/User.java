@@ -7,6 +7,7 @@ import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.USER
 import static muni.fi.cz.jobportal.configuration.search.LuceneConfiguration.FULLTEXT_ANALYZER;
 import static muni.fi.cz.jobportal.configuration.search.LuceneConfiguration.SORT_NORMALIZER;
 import static muni.fi.cz.jobportal.configuration.search.LuceneConfiguration.SUGGESTER;
+import static muni.fi.cz.jobportal.enums.JobPortalScope.ADMIN;
 import static org.hibernate.search.engine.backend.types.Sortable.YES;
 
 import java.util.UUID;
@@ -79,11 +80,22 @@ public class User {
   @JoinColumn(name = "company_id")
   private Company company;
 
+  @OneToOne(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+  @JoinColumn(name = "preferences_id")
+  private UserPreferences preferences;
+
   public String getFullName() {
     if (name == null) {
       return lastName == null ? "" : lastName;
     }
     return lastName == null ? name : name + " " + lastName;
+  }
+
+  public UUID getNUI() {
+    if (!ADMIN.equals(getScope())) {
+      return getApplicant() == null ? getCompany().getId() : getApplicant().getId();
+    }
+    return getId();
   }
 
 }

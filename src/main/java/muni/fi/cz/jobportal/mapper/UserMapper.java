@@ -19,6 +19,7 @@ public interface UserMapper {
   @Mapping(target = "password", ignore = true)
   User map(UserCreateDto request);
 
+  @Mapping(target = "nui", source = "NUI")
   UserDto map(User source);
 
   UserCreateDto map(RegistrationRequest request);

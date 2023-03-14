@@ -1,0 +1,18 @@
+<button mat-button [matMenuTriggerFor]="menu" (click)="open=true">
+  <mat-icon>{{open ? 'arrow_drop_up' : 'arrow_drop_down'}}</mat-icon>
+  <mat-icon>language</mat-icon>
+</button>
+<mat-menu #menu="matMenu" (closed)="open=false">
+  <button mat-menu-item (click)="useLanguage('en')">
+    <span [translate]="'home.language.en-lang'"></span>
+  </button>
+  <button mat-menu-item (click)="useLanguage('cs')">
+    <span [translate]="'home.language.cs-lang'"></span>
+  </button>
+  <button mat-menu-item (click)="useLanguage('sk')">
+    <span [translate]="'home.language.sk-lang'"></span>
+  </button>
+  <button mat-menu-item (click)="useLanguage('ru')">
+    <span [translate]="'home.language.ru-lang'"></span>
+  </button>
+</mat-menu>

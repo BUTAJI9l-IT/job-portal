@@ -1,15 +1,17 @@
 package muni.fi.cz.jobportal.resource;
 
 import static muni.fi.cz.jobportal.api.ApiTags.COMPANY;
+import static muni.fi.cz.jobportal.configuration.constants.ApplicationConstants.BEARER_AUTH;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import java.util.UUID;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import muni.fi.cz.jobportal.annotation.JobPortalSecuredController;
+import muni.fi.cz.jobportal.annotation.JobPortalController;
 import muni.fi.cz.jobportal.api.common.CompanyDto;
 import muni.fi.cz.jobportal.api.detail.CompanyDetailDto;
 import muni.fi.cz.jobportal.api.request.CompanyUpdateDto;
@@ -34,7 +36,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @Tag(name = COMPANY)
 @RequestMapping("/companies")
-@JobPortalSecuredController
+@JobPortalController
 @RequiredArgsConstructor
 public class CompanyResource {
 
@@ -48,6 +50,7 @@ public class CompanyResource {
 
   @PutMapping("/{companyId}")
   @Operation(summary = "Updates a company by given id")
+  @SecurityRequirement(name = BEARER_AUTH)
   public ResponseEntity<CompanyDetailDto> updateCompany(@PathVariable("companyId") UUID companyId,
     @Valid @RequestBody CompanyUpdateDto payload) {
     return ResponseEntity.ok(companyService.update(companyId, payload));

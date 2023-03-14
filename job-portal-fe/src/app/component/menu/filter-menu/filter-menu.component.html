@@ -1,0 +1,103 @@
+<button mat-raised-button [matMenuTriggerFor]="filterMenu"
+        [matBadge]="badgeCount()" matBadgePosition="before" matBadgeColor="accent"
+        [matBadgeHidden]="badgeCount() === 0">
+  <mat-icon color="primary">filter_list</mat-icon>
+  {{'button.filters' | translate}}
+</button>
+
+<mat-menu #filterMenu="matMenu" class="my-menu">
+  <ng-template matMenuContent>
+    <div>
+      <div (click)="$event.stopPropagation()">
+        <button mat-button color="accent" (click)="clear()">{{'button.filters.clear' | translate}}</button>
+      </div>
+      <mat-drawer-container class="example-container" [hasBackdrop]="false" (click)="$event.stopPropagation()">
+        <mat-drawer #sidenav [mode]="'side'" disableClose opened>
+          <mat-nav-list #list>
+
+            <!--            <mat-list-item *ngIf="applicants" (click)="show('applicants')" [activated]="showTab === 'applicants'">-->
+            <!--              <div class="item"><span [matBadge]="'0'" matBadgeOverlap="true"-->
+            <!--                                      matBadgeColor="accent"-->
+            <!--                                      [matBadgeHidden]="false">-->
+            <!--                {{'filters.label.applicants' | translate}}-->
+            <!--              </span>-->
+            <!--              </div>-->
+            <!--            </mat-list-item>-->
+
+            <!--            <mat-list-item *ngIf="jobs" (click)="show('jobs')" [activated]="showTab === 'jobs'">-->
+            <!--              <div class="item"><span [matBadge]="'0'" matBadgeOverlap="true"-->
+            <!--                                      matBadgeColor="accent"-->
+            <!--                                      [matBadgeHidden]="false">-->
+            <!--                {{'filters.label.jobs' | translate}}-->
+            <!--              </span>-->
+            <!--              </div>-->
+            <!--            </mat-list-item>-->
+
+            <mat-list-item *ngIf="companies" (click)="show('companies')" [activated]="showTab === 'companies'">
+              <div class="item"><span [matBadge]="companiesSelected.value!.length" matBadgeOverlap="true"
+                                      matBadgeColor="accent"
+                                      [matBadgeHidden]="companiesSelected.value!.length === 0">
+                {{'filters.label.companies' | translate}}
+              </span>
+              </div>
+            </mat-list-item>
+
+            <mat-list-item *ngIf="dates" (click)="show('dates')" [activated]="showTab === 'dates'">
+              <div class="item"><span
+                [matBadge]="(!!dateRange.controls.from.value ? 1 : 0) + (!!dateRange.controls.to.value ? 1 : 0)"
+                matBadgeOverlap="true"
+                matBadgeColor="accent"
+                [matBadgeHidden]="!dateRange.controls.from.value && !dateRange.controls.to.value">
+                {{'filters.label.dates' | translate}}
+              </span>
+              </div>
+            </mat-list-item>
+
+            <mat-list-item *ngIf="companySize" (click)="show('companySize')" [activated]="showTab === 'companySize'">
+              <div class="item"><span [matBadge]="!!companySizeValue.value ? 1 : 0" matBadgeOverlap="true"
+                                      matBadgeColor="accent"
+                                      [matBadgeHidden]="!companySizeValue.value">
+                {{'filters.label.companySize' | translate}}
+              </span>
+              </div>
+            </mat-list-item>
+
+            <mat-list-item *ngIf="categories" (click)="show('categories')" [activated]="showTab === 'categories'">
+              <div class="item">
+                <span [matBadge]="categoriesSelectedCount.value" matBadgeOverlap="true"
+                      matBadgeColor="accent"
+                      [matBadgeHidden]="categoriesSelectedCount.value === 0">
+                  {{'filters.label.categories' | translate}}
+                </span>
+              </div>
+            </mat-list-item>
+
+          </mat-nav-list>
+
+        </mat-drawer>
+
+        <mat-drawer-content>
+          <div class="content">
+            <div *ngIf="showTab === 'categories' && categories">
+              <intermediate-checkbox #catsTab [categories]="allCategories"
+                                     [categoriesSelected]="categoriesSelected"
+                                     [categoriesSelectedCount]="categoriesSelectedCount">
+
+              </intermediate-checkbox>
+            </div>
+            <div *ngIf="showTab === 'companySize' && companySize">
+              <radio-company-size #cSizeTab [size]="companySizeValue"></radio-company-size>
+            </div>
+            <div class="item" *ngIf="showTab === 'dates' && dates">
+              <date-range [dateRange]="dateRange" [fieldAppearance]="'outline'"></date-range>
+            </div>
+            <div class="item" *ngIf="showTab === 'companies' && companies">
+              <company-multiselect [selectedCompanies]="companiesSelected"></company-multiselect>
+            </div>
+          </div>
+        </mat-drawer-content>
+      </mat-drawer-container>
+    </div>
+  </ng-template>
+
+</mat-menu>

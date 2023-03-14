@@ -1,0 +1,31 @@
+<mat-card style="margin:0.5em;">
+  <mat-card-header>
+    <img #avatarImg mat-card-avatar class="avatar"
+         [src]="avatar.value" alt="">
+
+    <mat-card-title style="font-size: 1vw">
+      {{user.controls['name'].value + ' ' + user.controls['lastName'].value}}
+    </mat-card-title>
+    <mat-card-subtitle *ngIf="user.controls['scope'].value === 'ADMIN'">
+      {{'account.account.admin-subtitle' | translate}}
+    </mat-card-subtitle>
+    <mat-card-subtitle *ngIf="user.controls['scope'].value === 'COMPANY'">
+      {{'account.account.company-subtitle' | translate}}
+    </mat-card-subtitle>
+    <mat-card-subtitle *ngIf="user.controls['scope'].value === 'REGULAR_USER'">
+      {{'account.account.user-subtitle' | translate}}
+    </mat-card-subtitle>
+    <mat-card-subtitle>
+      {{user.controls['email'].value}}
+    </mat-card-subtitle>
+
+    <span fxFlex></span>
+
+    <div>
+      <button mat-icon-button
+              (click)="deleteUser(); $event.stopPropagation();">
+        <mat-icon color="warn">clear</mat-icon>
+      </button>
+    </div>
+  </mat-card-header>
+</mat-card>

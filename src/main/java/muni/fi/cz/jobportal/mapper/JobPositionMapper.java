@@ -1,5 +1,6 @@
 package muni.fi.cz.jobportal.mapper;
 
+import muni.fi.cz.jobportal.api.common.JobPositionDto;
 import muni.fi.cz.jobportal.api.detail.JobPositionDetailDto;
 import muni.fi.cz.jobportal.api.request.JobPositionCreateDto;
 import muni.fi.cz.jobportal.api.request.JobPositionUpdateDto;
@@ -18,10 +19,17 @@ import org.mapstruct.MappingTarget;
 public interface JobPositionMapper {
 
   @Mapping(target = "company.name", source = "company.companyName")
+  @Mapping(target = "company.userId", source = "company.user.id")
   @Mapping(target = "jobCategories", ignore = true)
   @Mapping(target = "applied", ignore = true)
   @Mapping(target = "appliedCount", ignore = true)
   JobPositionDetailDto map(JobPosition source);
+
+  @Mapping(target = "company.name", source = "company.companyName")
+  @Mapping(target = "company.userId", source = "company.user.id")
+  @Mapping(target = "jobCategories", ignore = true)
+  @Mapping(target = "applied", ignore = true)
+  JobPositionDto mapDto(JobPosition source);
 
   @Mapping(target = "company", ignore = true)
   @Mapping(target = "jobCategories", ignore = true)

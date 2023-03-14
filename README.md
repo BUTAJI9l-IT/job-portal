@@ -13,6 +13,6 @@ Navod na pouziti aplikace:
   - EMAIL_STMP_HOST - stmp host pro email sluzbu, kterou pouziva uvedena adresa (**smtp.gmail.com** pro GMailovske adresy)
   - NOTIFICATIONS_ENABLED - **true** pokud chcete zapnout notifikace a mate nastavene promenne s prefixem **EMAIL_**
 - Provedte prikaz **docker compose up --build** v repozitari **'Job-Portal'**
-- Pokud jste nemenili promennou **PORT**, Swagger mel by byt pristupny na adrese http://localhost:8080/swagger-ui/index.html#/
+- Swagger mel by byt pristupny na adrese http://localhost:8080/swagger-ui/index.html#/
 - Prikaz **docker compose down** by mel vypnout aplikaci
 

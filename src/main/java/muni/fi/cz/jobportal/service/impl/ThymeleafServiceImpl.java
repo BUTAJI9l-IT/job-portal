@@ -12,6 +12,9 @@ import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
@@ -24,7 +27,9 @@ import muni.fi.cz.jobportal.repository.ApplicantRepository;
 import muni.fi.cz.jobportal.service.FileService;
 import muni.fi.cz.jobportal.service.ThymeleafService;
 import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Base64Utils;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
@@ -48,23 +53,31 @@ public class ThymeleafServiceImpl implements ThymeleafService {
   @Override
   public ByteArrayInputStream generateCvPdf(@NonNull UUID applicantId) {
     final var applicant = applicantRepository.getOneByIdOrThrowNotFound(applicantId);
-    return convertToPDF(parseTemplate(Map.of(
-        NAME, applicant.getUser().getName(),
-        LAST_NAME, applicant.getUser().getLastName(),
-        AVATAR, fileService.getAvatar(applicant.getUser().getId()).getAvatar(),
-        EMAIL, applicant.getUser().getEmail(),
-        PHONE, applicant.getPhone(),
-        PROFILE, applicant.getProfile(),
-        EXPERIENCES, experienceMapper.map(applicant.getExperiences())
-    ), CV_TEMPLATE_NAME));
+    try {
+      return convertToPDF(parseTemplate(Map.of(
+        NAME, safeGetString(applicant.getUser().getName()),
+        LAST_NAME, safeGetString(applicant.getUser().getLastName()),
+        AVATAR,
+        Base64Utils.encodeToString(fileService.getAvatar(applicant.getUser().getId()).resource().getInputStream()
+          .readAllBytes()),
+        EMAIL, safeGetString(applicant.getUser().getEmail()),
+        PHONE, safeGetString(applicant.getPhone()),
+        PROFILE, safeGetString(applicant.getProfile()),
+        EXPERIENCES, experienceMapper.map(applicant.getExperiences() != null ? applicant.getExperiences() : List.of())
+      ), CV_TEMPLATE_NAME, Locale.ENGLISH));
+    } catch (IOException e) {
+      throw new ConversionException();
+    }
   }
 
   @NonNull
   @Override
-  public String parseTemplate(@NonNull Map<TemplateParameter, Object> variables, @NonNull String template) {
+  public String parseTemplate(@NonNull Map<TemplateParameter, Object> variables, @NonNull String template,
+    @NonNull Locale lang) {
     final var context = new Context();
     context.setVariables(variables.entrySet().stream()
-        .collect(Collectors.toMap(e -> e.getKey().toString(), Entry::getValue)));
+      .collect(Collectors.toMap(e -> e.getKey().toString(), Entry::getValue)));
+    context.setLocale(lang);
     return templateEngine.process(template, context);
   }
 
@@ -77,5 +90,11 @@ public class ThymeleafServiceImpl implements ThymeleafService {
     } catch (Exception ignore) {
       throw new ConversionException();
     }
+  }
+
+
+  @NonNull
+  private String safeGetString(@Nullable String s) {
+    return s == null ? "" : s;
   }
 }

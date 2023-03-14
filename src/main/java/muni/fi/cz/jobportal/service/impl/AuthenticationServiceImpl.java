@@ -1,6 +1,7 @@
 package muni.fi.cz.jobportal.service.impl;
 
 import static muni.fi.cz.jobportal.api.JwtClaims.EMAIL_CLAIM;
+import static muni.fi.cz.jobportal.api.JwtClaims.LANGUAGE_CLAIM;
 import static muni.fi.cz.jobportal.api.JwtClaims.NON_USER_UUID_CLAIM;
 import static muni.fi.cz.jobportal.api.JwtClaims.SCOPE_CLAIM;
 
@@ -60,8 +61,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
   @Override
   public LoginResponse performLogin(@NonNull LoginRequest request) {
     final var authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-        request.getEmail(),
-        request.getPassword()
+      request.getEmail(),
+      request.getPassword()
     ));
 
     if (!authentication.isAuthenticated()) {
@@ -69,9 +70,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     final var user = userRepository.findByEmail(request.getEmail())
-        .orElseThrow(() -> {
-          throw new EntityNotFoundException(User.class);
-        });
+      .orElseThrow(() -> {
+        throw new EntityNotFoundException(User.class);
+      });
     return performLoginForUser(authentication, user.getId());
   }
 
@@ -88,12 +89,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     final var now = staticObjectFactory.getNowAsInstant();
 
     final var accessTokenClaims = JwtClaimsSet.builder().claims(c -> c.putAll(claims.getClaims()))
-        .expiresAt(now.plus(applicationProperties.getAccessToken().getDuration()))
-        .id(staticObjectFactory.getRandomId().toString()).build();
+      .expiresAt(now.plus(applicationProperties.getAccessToken().getDuration()))
+      .id(staticObjectFactory.getRandomId().toString()).build();
 
     final var refreshExpiry = now.plus(applicationProperties.getRefreshToken().getDuration());
     final var refreshTokenClaims = JwtClaimsSet.builder().claims(c -> c.putAll(claims.getClaims()))
-        .expiresAt(refreshExpiry).id(staticObjectFactory.getRandomId().toString()).build();
+      .expiresAt(refreshExpiry).id(staticObjectFactory.getRandomId().toString()).build();
 
     return getLoginResponse(user, accessTokenClaims, refreshTokenClaims);
   }
@@ -106,30 +107,30 @@ public class AuthenticationServiceImpl implements AuthenticationService {
   @NonNull
   @Override
   public LoginResponse registerUser(@NonNull RegistrationRequest request) {
+    if (request.getScope().equals(JobPortalScope.ADMIN)) {
+      throw new AccessDeniedException("Cannot be registered as an administrator");
+    }
     final var userId = userService.create(userMapper.map(request)).getId();
     return performLoginForUser(authenticationManager.authenticate(
-        new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword().getPassword())), userId);
+      new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword().getPassword())), userId);
   }
 
   private JwtClaimsSet createAccessToken(UUID id, User user, Instant now, Authentication authentication) {
     final var claims = JwtClaimsSet.builder()
-        .id(id.toString())
-        .issuedAt(staticObjectFactory.now());
+      .id(id.toString())
+      .issuedAt(staticObjectFactory.now());
 
     final var authorities = authentication.getAuthorities();
     claims.subject(user.getId().toString());
     claims.claim(EMAIL_CLAIM, user.getEmail());
-    if (user.getScope().equals(JobPortalScope.COMPANY)) {
-      claims.claim(NON_USER_UUID_CLAIM, user.getCompany().getId().toString());
-    } else if (user.getScope().equals(JobPortalScope.REGULAR_USER)) {
-      claims.claim(NON_USER_UUID_CLAIM, user.getApplicant().getId().toString());
-    }
+    claims.claim(LANGUAGE_CLAIM, user.getPreferences().getLanguage().getCode());
+    claims.claim(NON_USER_UUID_CLAIM, user.getNUI().toString());
     claims.claim(SCOPE_CLAIM, authorities.stream()
-        .map(GrantedAuthority::getAuthority)
-        .findFirst()
-        .orElseThrow(() -> {
-          throw new EmptyScopesException();
-        }));
+      .map(GrantedAuthority::getAuthority)
+      .findFirst()
+      .orElseThrow(() -> {
+        throw new EmptyScopesException();
+      }));
     claims.subject(user.getId().toString());
     claims.expiresAt(now.plus(applicationProperties.getAccessToken().getDuration()));
     return claims.build();
@@ -141,7 +142,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     final var accessTokenClaims = createAccessToken(staticObjectFactory.getRandomId(), user, now, authentication);
     final var refreshTokenClaims = JwtClaimsSet.from(accessTokenClaims)
-        .expiresAt(now.plus(applicationProperties.getRefreshToken().getDuration())).build();
+      .expiresAt(now.plus(applicationProperties.getRefreshToken().getDuration())).build();
 
     return getLoginResponse(user, accessTokenClaims, refreshTokenClaims);
   }

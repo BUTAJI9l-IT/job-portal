@@ -1,0 +1,23 @@
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+  <changeSet id="2023.04.30.01" author="vitalii.bortsov" context="data">
+    <insert tableName="jp_users">
+      <column name="id" value="e2b59182-8e7a-4d4e-8e43-f20393385c90"/>
+      <column name="scope" value="ADMIN"/>
+      <column name="password" value="$2a$10$kzRbPUenMajOyLgDUWngdO86r6YyuDOnIfjrr.myMLK6noawXGekK"/>
+      <column name="email" value="admin@jobportal.com"/>
+      <column name="name" value="Admin"/>
+      <column name="last_name" value="Adminovic"/>
+    </insert>
+
+    <insert tableName="preferences">
+      <column name="id" value="e2b59182-8e7a-4d4e-8e43-f20393385c90"/>
+      <column name="user_id" value="e2b59182-8e7a-4d4e-8e43-f20393385c90"/>
+      <column name="notifications_enabled" value="false"/>
+      <column name="lang" value="en"/>
+    </insert>
+  </changeSet>
+</databaseChangeLog>

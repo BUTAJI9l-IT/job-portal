@@ -11,9 +11,9 @@ public class JobPositionDto {
   private UUID id;
   private String positionName;
   private PositionState status;
-  private ReferenceDto company;
+  private ReferenceUserDto company;
   private Boolean applied;
   private Boolean favourite;
-  private List<String> jobCategories;
+  private List<ReferenceDto> jobCategories;
 
 }

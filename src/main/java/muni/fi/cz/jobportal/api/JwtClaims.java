@@ -13,5 +13,6 @@ public class JwtClaims {
 
   public static final String SCOPE_CLAIM = "scope";
   public static final String EMAIL_CLAIM = "email";
+  public static final String LANGUAGE_CLAIM = "lang";
   public static final String NON_USER_UUID_CLAIM = "nui";
 }

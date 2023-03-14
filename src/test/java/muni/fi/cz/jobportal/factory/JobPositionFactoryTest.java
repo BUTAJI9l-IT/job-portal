@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
 import muni.fi.cz.jobportal.AbstractTest;
 import muni.fi.cz.jobportal.api.request.JobPositionCreateDto;
 import muni.fi.cz.jobportal.domain.Company;
@@ -15,6 +16,7 @@ import muni.fi.cz.jobportal.enums.PositionState;
 import muni.fi.cz.jobportal.repository.CompanyRepository;
 import muni.fi.cz.jobportal.repository.JobCategoryRepository;
 import muni.fi.cz.jobportal.repository.JobPositionRepository;
+import muni.fi.cz.jobportal.utils.AuthorityValidator;
 import muni.fi.cz.jobportal.utils.StaticObjectFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,6 +35,8 @@ class JobPositionFactoryTest extends AbstractTest {
   private CompanyRepository companyRepository;
   @Mock
   private StaticObjectFactory staticObjectFactory;
+  @Mock
+  private AuthorityValidator authorityValidator;
   @InjectMocks
   private JobPositionFactory jobPositionFactory;
 
@@ -40,8 +44,9 @@ class JobPositionFactoryTest extends AbstractTest {
   void prepareDetailTest() {
     final var source = preparePositionEntity(new Company(), PositionState.ACTIVE);
 
+    when(authorityValidator.getCurrentUserFromHeader()).thenReturn(UUID.randomUUID());
     when(jobPositionRepository.countApplied(any())).thenReturn(0);
-    when(jobPositionRepository.applicantWithIdLiked(any(), any())).thenReturn(true);
+    when(jobPositionRepository.userWithIdLiked(any(), any())).thenReturn(true);
     when(jobPositionRepository.userWithIdApplied(any(), any())).thenReturn(true);
 
     final var result = jobPositionFactory.prepare(source);

@@ -1,0 +1,41 @@
+<app-searchbar [tags]="filters.controls.q" [inputQ]="filters.controls.inputQ"></app-searchbar>
+<div>
+  <mat-button-toggle-group [formControl]="filters.controls.status">
+    <mat-button-toggle [value]="undefined"><span [translate]="'application.all'"></span></mat-button-toggle>
+    <mat-button-toggle value="OPEN"><span [translate]="'application.open'"></span></mat-button-toggle>
+    <mat-button-toggle style="background: lightgoldenrodyellow" value="SEEN"><span
+      [translate]="'application.seen'"></span></mat-button-toggle>
+    <mat-button-toggle style="background: darkseagreen" value="APPROVED"><span
+      [translate]="'application.approved'"></span></mat-button-toggle>
+    <mat-button-toggle style="background: indianred" value="DECLINED"><span
+      [translate]="'application.declined'"></span></mat-button-toggle>
+    <mat-button-toggle style="background: grey" value="CLOSED"><span
+      [translate]="'application.closed'"></span></mat-button-toggle>
+  </mat-button-toggle-group>
+  <div fxFlex></div>
+  <filter-menu [dateRange]="filters.controls.dateRange" [dates]="true"></filter-menu>
+  <sort-menu [sortArray]="filters.controls.sort" [applicationDate]="true"></sort-menu>
+</div>
+<div style="display:flex; justify-content: center">
+  <mat-card id="container-for-cards" [style]="
+    'width: ' + width + ';'+
+    'max-height: ' + height + ';' +
+    'overflow-y: auto ;'
+">
+    <div>
+      <div>
+        <mat-card-content>
+          <mat-selection-list [disableRipple]="true">
+            <mat-list-item *ngFor="let app of applications.controls" style="height: 100%"
+                           [routerLink]="'//jobs/' + app.controls['job'].value">
+              <application-card (onUpdate)="deleteItem()" [application]="app" [nui]="nui"></application-card>
+            </mat-list-item>
+          </mat-selection-list>
+        </mat-card-content>
+        <mat-card-actions align="end" class="action-buttons">
+          <app-paginator [pageIndex]="page" [pageSize]="filters.controls.size" [length]="count"></app-paginator>
+        </mat-card-actions>
+      </div>
+    </div>
+  </mat-card>
+</div>

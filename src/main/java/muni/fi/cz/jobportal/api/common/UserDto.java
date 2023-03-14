@@ -8,6 +8,7 @@ import muni.fi.cz.jobportal.enums.JobPortalScope;
 public class UserDto {
 
   private UUID id;
+  private UUID nui;
   private String email;
   private String name;
   private String lastName;

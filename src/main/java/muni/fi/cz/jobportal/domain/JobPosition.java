@@ -1,10 +1,12 @@
 package muni.fi.cz.jobportal.domain;
 
+import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.APPLICATION_DATE;
 import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.CITY;
 import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.COUNTRY;
 import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.DESCRIPTION;
 import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.FULLTEXT_SUFFIX;
 import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.NAME;
+import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.RELEVANCE;
 import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.SORT_SUFFIX;
 import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.STATE;
 import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.STATUS;
@@ -16,6 +18,7 @@ import static org.hibernate.search.engine.backend.types.Sortable.YES;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -80,6 +83,7 @@ public class JobPosition {
   @FullTextField(name = DESCRIPTION + FULLTEXT_SUFFIX, analyzer = FULLTEXT_ANALYZER, searchAnalyzer = SUGGESTER)
   private String detail;
 
+  @GenericField(name = RELEVANCE + SORT_SUFFIX, sortable = YES)
   private Instant created;
   private Instant lastUpdated;
 
@@ -87,7 +91,7 @@ public class JobPosition {
   @JoinColumn(name = "company_id")
   private Company company;
 
-  @OneToMany(mappedBy = "jobPosition", fetch = FetchType.LAZY)
+  @OneToMany(mappedBy = "jobPosition", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)
   private List<Application> applications;
 
   @ManyToMany(fetch = FetchType.LAZY)
@@ -95,4 +99,10 @@ public class JobPosition {
     joinColumns = @JoinColumn(name = "job_position", referencedColumnName = "id"),
     inverseJoinColumns = @JoinColumn(name = "category", referencedColumnName = "id"))
   private List<JobCategory> jobCategories;
+
+  @ManyToMany(fetch = FetchType.LAZY)
+  @JoinTable(name = "applicant_saved_jobs",
+    joinColumns = @JoinColumn(name = "job_position", referencedColumnName = "id"),
+    inverseJoinColumns = @JoinColumn(name = "applicant", referencedColumnName = "id"))
+  private List<JobPosition> applicantsSaved;
 }

@@ -53,13 +53,13 @@ public class JobPositionServiceImpl implements JobPositionService {
   @PreAuthorize("@authorityValidator.canCreateJobPosition(#payload)")
   public JobPositionDetailDto create(@NonNull JobPositionCreateDto payload) {
     jobCategoryRepository.findByOccupationName(payload.getPositionName())
-        .ifPresent(cat -> {
-          if (payload.getJobCategories() == null) {
-            payload.setJobCategories(List.of(cat.getId()));
-          } else if (payload.getJobCategories().stream().noneMatch(id -> id.equals(cat.getId()))) {
-            payload.getJobCategories().add(cat.getId());
-          }
-        });
+      .ifPresent(cat -> {
+        if (payload.getJobCategories() == null) {
+          payload.setJobCategories(List.of(cat.getId()));
+        } else if (payload.getJobCategories().stream().noneMatch(id -> id.equals(cat.getId()))) {
+          payload.getJobCategories().add(cat.getId());
+        }
+      });
     return jobPositionMapper.map(jobPositionRepository.save(jobPositionMapper.map(payload)));
   }
 
@@ -74,7 +74,7 @@ public class JobPositionServiceImpl implements JobPositionService {
   @Override
   @Transactional(readOnly = true)
   public Page<JobPositionDto> findAll(Pageable pageable, JobPositionQueryParams params) {
-    return jobPositionRepository.search(pageable, params).map(jobPositionMapper::map);
+    return jobPositionRepository.search(pageable, params).map(jobPositionMapper::mapDto);
   }
 
   @NonNull
@@ -120,10 +120,10 @@ public class JobPositionServiceImpl implements JobPositionService {
   @PreAuthorize("@authorityValidator.isAdmin() OR @authorityValidator.isCurrentApplicant(#applicantId)")
   public FavouritesJobsResponse getFavorites(@NonNull UUID applicantId) {
     return new FavouritesJobsResponse(
-        applicantRepository.getOneByIdOrThrowNotFound(applicantId).getSavedJobs()
-            .stream()
-            .map(jp -> (JobPositionDto) jobPositionMapper.map(jp))
-            .toList()
+      applicantRepository.getOneByIdOrThrowNotFound(applicantId).getSavedJobs()
+        .stream()
+        .map(jobPositionMapper::mapDto)
+        .toList()
     );
   }
 
@@ -139,9 +139,9 @@ public class JobPositionServiceImpl implements JobPositionService {
     applicant.getSavedJobs().add(jobPosition);
     applicantRepository.saveAndFlush(applicant);
     return new FavouritesJobsResponse(applicant.getSavedJobs()
-        .stream()
-        .map(jp -> (JobPositionDto) jobPositionMapper.map(jp))
-        .toList());
+      .stream()
+      .map(jobPositionMapper::mapDto)
+      .toList());
   }
 
   @NonNull
@@ -156,8 +156,8 @@ public class JobPositionServiceImpl implements JobPositionService {
     applicant.getSavedJobs().removeIf(jp -> jp.getId().equals(jobPosition.getId()));
     applicantRepository.saveAndFlush(applicant);
     return new FavouritesJobsResponse(applicant.getSavedJobs()
-        .stream()
-        .map(jp -> (JobPositionDto) jobPositionMapper.map(jp))
-        .toList());
+      .stream()
+      .map(jobPositionMapper::mapDto)
+      .toList());
   }
 }

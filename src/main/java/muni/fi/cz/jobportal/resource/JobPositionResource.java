@@ -1,14 +1,17 @@
 package muni.fi.cz.jobportal.resource;
 
 import static muni.fi.cz.jobportal.api.ApiTags.JOB_POSITION;
+import static muni.fi.cz.jobportal.configuration.constants.ApplicationConstants.BEARER_AUTH;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import java.util.UUID;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import muni.fi.cz.jobportal.annotation.JobPortalController;
 import muni.fi.cz.jobportal.annotation.JobPortalSecuredController;
 import muni.fi.cz.jobportal.api.common.FavouritesJobsResponse;
 import muni.fi.cz.jobportal.api.common.JobPositionDto;
@@ -37,7 +40,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @Tag(name = JOB_POSITION)
 @RequestMapping("/positions")
-@JobPortalSecuredController
+@JobPortalController
 @RequiredArgsConstructor
 public class JobPositionResource {
 
@@ -45,6 +48,7 @@ public class JobPositionResource {
 
   @PostMapping("/applicants/{applicantId}/apply/{jobPositionId}")
   @Operation(summary = "Apply for a job position")
+  @SecurityRequirement(name = BEARER_AUTH)
   public ResponseEntity<JobPositionDetailDto> apply(@PathVariable("applicantId") UUID applicantId,
     @PathVariable("jobPositionId") UUID jobPositionId) {
     return ResponseEntity.ok(jobPositionService.apply(applicantId, jobPositionId));
@@ -52,12 +56,14 @@ public class JobPositionResource {
 
   @PostMapping
   @Operation(summary = "Create a job position")
+  @SecurityRequirement(name = BEARER_AUTH)
   public ResponseEntity<JobPositionDetailDto> createJobPosition(@Valid @RequestBody JobPositionCreateDto payload) {
     return ResponseEntity.ok(jobPositionService.create(payload));
   }
 
   @PutMapping("/{jobPositionId}")
   @Operation(summary = "Change a state of a job position")
+  @SecurityRequirement(name = BEARER_AUTH)
   public ResponseEntity<JobPositionDetailDto> updateJobPosition(@PathVariable("jobPositionId") UUID jobPositionId,
     @Valid @RequestBody JobPositionUpdateDto payload) {
     return ResponseEntity.ok(jobPositionService.update(jobPositionId, payload));
@@ -88,12 +94,14 @@ public class JobPositionResource {
 
   @GetMapping("/applicants/{applicantId}/favorites")
   @Operation(summary = "Get favorite jobs of a current user")
+  @SecurityRequirement(name = BEARER_AUTH)
   public ResponseEntity<FavouritesJobsResponse> getFavorites(@PathVariable("applicantId") UUID applicantId) {
     return ResponseEntity.ok(jobPositionService.getFavorites(applicantId));
   }
 
   @PutMapping("/applicants/{applicantId}/favourites/{jobPositionId}/add")
   @Operation(summary = "Add to favorite jobs of a current user")
+  @SecurityRequirement(name = BEARER_AUTH)
   public ResponseEntity<FavouritesJobsResponse> addToFavorites(@PathVariable("applicantId") UUID applicantId,
     @PathVariable("jobPositionId") UUID jobPositionId) {
     return ResponseEntity.ok(jobPositionService.addToFavorites(applicantId, jobPositionId));
@@ -101,6 +109,7 @@ public class JobPositionResource {
 
   @PutMapping("/applicants/{applicantId}/favourites/{jobPositionId}/remove")
   @Operation(summary = "Remove from favorite jobs of a current user")
+  @SecurityRequirement(name = BEARER_AUTH)
   public ResponseEntity<FavouritesJobsResponse> removeFromFavorites(@PathVariable("applicantId") UUID applicantId,
     @PathVariable("jobPositionId") UUID jobPositionId) {
     return ResponseEntity.ok(jobPositionService.removeFromFavorites(applicantId, jobPositionId));
