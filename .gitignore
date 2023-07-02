@@ -39,13 +39,6 @@ _site
 *.tar
 *.7z
 
-# Type faces
-*.otf
-*.ttf
-*.woff
-*.eot
-*.ttc
-
 # Video & audio
 *.mov
 *.mp4
