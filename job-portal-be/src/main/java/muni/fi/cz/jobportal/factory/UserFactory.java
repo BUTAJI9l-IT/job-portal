@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import muni.fi.cz.jobportal.api.request.UserCreateDto;
 import muni.fi.cz.jobportal.domain.User;
 import muni.fi.cz.jobportal.mapper.PreferencesMapper;
-import muni.fi.cz.jobportal.repository.PreferencesRepository;
 import org.mapstruct.ObjectFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
