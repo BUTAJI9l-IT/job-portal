@@ -1,0 +1,2830 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "job-portal",
+    "version": "local"
+  },
+  "servers": [
+    {
+      "url": "/",
+      "description": "xx"
+    }
+  ],
+  "paths": {
+    "/applicants": {
+      "get": {
+        "tags": [
+          "Applicant"
+        ],
+        "summary": "Returns all applicants",
+        "operationId": "getApplicants",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "jobPosition",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "The size of the page to be returned",
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageApplicantDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth_schema": []
+          }
+        ]
+      }
+    },
+    "/applicants/{applicantId}": {
+      "get": {
+        "tags": [
+          "Applicant"
+        ],
+        "summary": "Returns an applicant by given id",
+        "operationId": "getApplicant",
+        "parameters": [
+          {
+            "name": "applicantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicantDetailDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth_schema": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Applicant"
+        ],
+        "summary": "Updates an applicant by given id",
+        "operationId": "updateApplicant",
+        "parameters": [
+          {
+            "name": "applicantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApplicantUpdateDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicantDetailDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth_schema": []
+          }
+        ]
+      }
+    },
+    "/applicants/{applicantId}/experience": {
+      "post": {
+        "tags": [
+          "Applicant"
+        ],
+        "summary": "Add experience",
+        "operationId": "addExperience",
+        "parameters": [
+          {
+            "name": "applicantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExperienceDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicantDetailDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth_schema": []
+          }
+        ]
+      }
+    },
+    "/applicants/{applicantId}/experience/{experienceId}": {
+      "delete": {
+        "tags": [
+          "Applicant"
+        ],
+        "summary": "Delete experience",
+        "operationId": "removeExperience",
+        "parameters": [
+          {
+            "name": "applicantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "experienceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicantDetailDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth_schema": []
+          }
+        ]
+      }
+    },
+    "/applicants/{applicantId}/generate-cv": {
+      "get": {
+        "tags": [
+          "Applicant"
+        ],
+        "summary": "Generates CV for given applicant",
+        "operationId": "generateCV",
+        "parameters": [
+          {
+            "name": "applicantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "Content-Disposition": {
+                "description": "containing file name",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/pdf": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth_schema": []
+          }
+        ]
+      }
+    },
+    "/applications": {
+      "get": {
+        "tags": [
+          "Application"
+        ],
+        "summary": "Returns all applications",
+        "operationId": "getApplications",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "applicant",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "jobPosition",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "company",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "OPEN",
+                "SEEN",
+                "APPROVED",
+                "DECLINED",
+                "CLOSED"
+              ]
+            }
+          },
+          {
+            "name": "dateFrom",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "dateTo",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "The size of the page to be returned",
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageApplicationDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth_schema": []
+          }
+        ]
+      }
+    },
+    "/applications/{applicationId}": {
+      "get": {
+        "tags": [
+          "Application"
+        ],
+        "summary": "Returns an application by given id",
+        "operationId": "getApplication",
+        "parameters": [
+          {
+            "name": "applicationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationDetailDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth_schema": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Application"
+        ],
+        "summary": "Delete an application",
+        "operationId": "deleteApplication",
+        "parameters": [
+          {
+            "name": "applicationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "auth_schema": []
+          }
+        ]
+      }
+    },
+    "/applications/{applicationId}/state": {
+      "put": {
+        "tags": [
+          "Application"
+        ],
+        "summary": "Change a state of an application",
+        "description": "Company can change a state an application",
+        "operationId": "changeApplicationState",
+        "parameters": [
+          {
+            "name": "applicationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApplicationUpdateDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationDetailDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth_schema": []
+          }
+        ]
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "Authorization"
+        ],
+        "summary": "Authorize",
+        "operationId": "login",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "tags": [
+          "Authorization"
+        ],
+        "summary": "Refresh tokens",
+        "operationId": "refreshToken",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshTokenRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "tags": [
+          "Authorization"
+        ],
+        "summary": "Registration",
+        "operationId": "register",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegistrationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/companies": {
+      "get": {
+        "tags": [
+          "Company"
+        ],
+        "summary": "Returns all companies",
+        "operationId": "getCompanies",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "companySize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "MICRO",
+                "SMALL",
+                "MEDIUM",
+                "LARGE",
+                "CORPORATION"
+              ]
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "The size of the page to be returned",
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageCompanyDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/companies/{companyId}": {
+      "get": {
+        "tags": [
+          "Company"
+        ],
+        "summary": "Returns a company by given id",
+        "operationId": "getCompany",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyDetailDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Company"
+        ],
+        "summary": "Updates a company by given id",
+        "operationId": "updateCompany",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyUpdateDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyDetailDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth_schema": []
+          }
+        ]
+      }
+    },
+    "/job-categories": {
+      "get": {
+        "tags": [
+          "Job Position Category"
+        ],
+        "summary": "List categories",
+        "operationId": "getCategories",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListOfCategoriesResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/job-categories/occupations": {
+      "get": {
+        "tags": [
+          "Job Position Category"
+        ],
+        "summary": "Search for occupation",
+        "operationId": "getOccupations",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "The size of the page to be returned",
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageReferenceDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/job-categories/{categoryId}": {
+      "get": {
+        "tags": [
+          "Job Position Category"
+        ],
+        "summary": "Get occupations",
+        "operationId": "getCategory",
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Job Position Category"
+        ],
+        "summary": "Delete a category",
+        "operationId": "deleteCategory",
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "auth_schema": []
+          }
+        ]
+      }
+    },
+    "/job-categories/{categoryName}": {
+      "post": {
+        "tags": [
+          "Job Position Category"
+        ],
+        "summary": "Create a category",
+        "operationId": "createCategory",
+        "parameters": [
+          {
+            "name": "categoryName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReferenceDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth_schema": []
+          }
+        ]
+      }
+    },
+    "/positions": {
+      "get": {
+        "tags": [
+          "Job Position"
+        ],
+        "summary": "Returns all job positions",
+        "operationId": "getJobPositions",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ACTIVE",
+                "INACTIVE"
+              ]
+            }
+          },
+          {
+            "name": "categories",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          },
+          {
+            "name": "companies",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "The size of the page to be returned",
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageJobPositionDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Job Position"
+        ],
+        "summary": "Create a job position",
+        "operationId": "createJobPosition",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JobPositionCreateDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobPositionDetailDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth_schema": []
+          }
+        ]
+      }
+    },
+    "/positions/applicants/{applicantId}/apply/{jobPositionId}": {
+      "post": {
+        "tags": [
+          "Job Position"
+        ],
+        "summary": "Apply for a job position",
+        "operationId": "apply",
+        "parameters": [
+          {
+            "name": "applicantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "jobPositionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobPositionDetailDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth_schema": []
+          }
+        ]
+      }
+    },
+    "/positions/applicants/{applicantId}/favorites": {
+      "get": {
+        "tags": [
+          "Job Position"
+        ],
+        "summary": "Get favorite jobs of a current user",
+        "operationId": "getFavorites",
+        "parameters": [
+          {
+            "name": "applicantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FavouritesJobsResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth_schema": []
+          }
+        ]
+      }
+    },
+    "/positions/applicants/{applicantId}/favourites/{jobPositionId}/add": {
+      "put": {
+        "tags": [
+          "Job Position"
+        ],
+        "summary": "Add to favorite jobs of a current user",
+        "operationId": "addToFavorites",
+        "parameters": [
+          {
+            "name": "applicantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "jobPositionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FavouritesJobsResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth_schema": []
+          }
+        ]
+      }
+    },
+    "/positions/applicants/{applicantId}/favourites/{jobPositionId}/remove": {
+      "put": {
+        "tags": [
+          "Job Position"
+        ],
+        "summary": "Remove from favorite jobs of a current user",
+        "operationId": "removeFromFavorites",
+        "parameters": [
+          {
+            "name": "applicantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "jobPositionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FavouritesJobsResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth_schema": []
+          }
+        ]
+      }
+    },
+    "/positions/{jobPositionId}": {
+      "get": {
+        "tags": [
+          "Job Position"
+        ],
+        "summary": "Returns a job position by given id",
+        "operationId": "getJobPosition",
+        "parameters": [
+          {
+            "name": "jobPositionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobPositionDetailDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Job Position"
+        ],
+        "summary": "Change a state of a job position",
+        "operationId": "updateJobPosition",
+        "parameters": [
+          {
+            "name": "jobPositionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JobPositionUpdateDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobPositionDetailDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth_schema": []
+          }
+        ]
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Returns all users",
+        "operationId": "getUsers",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "scope",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ADMIN",
+                "COMPANY",
+                "REGULAR_USER"
+              ]
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "The size of the page to be returned",
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageUserDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth_schema": []
+          }
+        ]
+      }
+    },
+    "/users/{userId}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get user info",
+        "operationId": "getUserInfo",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth_schema": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Updates user's password",
+        "operationId": "updatePassword",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserUpdateDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth_schema": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Delete a user",
+        "operationId": "deleteUser",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "auth_schema": []
+          }
+        ]
+      }
+    },
+    "/users/{userId}/avatar": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get user avatar",
+        "operationId": "getAvatar",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Upload new user avatar",
+        "operationId": "uploadAvatar",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                },
+                "required": [
+                  "file"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth_schema": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Delete old user avatar",
+        "operationId": "deleteAvatar",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth_schema": []
+          }
+        ]
+      }
+    },
+    "/users/{userId}/avatar-secure": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get user avatar authenticated",
+        "operationId": "getAvatarSecured",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth_schema": []
+          }
+        ]
+      }
+    },
+    "/users/{userId}/preferences": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get user preferences",
+        "operationId": "getUserPreferences",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreferencesDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth_schema": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Update user preferences",
+        "operationId": "updatePreferences",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PreferencesDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreferencesDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth_schema": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ApplicantDetailDto": {
+        "type": "object",
+        "properties": {
+          "city": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "experiences": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExperienceDto"
+            }
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "profile": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "ApplicantDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "ApplicantUpdateDto": {
+        "type": "object",
+        "properties": {
+          "city": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "profile": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          }
+        }
+      },
+      "ApplicationDetailDto": {
+        "type": "object",
+        "properties": {
+          "applicant": {
+            "$ref": "#/components/schemas/ApplicantDetailDto"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "jobPosition": {
+            "$ref": "#/components/schemas/JobPositionDetailDto"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "OPEN",
+              "SEEN",
+              "APPROVED",
+              "DECLINED",
+              "CLOSED"
+            ]
+          }
+        }
+      },
+      "ApplicationDto": {
+        "type": "object",
+        "properties": {
+          "applicant": {
+            "$ref": "#/components/schemas/ReferenceDto"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "jobPosition": {
+            "$ref": "#/components/schemas/ReferenceDto"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "OPEN",
+              "SEEN",
+              "APPROVED",
+              "DECLINED",
+              "CLOSED"
+            ]
+          }
+        }
+      },
+      "ApplicationUpdateDto": {
+        "type": "object",
+        "properties": {
+          "state": {
+            "type": "string",
+            "enum": [
+              "OPEN",
+              "SEEN",
+              "APPROVED",
+              "DECLINED",
+              "CLOSED"
+            ]
+          }
+        }
+      },
+      "CategoryDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "occupations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReferenceDto"
+            }
+          }
+        }
+      },
+      "CompanyDetailDto": {
+        "type": "object",
+        "properties": {
+          "companyLink": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "companySize": {
+            "type": "string",
+            "enum": [
+              "MICRO",
+              "SMALL",
+              "MEDIUM",
+              "LARGE",
+              "CORPORATION"
+            ]
+          },
+          "description": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "jobPositions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/JobPositionDto"
+            }
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "CompanyDto": {
+        "type": "object",
+        "properties": {
+          "companyName": {
+            "type": "string"
+          },
+          "companySize": {
+            "type": "string",
+            "enum": [
+              "MICRO",
+              "SMALL",
+              "MEDIUM",
+              "LARGE",
+              "CORPORATION"
+            ]
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "CompanyUpdateDto": {
+        "required": [
+          "companyName"
+        ],
+        "type": "object",
+        "properties": {
+          "companyLink": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "companySize": {
+            "type": "string",
+            "enum": [
+              "MICRO",
+              "SMALL",
+              "MEDIUM",
+              "LARGE",
+              "CORPORATION"
+            ]
+          },
+          "description": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "DateRangeDto": {
+        "type": "object",
+        "properties": {
+          "fromDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "toDate": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
+      "ExperienceDto": {
+        "required": [
+          "occupation"
+        ],
+        "type": "object",
+        "properties": {
+          "company": {
+            "$ref": "#/components/schemas/CompanyDto"
+          },
+          "dateRange": {
+            "$ref": "#/components/schemas/DateRangeDto"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "jobCategories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReferenceDto"
+            }
+          },
+          "occupation": {
+            "type": "string"
+          }
+        }
+      },
+      "FavouritesJobsResponse": {
+        "type": "object",
+        "properties": {
+          "jobs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/JobPositionDto"
+            }
+          }
+        }
+      },
+      "JobPositionCreateDto": {
+        "required": [
+          "company",
+          "contactEmail",
+          "positionName"
+        ],
+        "type": "object",
+        "properties": {
+          "city": {
+            "type": "string"
+          },
+          "company": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "contactEmail": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "string"
+          },
+          "jobCategories": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "positionName": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          }
+        }
+      },
+      "JobPositionDetailDto": {
+        "type": "object",
+        "properties": {
+          "applied": {
+            "type": "boolean"
+          },
+          "appliedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "city": {
+            "type": "string"
+          },
+          "company": {
+            "$ref": "#/components/schemas/ReferenceUserDto"
+          },
+          "contactEmail": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "detail": {
+            "type": "string"
+          },
+          "favourite": {
+            "type": "boolean"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "jobCategories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReferenceDto"
+            }
+          },
+          "lastUpdated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "positionName": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "INACTIVE"
+            ]
+          }
+        }
+      },
+      "JobPositionDto": {
+        "type": "object",
+        "properties": {
+          "applied": {
+            "type": "boolean"
+          },
+          "company": {
+            "$ref": "#/components/schemas/ReferenceUserDto"
+          },
+          "favourite": {
+            "type": "boolean"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "jobCategories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReferenceDto"
+            }
+          },
+          "positionName": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "INACTIVE"
+            ]
+          }
+        }
+      },
+      "JobPositionUpdateDto": {
+        "required": [
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "city": {
+            "type": "string"
+          },
+          "contactEmail": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "string"
+          },
+          "jobCategories": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "positionName": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "INACTIVE"
+            ]
+          }
+        }
+      },
+      "ListOfCategoriesResponse": {
+        "type": "object",
+        "properties": {
+          "jobCategories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReferenceDto"
+            }
+          }
+        }
+      },
+      "LoginRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string"
+          },
+          "refreshToken": {
+            "type": "string"
+          }
+        }
+      },
+      "PageApplicantDto": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ApplicantDto"
+            }
+          },
+          "empty": {
+            "type": "boolean"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/Sort"
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "PageApplicationDto": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ApplicationDto"
+            }
+          },
+          "empty": {
+            "type": "boolean"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/Sort"
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "PageCompanyDto": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CompanyDto"
+            }
+          },
+          "empty": {
+            "type": "boolean"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/Sort"
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "PageJobPositionDto": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/JobPositionDto"
+            }
+          },
+          "empty": {
+            "type": "boolean"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/Sort"
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "PageReferenceDto": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReferenceDto"
+            }
+          },
+          "empty": {
+            "type": "boolean"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/Sort"
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "PageUserDto": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserDto"
+            }
+          },
+          "empty": {
+            "type": "boolean"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/Sort"
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "PageableObject": {
+        "type": "object",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "paged": {
+            "type": "boolean"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/Sort"
+          },
+          "unpaged": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PreferencesDto": {
+        "required": [
+          "language",
+          "notificationsEnabled"
+        ],
+        "type": "object",
+        "properties": {
+          "language": {
+            "type": "string"
+          },
+          "notificationsEnabled": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ReferenceDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "ReferenceUserDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "RefreshTokenRequest": {
+        "required": [
+          "refreshToken"
+        ],
+        "type": "object",
+        "properties": {
+          "refreshToken": {
+            "type": "string"
+          }
+        }
+      },
+      "RegistrationRequest": {
+        "required": [
+          "email",
+          "scope"
+        ],
+        "type": "object",
+        "properties": {
+          "companyLink": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "companySize": {
+            "type": "string",
+            "enum": [
+              "MICRO",
+              "SMALL",
+              "MEDIUM",
+              "LARGE",
+              "CORPORATION"
+            ]
+          },
+          "email": {
+            "type": "string"
+          },
+          "language": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "password": {
+            "$ref": "#/components/schemas/RepeatPasswordDto"
+          },
+          "scope": {
+            "type": "string",
+            "enum": [
+              "ADMIN",
+              "COMPANY",
+              "REGULAR_USER"
+            ]
+          }
+        }
+      },
+      "RepeatPasswordDto": {
+        "required": [
+          "password",
+          "repeatPassword"
+        ],
+        "type": "object",
+        "properties": {
+          "password": {
+            "maxLength": 2147483647,
+            "minLength": 8,
+            "type": "string"
+          },
+          "repeatPassword": {
+            "maxLength": 2147483647,
+            "minLength": 8,
+            "type": "string"
+          }
+        }
+      },
+      "Sort": {
+        "type": "object",
+        "properties": {
+          "empty": {
+            "type": "boolean"
+          },
+          "sorted": {
+            "type": "boolean"
+          },
+          "unsorted": {
+            "type": "boolean"
+          }
+        }
+      },
+      "UserDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "nui": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "scope": {
+            "type": "string",
+            "enum": [
+              "ADMIN",
+              "COMPANY",
+              "REGULAR_USER"
+            ]
+          }
+        }
+      },
+      "UserUpdateDto": {
+        "type": "object",
+        "properties": {
+          "oldPassword": {
+            "type": "string"
+          },
+          "password": {
+            "$ref": "#/components/schemas/RepeatPasswordDto"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "auth_schema": {
+        "type": "http",
+        "scheme": "Bearer"
+      }
+    }
+  }
+}
