@@ -51,11 +51,11 @@ springdoc:
 
 job-portal:
   key-store:
-    key-store-password: KKLdv39i3EW
-    key-pair-name: keypair
-    key-pair-password: SAui78gew8Y
-    location: classpath:/keypair
-    kid: kid
+    key-store-password: ${KEY_STORE_PASSWORD:KKLdv39i3EW}
+    key-pair-name: ${KEY_PAIR_NAME:keypair}
+    key-pair-password: ${KEY_PAIR_PASSWORD:SAui78gew8Y}
+    location: ${KEY_STORE_LOCATION:classpath:/keypair}
+    kid: ${KEY_STORE_KID:kid}
   access-token:
     duration: ${ACCESS_TOKEN_DURATION:1H}
   refresh-token:
