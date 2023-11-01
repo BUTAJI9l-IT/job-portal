@@ -15,24 +15,6 @@
         <mat-drawer #sidenav [mode]="'side'" disableClose opened>
           <mat-nav-list #list>
 
-            <!--            <mat-list-item *ngIf="applicants" (click)="show('applicants')" [activated]="showTab === 'applicants'">-->
-            <!--              <div class="item"><span [matBadge]="'0'" matBadgeOverlap="true"-->
-            <!--                                      matBadgeColor="accent"-->
-            <!--                                      [matBadgeHidden]="false">-->
-            <!--                {{'filters.label.applicants' | translate}}-->
-            <!--              </span>-->
-            <!--              </div>-->
-            <!--            </mat-list-item>-->
-
-            <!--            <mat-list-item *ngIf="jobs" (click)="show('jobs')" [activated]="showTab === 'jobs'">-->
-            <!--              <div class="item"><span [matBadge]="'0'" matBadgeOverlap="true"-->
-            <!--                                      matBadgeColor="accent"-->
-            <!--                                      [matBadgeHidden]="false">-->
-            <!--                {{'filters.label.jobs' | translate}}-->
-            <!--              </span>-->
-            <!--              </div>-->
-            <!--            </mat-list-item>-->
-
             <mat-list-item *ngIf="companies" (click)="show('companies')" [activated]="showTab === 'companies'">
               <div class="item"><span [matBadge]="companiesSelected.value!.length" matBadgeOverlap="true"
                                       matBadgeColor="accent"
