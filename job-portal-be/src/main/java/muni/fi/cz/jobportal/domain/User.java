@@ -1,0 +1,83 @@
+package muni.fi.cz.jobportal.domain;
+
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import muni.fi.cz.jobportal.configuration.search.binder.UserBinder;
+import muni.fi.cz.jobportal.enums.JobPortalScope;
+import org.hibernate.search.mapper.pojo.bridge.mapping.annotation.TypeBinderRef;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.*;
+
+import javax.persistence.*;
+import java.util.UUID;
+
+import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.*;
+import static muni.fi.cz.jobportal.configuration.search.LuceneConfiguration.*;
+import static muni.fi.cz.jobportal.enums.JobPortalScope.ADMIN;
+import static org.hibernate.search.engine.backend.types.Sortable.YES;
+
+/**
+ * User entity class.
+ *
+ * @author Vitalii Bortsov
+ */
+@Getter
+@Setter
+@Entity
+@Indexed
+@Table(name = "jp_users")
+@EqualsAndHashCode(of = "id")
+@TypeBinding(binder = @TypeBinderRef(type = UserBinder.class))
+public class User {
+
+  @Id
+  @GeneratedValue
+  private UUID id;
+
+  @Column(name = "email", unique = true)
+  @KeywordField(name = EMAIL + SORT_SUFFIX, sortable = YES, normalizer = SORT_NORMALIZER)
+  @FullTextField(name = EMAIL + FULLTEXT_SUFFIX, analyzer = FULLTEXT_ANALYZER, searchAnalyzer = SUGGESTER)
+  private String email;
+  @Column(name = "password")
+  private String password;
+
+  private String name;
+  private String lastName;
+
+  @OneToOne(mappedBy = "uploadedBy", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+  @JoinColumn(name = "avatar_file")
+  private File avatar;
+
+  @Enumerated(EnumType.STRING)
+  @Column(name = "scope")
+  @KeywordField(name = USER_SCOPE + SORT_SUFFIX, sortable = YES)
+  @GenericField(name = USER_SCOPE)
+  private JobPortalScope scope;
+
+  @OneToOne(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+  @JoinColumn(name = "applicant_id")
+  private Applicant applicant;
+
+  @OneToOne(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+  @JoinColumn(name = "company_id")
+  private Company company;
+
+  @OneToOne(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+  @JoinColumn(name = "preferences_id")
+  private UserPreferences preferences;
+
+  public String getFullName() {
+    if (name == null) {
+      return lastName == null ? "" : lastName;
+    }
+    return lastName == null ? name : name + " " + lastName;
+  }
+
+  public UUID getNUI() {
+    if (!ADMIN.equals(getScope())) {
+      return getApplicant() == null ? getCompany().getId() : getApplicant().getId();
+    }
+    return getId();
+  }
+
+}

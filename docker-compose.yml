@@ -4,7 +4,7 @@ services:
   job-portal:
     image: job-portal
     build:
-      context: .
+      context: ./job-portal-be
     container_name: job-portal
     ports:
       - "8080:8080"
