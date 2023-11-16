@@ -9,20 +9,13 @@ import {NgSelectModule} from '@ng-select/ng-select';
 import {HomeComponent} from './home/home/containers/home.component';
 import {RouterModule, Routes} from "@angular/router";
 import {AppComponent} from "./app.component";
-import {StoreModule} from "@ngrx/store";
-import * as fromSpinner from "./state/spinner/spinner.reducer";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatIconModule} from "@angular/material/icon";
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {MatChipsModule} from "@angular/material/chips";
 import {MatDialogModule} from "@angular/material/dialog";
 import {MatInputModule} from "@angular/material/input";
-import {
-  ErrorStateMatcher,
-  MAT_DATE_LOCALE,
-  MatRippleModule,
-  ShowOnDirtyErrorStateMatcher
-} from "@angular/material/core";
+import {ErrorStateMatcher, MatRippleModule, ShowOnDirtyErrorStateMatcher} from "@angular/material/core";
 import {MatTabsModule} from "@angular/material/tabs";
 import {MatGridListModule} from "@angular/material/grid-list";
 import {MatCheckboxModule} from "@angular/material/checkbox";
@@ -35,7 +28,6 @@ import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {MatMenuModule} from "@angular/material/menu";
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatListModule} from "@angular/material/list";
-import {CompaniesComponent} from './companies/components/companies/companies.component';
 import {NotFoundComponent} from './home/components/not-found/not-found.component';
 import {ForbiddenComponent} from "./home/components/forbidden/forbidden.component";
 import {UserComponent} from "./user/components/user/user.component";
@@ -79,7 +71,6 @@ const routes: Routes = [
     NgSelectModule,
     FormsModule,
     RouterModule.forRoot(routes),
-    StoreModule.forRoot({spinner: fromSpinner.reducer}, {}),
     MatToolbarModule,
     MatIconModule,
     MatChipsModule,
