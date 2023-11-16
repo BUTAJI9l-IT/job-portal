@@ -21,7 +21,7 @@
 
     <span fxFlex></span>
 
-    <div>
+    <div *ngIf="currentId !== user.controls['id'].value">
       <button mat-icon-button
               (click)="deleteUser(); $event.stopPropagation();">
         <mat-icon color="warn">clear</mat-icon>
