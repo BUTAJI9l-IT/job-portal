@@ -4,6 +4,7 @@ import {UserService} from "../../../../../api/user.service";
 import {DomSanitizer} from "@angular/platform-browser";
 import {ConfirmationService} from "../../../../service/confirmation.service";
 import {AlertService} from "../../../../service/alert.service";
+import {StorageService} from "../../../../service/storage.service";
 
 @Component({
   selector: 'user-card',
@@ -15,6 +16,7 @@ export class UserCardComponent {
   onUpdate = new EventEmitter();
   @ViewChild('avatarImg') avatarImg: ElementRef<HTMLImageElement> | undefined;
   avatar = new FormControl();
+  currentId: string | undefined = "";
 
   @Input()
   user: FormGroup = new FormGroup({
@@ -27,7 +29,8 @@ export class UserCardComponent {
 
   constructor(
     private userService: UserService, private confirmationService: ConfirmationService,
-    private sanitizer: DomSanitizer, private alertService: AlertService) {
+    private sanitizer: DomSanitizer, private alertService: AlertService, private store: StorageService) {
+    this.currentId = store.getTokenInfo()?.sub
   }
 
   private getAvatar(userId: string) {

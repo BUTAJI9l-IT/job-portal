@@ -39,6 +39,8 @@ services:
   db:
     image: 'postgres:13.1-alpine'
     container_name: db
+    ports:
+      - "5432:5432"
     environment:
       - POSTGRES_USER=jobportal # not good practice, it is better to store in 'secrets'
       - POSTGRES_PASSWORD=jobportal # not good practice, it is better to store in 'secrets'
