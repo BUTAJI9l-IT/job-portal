@@ -35,11 +35,11 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<Object>> {
-    if (req.url === this.basePath + "/auth/login") {
+    if (req.url.startsWith(this.basePath + "/auth")) {
       return next.handle(req);
     }
     let authReq = req;
-    const token = this.storageService.getTokens()?.refreshToken;
+    const token = this.storageService.getTokens()?.accessToken;
     if (token != null) {
       authReq = this.addTokenHeader(req, token);
     }
@@ -71,7 +71,7 @@ export class AuthInterceptor implements HttpInterceptor {
             this.isRefreshing = false;
 
             this.storageService.saveTokens(token);
-            this.refreshTokenSubject.next(token.accessToken);
+            this.refreshTokenSubject.next(token.refreshToken);
 
             return next.handle(this.addTokenHeader(request, token.accessToken!));
           }),
