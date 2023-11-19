@@ -84,7 +84,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     final var user = userRepository.findById(UUID.fromString(claims.getSubject())).orElseThrow();
-    final var now = staticObjectFactory.getNowAsInstant();
+    final var now = Instant.now();
 
     final var accessTokenClaims = JwtClaimsSet.builder().claims(c -> c.putAll(claims.getClaims()))
       .expiresAt(now.plus(applicationProperties.getAccessToken().getDuration()))
@@ -116,7 +116,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
   private JwtClaimsSet createAccessToken(UUID id, User user, Instant now, Authentication authentication) {
     final var claims = JwtClaimsSet.builder()
       .id(id.toString())
-      .issuedAt(staticObjectFactory.now());
+      .issuedAt(now);
 
     final var authorities = authentication.getAuthorities();
     claims.subject(user.getId().toString());
