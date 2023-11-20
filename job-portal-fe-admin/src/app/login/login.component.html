@@ -1,0 +1,22 @@
+<div style="width: 100%; height: 100%">
+    <div style="text-align: center; padding-top: 5%">
+        <p>
+            <mat-form-field style="width: 20%">
+                <mat-label>Enter your email</mat-label>
+                <input matInput placeholder="pat@example.com" [formControl]="email" required>
+            </mat-form-field>
+        </p>
+        <p>
+            <mat-form-field style="width: 20%">
+                <mat-label>Enter your password</mat-label>
+                <input matInput [formControl]="password" [type]="hide ? 'password' : 'text'">
+                <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                    <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+            </mat-form-field>
+        </p>
+        <p>
+            <button color="accent" style="width: 20%" (click)="onButtonPush()" mat-flat-button>Login</button>
+        </p>
+    </div>
+</div>
