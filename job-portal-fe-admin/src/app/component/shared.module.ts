@@ -32,9 +32,14 @@ import {MatRadioModule} from "@angular/material/radio";
 import {ForbiddenComponent} from "../home/components/forbidden/forbidden.component";
 import { PageableComponent } from './pageable/pageable.component';
 import {MatSortModule} from "@angular/material/sort";
+import { FiltersComponent } from './pageable/filters/filters.component';
+import { CompanySelectComponent } from './input/company-select/company-select.component';
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import { JobSelectComponent } from './input/job-select/job-select.component';
+import { ApplicantSelectComponent } from './input/applicant-select/applicant-select.component';
 
 @NgModule({
-  declarations: [NotFoundComponent, ForbiddenComponent, PageableComponent],
+  declarations: [NotFoundComponent, ForbiddenComponent, PageableComponent, FiltersComponent, CompanySelectComponent, JobSelectComponent, ApplicantSelectComponent],
   exports: [NotFoundComponent, ForbiddenComponent, PageableComponent],
     imports: [
         MatNativeDateModule,
@@ -70,7 +75,8 @@ import {MatSortModule} from "@angular/material/sort";
         MatButtonToggleModule,
         MatBadgeModule,
         MatRadioModule,
-        MatSortModule
+        MatSortModule,
+        MatAutocompleteModule
     ],
 })
 export class SharedModule {
