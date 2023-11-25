@@ -1,0 +1,27 @@
+<mat-form-field appearance="outline" style="width: 100%">
+
+    <mat-label>Job position</mat-label>
+
+    <input type="text"
+           matInput
+           [formControl]="jobControl"
+           [matAutocomplete]="autoJob">
+
+    <mat-autocomplete #autoJob="matAutocomplete" [displayWith]="jobDisplay">
+        <mat-option *ngFor="let option of jobs" [value]="option">
+            {{option.positionName}}
+        </mat-option>
+    </mat-autocomplete>
+
+</mat-form-field>
+
+<mat-chip-set>
+    <mat-chip-row (removed)="remove()"
+                  [editable]="false">
+        {{selectedJob.value?.positionName}}
+        <button matChipRemove>
+            <mat-icon>cancel</mat-icon>
+        </button>
+    </mat-chip-row>
+</mat-chip-set>
+

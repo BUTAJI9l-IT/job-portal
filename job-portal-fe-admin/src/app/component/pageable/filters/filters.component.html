@@ -1,0 +1,67 @@
+<div fxLayout="row" fxFlexAlign="start">
+    <div *ngIf="isEnabled('companies')" class="f">
+        <app-company-select [multiple]="true" (onChange)="setCompanies($event)"/>
+    </div>
+    <div *ngIf="isEnabled('company')" class="f">
+        <app-company-select [multiple]="false" (onChange)="setCompany($event)"/>
+    </div>
+    <div *ngIf="isEnabled('jobPosition')" class="f">
+        <app-job-select [selectedCompaniesId]="filtersForm.controls.companies" (onChange)="setJobPosition($event)"/>
+    </div>
+    <div *ngIf="isEnabled('applicant')" class="f">
+        <app-applicant-select [selectedJobId]="filtersForm.controls.jobPosition" (onChange)="setApplicant($event)"/>
+    </div>
+    <div *ngIf="isEnabled('scope')" class="f">
+        <mat-form-field>
+            <mat-label>Scope</mat-label>
+            <mat-select [formControl]="filtersForm.controls.scope">
+                <mat-option [value]="undefined"></mat-option>
+                <mat-option [value]="'ADMIN'">Admin</mat-option>
+                <mat-option [value]="'REGULAR_USER'">Regular user</mat-option>
+                <mat-option [value]="'COMPANY'">Company</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>ny-select [multiple]="false" (onChange)="setCompany($event)"/>
+
+    <div *ngIf="isEnabled('companySize')" class="f">
+        <mat-form-field>
+            <mat-label>Company size</mat-label>
+            <mat-select [formControl]="filtersForm.controls.companySize">
+                <mat-option [value]="undefined"></mat-option>
+                <mat-option [value]="'MICRO'">Micro</mat-option>
+                <mat-option [value]="'SMALL'">Small</mat-option>
+                <mat-option [value]="'MEDIUM'">Medium</mat-option>
+                <mat-option [value]="'LARGE'">Large</mat-option>
+                <mat-option [value]="'CORPORATION'">Corporation</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+
+    <div *ngIf="isEnabled('status') && filtersFor.toString() === 'JOB'" class="f">
+        <mat-form-field>
+            <mat-label>Job position status</mat-label>
+            <mat-select [formControl]="filtersForm.controls.status">
+                <mat-option [value]="undefined"></mat-option>
+                <mat-option [value]="'ACTIVE'">Active</mat-option>
+                <mat-option [value]="'INACTIVE'">Inactive</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+
+    <div *ngIf="isEnabled('status') && filtersFor.toString() === 'APPLICATION'" class="f">
+        <mat-form-field>
+            <mat-label>Application status</mat-label>
+            <mat-select [formControl]="filtersForm.controls.status">
+                <mat-option [value]="undefined"></mat-option>
+                <mat-option [value]="'OPEN'">Open</mat-option>
+                <mat-option [value]="'SEEN'">Seen</mat-option>
+                <mat-option [value]="'APPROVED'">Approved</mat-option>
+                <mat-option [value]="'DECLINED'">Declined</mat-option>
+                <mat-option [value]="'CLOSED'">Closed</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+
+<!--    date cat,-->
+
+</div>
