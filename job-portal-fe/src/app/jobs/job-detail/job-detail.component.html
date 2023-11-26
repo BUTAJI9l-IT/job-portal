@@ -81,7 +81,7 @@
         <div>
           <div class="accentColor" style="cursor: default"
                *ngIf="!fromApplications && $any(jobPosition).get('appliedCount').value !== 0">
-            <b>{{$any(jobPosition).get('appliedCount').value}}</b> {{'job-position.applied' | translate}}
+            {{'job-position.applied' | translate}} <b>{{$any(jobPosition).get('appliedCount').value}}</b>
           </div>
         </div>
       </mat-card-actions>
