@@ -9,7 +9,9 @@
           {{'jobs.inactive' | translate}}
         </button>
       </div>
-      {{jobPosition.controls['positionName'].value}}
+      <div style="white-space: pre-wrap">
+        {{jobPosition.controls['positionName'].value}}
+      </div>
     </mat-card-title>
     <mat-card-subtitle>
       <extendable-chips [categories]="$any(jobPosition).controls['jobCategories']"></extendable-chips>
@@ -25,35 +27,38 @@
 
     <span fxFlex></span>
 
-    <div *ngIf="canEdit">
-      <button class="button-bottom"
-              *ngIf="canEdit && !applicant && $any(jobPosition).controls['status'].value === 'ACTIVE'" mat-icon-button
-              [routerLink]="'/jobs/'+$any(jobPosition).controls['id'].value+'/applications'"
-              (click)="$event.stopPropagation();">
-        <mat-icon color="accent" [title]="'job-position.applicants' | translate">assignment_turned_in</mat-icon>
-      </button>
-      <button *ngIf="$any(jobPosition).controls['status'].value === 'ACTIVE'" mat-icon-button
-              (click)="deleteJobPosition(); $event.stopPropagation();">
-        <mat-icon color="accent">delete</mat-icon>
-      </button>
-      <button *ngIf="$any(jobPosition).controls['status'].value === 'INACTIVE'" mat-icon-button
-              (click)="restoreJobPosition(); $event.stopPropagation();">
-        <mat-icon color="accent">restore_from_trash</mat-icon>
-      </button>
+    <div matTooltip>
+      <div *ngIf="canEdit">
+        <button class="button-bottom"
+                *ngIf="canEdit && !applicant && $any(jobPosition).controls['status'].value === 'ACTIVE'" mat-icon-button
+                [routerLink]="'/jobs/'+$any(jobPosition).controls['id'].value+'/applications'"
+                (click)="$event.stopPropagation();">
+          <mat-icon color="accent" [title]="'job-position.applicants' | translate">assignment_turned_in</mat-icon>
+        </button>
+        <button *ngIf="$any(jobPosition).controls['status'].value === 'ACTIVE'" mat-icon-button
+                (click)="deleteJobPosition(); $event.stopPropagation();">
+          <mat-icon color="accent">delete</mat-icon>
+        </button>
+        <button *ngIf="$any(jobPosition).controls['status'].value === 'INACTIVE'" mat-icon-button
+                (click)="restoreJobPosition(); $event.stopPropagation();">
+          <mat-icon color="accent">restore_from_trash</mat-icon>
+        </button>
+      </div>
+
+      <div *ngIf="applicant">
+        <button *ngIf="$any(jobPosition).controls['applied'].value" mat-icon-button [disableRipple]="true" disabled>
+          <mat-icon color="accent">done_all</mat-icon>
+        </button>
+        <button *ngIf="!$any(jobPosition).controls['favourite'].value" mat-icon-button
+                (click)="addToFavorite(); $event.stopPropagation();">
+          <mat-icon color="accent">favorite_border</mat-icon>
+        </button>
+        <button *ngIf="$any(jobPosition).controls['favourite'].value" mat-icon-button
+                (click)="deleteFromFavorite(); $event.stopPropagation();">
+          <mat-icon color="accent">favorite</mat-icon>
+        </button>
+      </div>
     </div>
 
-    <div *ngIf="applicant">
-      <button *ngIf="$any(jobPosition).controls['applied'].value" mat-icon-button [disableRipple]="true" disabled>
-        <mat-icon color="accent">done_all</mat-icon>
-      </button>
-      <button *ngIf="!$any(jobPosition).controls['favourite'].value" mat-icon-button
-              (click)="addToFavorite(); $event.stopPropagation();">
-        <mat-icon color="accent">favorite_border</mat-icon>
-      </button>
-      <button *ngIf="$any(jobPosition).controls['favourite'].value" mat-icon-button
-              (click)="deleteFromFavorite(); $event.stopPropagation();">
-        <mat-icon color="accent">favorite</mat-icon>
-      </button>
-    </div>
   </mat-card-header>
 </mat-card>
