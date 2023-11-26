@@ -22,7 +22,7 @@ services:
       - EMAIL_PORT=587
       - EMAIL_NOTIFICATION_APP_USERNAME=  # add your email (according to stmp) (not good practice, it is better to store in 'secrets')
       - EMAIL_NOTIFICATION_APP_PASSWORD= # generate password for application in gmail (not good practice, it is better to store in 'secrets')
-      - NOTIFICATIONS_ENABLED=true # enable notifications
+      - NOTIFICATIONS_ENABLED=false # enable notifications
     volumes:
       - app-data:/tmp
 
