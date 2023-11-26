@@ -56,7 +56,7 @@
   "job-position.updated": "Last updated:",
   "job-position.created": "Created:",
   "job-position.other-jobs": "Other positions in this company",
-  "job-position.applied": "already applied",
+  "job-position.applied": "Already applied:",
   "job-position.apply": "Apply now",
   "alerts.job-position.apply": "Application was sent",
   "alerts.job-position.withdraw": "Application was deleted",

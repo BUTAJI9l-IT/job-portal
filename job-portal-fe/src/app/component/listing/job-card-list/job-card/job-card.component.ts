@@ -123,6 +123,7 @@ export class JobCardComponent implements OnInit, AfterViewInit, OnDestroy {
     let nui = this.storage.getTokenInfo()?.nui!;
     this.canEdit = (scope === "ADMIN") || (scope === "COMPANY" && nui === this.jobPosition.get("company")?.get("id")!.value)
     this.applicant = (scope === "REGULAR_USER");
+    this.nui = nui
   }
 
   ngOnDestroy(): void {
