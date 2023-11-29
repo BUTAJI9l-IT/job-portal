@@ -16,7 +16,8 @@
         "tags": [
           "Applicant"
         ],
-        "summary": "Returns all applicants",
+        "summary": "Returns all applicants | Koncový bod pro získání všech uživatelů",
+        "description": "Koncový bod je bez omezení dostupný pouze pro administrátory. Uživatelé s firemním účtem mohou vyhledávat pouze uchazeče o pracovní místo ve své společnosti.",
         "operationId": "getApplicants",
         "parameters": [
           {
@@ -93,7 +94,8 @@
         "tags": [
           "Applicant"
         ],
-        "summary": "Returns an applicant by given id",
+        "summary": "Returns an applicant by given id | Koncový bod pro získání informací o uchazeči na základě jeho ID",
+        "description": "Koncový bod pro získání informací o uchazeči na základě jeho ID. K němu mají přístup uchazeči s odpovídajícím ID, administrátoři a společnosti.",
         "operationId": "getApplicant",
         "parameters": [
           {
@@ -128,7 +130,8 @@
         "tags": [
           "Applicant"
         ],
-        "summary": "Updates an applicant by given id",
+        "summary": "Updates an applicant by given id | Koncový bod pro aktualizaci informací o uchazeči na základě jeho ID",
+        "description": "Koncový bod pro aktualizaci informací o uchazeči na základě jeho ID. Je přístupný pro uchazeče s odpovídajícím ID a administrátory.",
         "operationId": "updateApplicant",
         "parameters": [
           {
@@ -175,7 +178,8 @@
         "tags": [
           "Applicant"
         ],
-        "summary": "Add experience",
+        "summary": "Add experience | Koncový bod pro vytvoření nové pracovní zkušenosti uchazeče na základě jeho ID",
+        "description": "Koncový bod pro vytvoření nové pracovní zkušenosti uchazeče na základě jeho ID. Je přístupný pro uchazeče s odpovídajícím ID a administrátory.",
         "operationId": "addExperience",
         "parameters": [
           {
@@ -222,7 +226,8 @@
         "tags": [
           "Applicant"
         ],
-        "summary": "Delete experience",
+        "summary": "Delete experience | Koncový bod pro odstranění pracovní zkušenosti uchazeče na základě ID uchazeče a ID zkušenosti",
+        "description": "Koncový bod pro odstranění pracovní zkušenosti uchazeče na základě ID uchazeče a ID zkušenosti. Má přístup uchazeč s odpovídajícím ID a administrátoři.",
         "operationId": "removeExperience",
         "parameters": [
           {
@@ -268,7 +273,8 @@
         "tags": [
           "Applicant"
         ],
-        "summary": "Generates CV for given applicant",
+        "summary": "Generates CV for given applicant | Koncový bod pro generování životopisu uchazeče s daným ID",
+        "description": "Koncový bod pro generování životopisu uchazeče s daným ID. Přístupný pro uchazeče s odpovídajícím ID a administrátory.",
         "operationId": "generateCV",
         "parameters": [
           {
@@ -315,7 +321,8 @@
         "tags": [
           "Application"
         ],
-        "summary": "Returns all applications",
+        "summary": "Returns all applications | Koncový bod pro získání všech žádostí",
+        "description": "Koncový bod je plně přístupný pouze pro administrátory. Uživatelé s firemním účtem mohou vyhledávat pouze žádosti o pracovnímísto ve své společnosti, zatímco uživatelé s běžným účtem mají přístup pouze ke svým vlastním žádostem.",
         "operationId": "getApplications",
         "parameters": [
           {
@@ -443,7 +450,8 @@
         "tags": [
           "Application"
         ],
-        "summary": "Returns an application by given id",
+        "summary": "Returns an application by given id | Koncový bod pro získání informací o žádosti na základě jejího ID",
+        "description": "Koncový bod pro získání informací o žádosti na základě jejího ID. Koncový bod je plně přístupný pouze pro administrátory. Uživatelé s firemním účtem mohou vyhledávat pouze žádosti o pracovnímísto ve své společnosti, zatímco uživatelé s běžným účtem mají přístup pouze ke svým vlastním žádostem.",
         "operationId": "getApplication",
         "parameters": [
           {
@@ -478,7 +486,8 @@
         "tags": [
           "Application"
         ],
-        "summary": "Delete an application",
+        "summary": "Delete an application | Koncový bod pro odstranění žádosti o pracovní místo",
+        "description": "Koncový bod pro odstranění žádosti o pracovní místo. Operace je přístupná pouze administrátorům a vlastníkům žádosti.",
         "operationId": "deleteApplication",
         "parameters": [
           {
@@ -508,8 +517,8 @@
         "tags": [
           "Application"
         ],
-        "summary": "Change a state of an application",
-        "description": "Company can change a state an application",
+        "summary": "Change a state of an application | Koncový bod pro změnu stavu žádosti",
+        "description": "Company can change a state an application | Koncový bod pro změnu stavu žádosti. Oprávnění k provádění této operace mají administrátoři a uživatelé s firemním účtem, kteří mají přístup k dané žádosti.",
         "operationId": "changeApplicationState",
         "parameters": [
           {
@@ -556,7 +565,8 @@
         "tags": [
           "Authorization"
         ],
-        "summary": "Authorize",
+        "summary": "Authorize | Koncový bod pro přihlášení uživatele",
+        "description": "",
         "operationId": "login",
         "requestBody": {
           "content": {
@@ -587,7 +597,8 @@
         "tags": [
           "Authorization"
         ],
-        "summary": "Refresh tokens",
+        "summary": "Refresh tokens | Koncový bod pro obnovení přístupového tokenu",
+        "description": "",
         "operationId": "refreshToken",
         "requestBody": {
           "content": {
@@ -618,7 +629,8 @@
         "tags": [
           "Authorization"
         ],
-        "summary": "Registration",
+        "summary": "Registration | Koncový bod pro registraci uživatele",
+        "description": "",
         "operationId": "register",
         "requestBody": {
           "content": {
@@ -649,7 +661,8 @@
         "tags": [
           "Company"
         ],
-        "summary": "Returns all companies",
+        "summary": "Returns all companies | Koncový bod pro získání všech společností",
+        "description": "",
         "operationId": "getCompanies",
         "parameters": [
           {
@@ -727,7 +740,8 @@
         "tags": [
           "Company"
         ],
-        "summary": "Returns a company by given id",
+        "summary": "Returns a company by given id | Koncový bod pro získání informací o společnosti na základě ID",
+        "description": "",
         "operationId": "getCompany",
         "parameters": [
           {
@@ -757,7 +771,8 @@
         "tags": [
           "Company"
         ],
-        "summary": "Updates a company by given id",
+        "summary": "Updates a company by given id | Koncový bod pro aktualizaci informací o společnosti na základě ID",
+        "description": "Koncový bod pro aktualizaci informací o společnosti na základě ID. Aktualizaci mohou provést administrátoři nebo samotná společnost.",
         "operationId": "updateCompany",
         "parameters": [
           {
@@ -804,7 +819,8 @@
         "tags": [
           "Job Position Category"
         ],
-        "summary": "List categories",
+        "summary": "List categories | Koncový bod pro získání všech kategorií",
+        "description": "Koncový bod pro získání všech kategorií.",
         "operationId": "getCategories",
         "responses": {
           "200": {
@@ -825,7 +841,8 @@
         "tags": [
           "Job Position Category"
         ],
-        "summary": "Search for occupation",
+        "summary": "Search for occupation | Koncový bod pro získání všech povolání na základě vyhledávacího dotazu",
+        "description": "",
         "operationId": "getOccupations",
         "parameters": [
           {
@@ -888,7 +905,8 @@
         "tags": [
           "Job Position Category"
         ],
-        "summary": "Get occupations",
+        "summary": "Get occupations | Koncový bod pro získání všech povolání na základě ID kategorie",
+        "description": "",
         "operationId": "getCategory",
         "parameters": [
           {
@@ -918,7 +936,8 @@
         "tags": [
           "Job Position Category"
         ],
-        "summary": "Delete a category",
+        "summary": "Delete a category | Odstranění kategorie na základě jejího ID",
+        "description": "Odstranění kategorie na základě jejího ID. Pouze pro administrátory.",
         "operationId": "deleteCategory",
         "parameters": [
           {
@@ -948,7 +967,8 @@
         "tags": [
           "Job Position Category"
         ],
-        "summary": "Create a category",
+        "summary": "Create a category | Vytvoření nové kategorie s daným jménem",
+        "description": "Vytvoření nové kategorie s daným jménem. Pouze pro administrátory.",
         "operationId": "createCategory",
         "parameters": [
           {
@@ -984,7 +1004,8 @@
         "tags": [
           "Job Position"
         ],
-        "summary": "Returns all job positions",
+        "summary": "Returns all job positions | Koncový bod pro získání všech pracovních míst",
+        "description": "",
         "operationId": "getJobPositions",
         "parameters": [
           {
@@ -1081,7 +1102,8 @@
         "tags": [
           "Job Position"
         ],
-        "summary": "Create a job position",
+        "summary": "Create a job position | Vytvoření nového pracovního místa",
+        "description": "Vytvoření nového pracovního místa. Nové pracovní místo může vytvořit společnost nebo administrátor.",
         "operationId": "createJobPosition",
         "requestBody": {
           "content": {
@@ -1117,7 +1139,8 @@
         "tags": [
           "Job Position"
         ],
-        "summary": "Apply for a job position",
+        "summary": "Apply for a job position | Vytvoření žádosti o pracovní místo na základě ID uchazeče a ID pracovního místa",
+        "description": "Vytvoření žádosti o pracovní místo na základě ID uchazeče a ID pracovního místa. Podání žádosti je možné pouze o aktivní nabídku",
         "operationId": "apply",
         "parameters": [
           {
@@ -1163,7 +1186,8 @@
         "tags": [
           "Job Position"
         ],
-        "summary": "Get favorite jobs of a current user",
+        "summary": "Get favorite jobs of a current user | Koncový bod pro získání uložených pracovních míst uchazeče na základě jeho ID",
+        "description": "Koncový bod pro získání uložených pracovních míst uchazeče na základě jeho ID. Je dostupný pouze pro administrátory a uchazeče s odpovídajícím ID.",
         "operationId": "getFavorites",
         "parameters": [
           {
@@ -1200,7 +1224,8 @@
         "tags": [
           "Job Position"
         ],
-        "summary": "Add to favorite jobs of a current user",
+        "summary": "Add to favorite jobs of a current user | Přidání pracovního místa do seznamu uložených pracovních míst uchazeče",
+        "description": "Přidání pracovního místa do seznamu uložených pracovních míst uchazeče.",
         "operationId": "addToFavorites",
         "parameters": [
           {
@@ -1246,7 +1271,8 @@
         "tags": [
           "Job Position"
         ],
-        "summary": "Remove from favorite jobs of a current user",
+        "summary": "Remove from favorite jobs of a current user | Odstranění pracovního místa ze seznamu uložených pracovních míst uchazeče",
+        "description": "Odstranění pracovního místa ze seznamu uložených pracovních míst uchazeče.",
         "operationId": "removeFromFavorites",
         "parameters": [
           {
@@ -1292,7 +1318,8 @@
         "tags": [
           "Job Position"
         ],
-        "summary": "Returns a job position by given id",
+        "summary": "Returns a job position by given id | Koncový bod pro získání podrobností o pracovním místě na základě ID",
+        "description": "",
         "operationId": "getJobPosition",
         "parameters": [
           {
@@ -1322,7 +1349,8 @@
         "tags": [
           "Job Position"
         ],
-        "summary": "Change a state of a job position",
+        "summary": "Change a job position | Koncový bod pro aktualizaci pracovního místa na základě ID",
+        "description": "Koncový bod pro aktualizaci pracovního místa na základě ID. Přístupný pro administrátory a společnosti, které vlastní dané pracovní místo.",
         "operationId": "updateJobPosition",
         "parameters": [
           {
@@ -1369,7 +1397,8 @@
         "tags": [
           "User"
         ],
-        "summary": "Returns all users",
+        "summary": "Returns all users | Koncový bod pro získání všech uživatelů",
+        "description": "Přistup k tomuto koncovému bodu má pouze administrátor.",
         "operationId": "getUsers",
         "parameters": [
           {
@@ -1450,7 +1479,8 @@
         "tags": [
           "User"
         ],
-        "summary": "Get user info",
+        "summary": "Get user info | Koncový bod pro získání informací o uživateli na základě ID",
+        "description": "Koncový bod pro získání informací o uživateli na základě ID. Infor mace o ostatních uživatelích, kromě sebe samého, může získat pouze administrátor.",
         "operationId": "getUserInfo",
         "parameters": [
           {
@@ -1485,7 +1515,8 @@
         "tags": [
           "User"
         ],
-        "summary": "Updates user's password",
+        "summary": "Updates user's password | Koncový bod pro aktualizaci informací o uživateli na základě ID",
+        "description": "Zabezpečený koncový bod pro aktualizaci informací o uživateli na základě ID. Oprávnění k provedení aktualizace mají uživatelé, kteří mají přístup k tomuto účtu.",
         "operationId": "updatePassword",
         "parameters": [
           {
@@ -1530,7 +1561,8 @@
         "tags": [
           "User"
         ],
-        "summary": "Delete a user",
+        "summary": "Delete a user | Koncový bod pro odstranění uživatele",
+        "description": "Koncový bod pro odstranění uživatele. Tuto operaci může provést samotný uživatel na svém účtu nebo administrátor.",
         "operationId": "deleteUser",
         "parameters": [
           {
@@ -1560,7 +1592,8 @@
         "tags": [
           "User"
         ],
-        "summary": "Get user avatar",
+        "summary": "Get user avatar | Koncový bod pro získání veřejných obrázků účtů",
+        "description": "Koncový bod pro získání veřejných obrázků účtů, tedy účtů společností.",
         "operationId": "getAvatar",
         "parameters": [
           {
@@ -1591,7 +1624,8 @@
         "tags": [
           "User"
         ],
-        "summary": "Upload new user avatar",
+        "summary": "Upload new user avatar | Nahrávání nového obrázku účtu na základě ID účtu",
+        "description": "Nahrávání nového obrázku účtu na základě ID účtu. Oprávnění k provedení této operace mají uživatelé, kteří mají přístup k tomuto účtu.",
         "operationId": "uploadAvatar",
         "parameters": [
           {
@@ -1645,7 +1679,8 @@
         "tags": [
           "User"
         ],
-        "summary": "Delete old user avatar",
+        "summary": "Delete old user avatar | Koncový bod pro odstranění obrázku účtu",
+        "description": "Koncový bod pro odstranění obrázku účtu. Tuto operaci může provést vlastník účtu nebo administrátor.",
         "operationId": "deleteAvatar",
         "parameters": [
           {
@@ -1683,7 +1718,8 @@
         "tags": [
           "User"
         ],
-        "summary": "Get user avatar authenticated",
+        "summary": "Get user avatar authenticated | Zabezpečený koncový bod pro získání obrázků účtů uchazečů",
+        "description": "Zabezpečený koncový bod pro získání obrázků účtů uchazečů. Administratori mohou získat libovolný obrázek, zatímco společnosti mají přístup pouze k obrázkům těch uživatelů, kteří jsou uchazeči o nějaké pracovní místo v této společnosti. Všichni uživatelé mají oprávnění k obrázku svého účtu",
         "operationId": "getAvatarSecured",
         "parameters": [
           {
@@ -1721,7 +1757,8 @@
         "tags": [
           "User"
         ],
-        "summary": "Get user preferences",
+        "summary": "Get user preferences | Koncový bod pro získání nastavení účtu uživatele na základě ID účtu",
+        "description": "",
         "operationId": "getUserPreferences",
         "parameters": [
           {
@@ -1756,7 +1793,8 @@
         "tags": [
           "User"
         ],
-        "summary": "Update user preferences",
+        "summary": "Update user preferences | Koncový bod pro aktualizaci nastavení účtu uživatele na základě ID účtu",
+        "description": "Koncový bod pro aktualizaci nastavení účtu uživatele na základě ID účtu.",
         "operationId": "updatePreferences",
         "parameters": [
           {
