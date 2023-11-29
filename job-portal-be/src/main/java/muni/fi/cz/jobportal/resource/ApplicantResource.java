@@ -43,27 +43,27 @@ public class ApplicantResource {
   private final ApplicantService applicantService;
 
   @GetMapping("/{applicantId}")
-  @Operation(summary = "Returns an applicant by given id")
+  @Operation(summary = "${api.applicant.getOne.summary}", description = "${api.applicant.getOne.description}")
   public ResponseEntity<ApplicantDetailDto> getApplicant(@PathVariable("applicantId") UUID applicantId) {
     return ResponseEntity.ok(applicantService.findOne(applicantId));
   }
 
   @PutMapping("/{applicantId}")
-  @Operation(summary = "Updates an applicant by given id")
+  @Operation(summary = "${api.applicant.update.summary}", description = "${api.applicant.update.description}")
   public ResponseEntity<ApplicantDetailDto> updateApplicant(@PathVariable("applicantId") UUID applicantId,
     @Valid @RequestBody ApplicantUpdateDto payload) {
     return ResponseEntity.ok(applicantService.update(applicantId, payload));
   }
 
   @PostMapping("/{applicantId}/experience")
-  @Operation(summary = "Add experience")
+  @Operation(summary = "${api.applicant.addExp.summary}", description = "${api.applicant.addExp.description}")
   public ResponseEntity<ApplicantDetailDto> addExperience(@PathVariable("applicantId") UUID applicantId,
     @Valid @RequestBody ExperienceDto payload) {
     return ResponseEntity.ok(applicantService.addExperience(applicantId, payload));
   }
 
   @DeleteMapping("/{applicantId}/experience/{experienceId}")
-  @Operation(summary = "Delete experience")
+  @Operation(summary = "${api.applicant.deleteExp.summary}", description = "${api.applicant.deleteExp.description}")
   public ResponseEntity<ApplicantDetailDto> removeExperience(@PathVariable("applicantId") UUID applicantId,
     @PathVariable("experienceId") UUID experienceId) {
     return ResponseEntity.ok(applicantService.removeExperience(applicantId, experienceId));
@@ -71,7 +71,7 @@ public class ApplicantResource {
 
   @GetMapping
   @PageableAsQueryParam
-  @Operation(summary = "Returns all applicants")
+  @Operation(summary = "${api.applicant.getAll.summary}", description = "${api.applicant.getAll.description}")
   public Page<ApplicantDto> getApplicants(@Parameter(hidden = true) Pageable pageable,
     @RequestParam(required = false) List<String> q,
     @RequestParam(required = false) UUID jobPosition) {
@@ -83,7 +83,7 @@ public class ApplicantResource {
   }
 
   @GetMapping(value = "/{applicantId}/generate-cv", produces = MediaType.APPLICATION_PDF_VALUE)
-  @Operation(summary = "Generates CV for given applicant")
+  @Operation(summary = "${api.applicant.cv.summary}", description = "${api.applicant.cv.description}")
   @ApiResponse(
     responseCode = "200",
     content = @Content(mediaType = MediaType.APPLICATION_PDF_VALUE, schema = @Schema(type = "string", format = "binary")),

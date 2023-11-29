@@ -1,0 +1,125 @@
+api:
+  applicant:
+    getOne:
+      summary: Returns an applicant by given id
+      description:
+    getAll:
+      summary: Returns all applicants
+      description:
+    update:
+      summary: Updates an applicant by given id
+      description:
+    addExp:
+      summary: Add experience
+      description:
+    deleteExp:
+      summary: Delete experience
+      description:
+    cv:
+      summary: Generates CV for given applicant
+      description:
+  application:
+    getOne:
+      summary: Returns an application by given id
+      description:
+    getAll:
+      summary: Returns all applications
+      description:
+    delete:
+      summary: Delete an application
+      description:
+    update:
+      summary: Change a state of an application
+      description: Company can change a state an application
+  auth:
+    login:
+      summary: Authorize
+      description:
+    register:
+      summary: Registration
+      description:
+    refresh:
+      summary: Refresh tokens
+      description:
+  company:
+    getOne:
+      summary: Returns a company by given id
+      description:
+    getAll:
+      summary: Returns all companies
+      description:
+    update:
+      summary: Updates a company by given id
+      description:
+  job-cat:
+    create:
+      summary: Create a category
+      description:
+    delete:
+      summary: Delete a category
+      description:
+    getAll:
+      summary: List categories
+      description:
+    getOne:
+      summary: Get occupations
+      description:
+    getOccupations:
+      summary: Search for occupation
+      description:
+  job:
+    apply:
+      summary: Apply for a job position
+      description:
+    create:
+      summary: Create a job position
+      description:
+    update:
+      summary: Change a state of a job position
+      description:
+    getAll:
+      summary: Returns all job positions
+      description:
+    getOne:
+      summary: Returns a job position by given id
+      description:
+    favorites:
+      summary: Get favorite jobs of a current user
+      description:
+    addFavorites:
+      summary: Add to favorite jobs of a current user
+      description:
+    deleteFavorites:
+      summary: Remove from favorite jobs of a current user
+      description:
+  user:
+    updatePassword:
+      summary: Updates user's password
+      description:
+    getOne:
+      summary: Get user info
+      description:
+    getPreferences:
+      summary: Get user preferences
+      description:
+    updatePreferences:
+      summary: Update user preferences
+      description:
+    delete:
+      summary: Delete a user
+      description:
+    getAll:
+      summary: Returns all users
+      description:
+    upload:
+      summary: Upload new user avatar
+      description:
+    deleteAvatar:
+      summary: Delete old user avatar
+      description:
+    getAvatar:
+      summary: Get user avatar
+      description:
+    getAvatarAuth:
+      summary: Get user avatar authenticated
+      description:

@@ -41,7 +41,7 @@ public class JobPositionResource {
   private final JobPositionService jobPositionService;
 
   @PostMapping("/applicants/{applicantId}/apply/{jobPositionId}")
-  @Operation(summary = "Apply for a job position")
+  @Operation(summary = "${api.job.apply.summary}", description = "${api.job.apply.description}")
   @SecurityRequirement(name = BEARER_AUTH)
   public ResponseEntity<JobPositionDetailDto> apply(@PathVariable("applicantId") UUID applicantId,
     @PathVariable("jobPositionId") UUID jobPositionId) {
@@ -49,14 +49,14 @@ public class JobPositionResource {
   }
 
   @PostMapping
-  @Operation(summary = "Create a job position")
+  @Operation(summary = "${api.job.create.summary}", description = "${api.job.create.description}")
   @SecurityRequirement(name = BEARER_AUTH)
   public ResponseEntity<JobPositionDetailDto> createJobPosition(@Valid @RequestBody JobPositionCreateDto payload) {
     return ResponseEntity.ok(jobPositionService.create(payload));
   }
 
   @PutMapping("/{jobPositionId}")
-  @Operation(summary = "Change a state of a job position")
+  @Operation(summary = "${api.job.update.summary}", description = "${api.job.update.description}")
   @SecurityRequirement(name = BEARER_AUTH)
   public ResponseEntity<JobPositionDetailDto> updateJobPosition(@PathVariable("jobPositionId") UUID jobPositionId,
     @Valid @RequestBody JobPositionUpdateDto payload) {
@@ -65,7 +65,7 @@ public class JobPositionResource {
 
   @GetMapping
   @PageableAsQueryParam
-  @Operation(summary = "Returns all job positions")
+  @Operation(summary = "${api.job.getAll.summary}", description = "${api.job.getAll.description}")
   public Page<JobPositionDto> getJobPositions(@Parameter(hidden = true) Pageable pageable,
     @RequestParam(required = false) List<String> q,
     @RequestParam(required = false) PositionState status,
@@ -81,20 +81,20 @@ public class JobPositionResource {
   }
 
   @GetMapping("/{jobPositionId}")
-  @Operation(summary = "Returns a job position by given id")
+  @Operation(summary = "${api.job.getOne.summary}", description = "${api.job.getOne.description}")
   public ResponseEntity<JobPositionDetailDto> getJobPosition(@PathVariable("jobPositionId") UUID jobPositionId) {
     return ResponseEntity.ok(jobPositionService.findOne(jobPositionId));
   }
 
   @GetMapping("/applicants/{applicantId}/favorites")
-  @Operation(summary = "Get favorite jobs of a current user")
+  @Operation(summary = "${api.job.favorites.summary}", description = "${api.job.favorites.description}")
   @SecurityRequirement(name = BEARER_AUTH)
   public ResponseEntity<FavouritesJobsResponse> getFavorites(@PathVariable("applicantId") UUID applicantId) {
     return ResponseEntity.ok(jobPositionService.getFavorites(applicantId));
   }
 
   @PutMapping("/applicants/{applicantId}/favourites/{jobPositionId}/add")
-  @Operation(summary = "Add to favorite jobs of a current user")
+  @Operation(summary = "${api.job.addFavorites.summary}", description = "${api.job.addFavorites.description}")
   @SecurityRequirement(name = BEARER_AUTH)
   public ResponseEntity<FavouritesJobsResponse> addToFavorites(@PathVariable("applicantId") UUID applicantId,
     @PathVariable("jobPositionId") UUID jobPositionId) {
@@ -102,7 +102,7 @@ public class JobPositionResource {
   }
 
   @PutMapping("/applicants/{applicantId}/favourites/{jobPositionId}/remove")
-  @Operation(summary = "Remove from favorite jobs of a current user")
+  @Operation(summary = "${api.job.deleteFavorites.summary}", description = "${api.job.deleteFavorites.description}")
   @SecurityRequirement(name = BEARER_AUTH)
   public ResponseEntity<FavouritesJobsResponse> removeFromFavorites(@PathVariable("applicantId") UUID applicantId,
     @PathVariable("jobPositionId") UUID jobPositionId) {

@@ -37,14 +37,14 @@ public class JobPositionCategoryResource {
   private final JobPositionCategoryService jobPositionCategoryService;
 
   @PostMapping("/{categoryName}")
-  @Operation(summary = "Create a category")
+  @Operation(summary = "${api.job-cat.create.summary}", description = "${api.job-cat.create.description}")
   @SecurityRequirement(name = BEARER_AUTH)
   public ResponseEntity<ReferenceDto> createCategory(@PathVariable("categoryName") String categoryName) {
     return ResponseEntity.ok(jobPositionCategoryService.create(categoryName));
   }
 
   @DeleteMapping("/{categoryId}")
-  @Operation(summary = "Delete a category")
+  @Operation(summary = "${api.job-cat.delete.summary}", description = "${api.job-cat.delete.description}")
   @SecurityRequirement(name = BEARER_AUTH)
   public ResponseEntity<Void> deleteCategory(@PathVariable("categoryId") UUID categoryId) {
     jobPositionCategoryService.delete(categoryId);
@@ -52,20 +52,20 @@ public class JobPositionCategoryResource {
   }
 
   @GetMapping
-  @Operation(summary = "List categories")
+  @Operation(summary = "${api.job-cat.getAll.summary}", description = "${api.job-cat.getAll.description}")
   public ResponseEntity<ListOfCategoriesResponse> getCategories() {
     return ResponseEntity.ok(jobPositionCategoryService.findAll());
   }
 
   @GetMapping("/{categoryId}")
-  @Operation(summary = "Get occupations")
+  @Operation(summary = "${api.job-cat.getOne.summary}", description = "${api.job-cat.getOne.description}")
   public ResponseEntity<CategoryDto> getCategory(@PathVariable("categoryId") UUID categoryId) {
     return ResponseEntity.ok(jobPositionCategoryService.getOccupationsByCategory(categoryId));
   }
 
   @GetMapping("/occupations")
   @PageableAsQueryParam
-  @Operation(summary = "Search for occupation")
+  @Operation(summary = "${api.job-cat.getOccupations.summary}", description = "${api.job-cat.getOccupations.description}")
   public Page<ReferenceDto> getOccupations(@Parameter(hidden = true) Pageable pageable,
     @RequestParam(required = false) List<String> q) {
     return jobPositionCategoryService.searchOccupations(pageable, OccupationQueryParams.builder().qList(q).build());

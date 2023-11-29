@@ -32,19 +32,19 @@ public class AuthenticationResource {
   private final AuthenticationService authenticationService;
 
   @PostMapping("/login")
-  @Operation(summary = "Authorize")
+  @Operation(summary = "${api.auth.login.summary}", description = "${api.auth.login.description}")
   public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
     return ResponseEntity.ok(authenticationService.performLogin(request));
   }
 
   @PostMapping("/register")
-  @Operation(summary = "Registration")
+  @Operation(summary = "${api.auth.register.summary}", description = "${api.auth.register.description}")
   public ResponseEntity<LoginResponse> register(@Valid @RequestBody RegistrationRequest request) {
     return ResponseEntity.ok(authenticationService.registerUser(request));
   }
 
   @PostMapping("/refresh")
-  @Operation(summary = "Refresh tokens")
+  @Operation(summary = "${api.auth.refresh.summary}", description = "${api.auth.refresh.description}")
   public ResponseEntity<LoginResponse> refreshToken(@Valid @RequestBody RefreshTokenRequest request) {
     return ResponseEntity.ok(authenticationService.refresh(request));
   }

@@ -38,14 +38,14 @@ public class ApplicationResource {
   private final ApplicationService applicationService;
 
   @GetMapping("/{applicationId}")
-  @Operation(summary = "Returns an application by given id")
+  @Operation(summary = "${api.application.getOne.summary}", description = "${api.application.getOne.description}")
   public ResponseEntity<ApplicationDetailDto> getApplication(@PathVariable("applicationId") UUID applicationId) {
     return ResponseEntity.ok(applicationService.findOne(applicationId));
   }
 
   @GetMapping
   @PageableAsQueryParam
-  @Operation(summary = "Returns all applications")
+  @Operation(summary = "${api.application.getAll.summary}", description = "${api.application.getAll.description}")
   public Page<ApplicationDto> getApplications(@Parameter(hidden = true) Pageable pageable,
     @RequestParam(required = false) List<String> q,
     @RequestParam(required = false) UUID applicant,
@@ -67,14 +67,14 @@ public class ApplicationResource {
   }
 
   @PutMapping("/{applicationId}/state")
-  @Operation(summary = "Change a state of an application", description = "Company can change a state an application")
+  @Operation(summary = "${api.application.update.summary}", description = "${api.application.update.description}")
   public ResponseEntity<ApplicationDetailDto> changeApplicationState(@PathVariable("applicationId") UUID applicationId,
     @Valid @RequestBody ApplicationUpdateDto payload) {
     return ResponseEntity.ok(applicationService.update(applicationId, payload));
   }
 
   @DeleteMapping("/{applicationId}")
-  @Operation(summary = "Delete an application")
+  @Operation(summary = "${api.application.delete.summary}", description = "${api.application.delete.description}")
   public ResponseEntity<Void> deleteApplication(@PathVariable("applicationId") UUID applicationId) {
     applicationService.delete(applicationId);
     return ResponseEntity.noContent().build();
