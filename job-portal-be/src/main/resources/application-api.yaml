@@ -1,125 +1,127 @@
 api:
   applicant:
     getOne:
-      summary: Returns an applicant by given id
-      description:
+      summary: Returns an applicant by given id | Koncový bod pro získání informací o uchazeči na základě jeho ID
+      description: Koncový bod pro získání informací o uchazeči na základě jeho ID. K němu mají přístup uchazeči s odpovídajícím ID, administrátoři a společnosti.
     getAll:
-      summary: Returns all applicants
-      description:
+      summary: Returns all applicants | Koncový bod pro získání všech uživatelů
+      description: Koncový bod je bez omezení dostupný pouze pro administrátory. Uživatelé s firemním účtem mohou vyhledávat pouze uchazeče o pracovní místo ve své společnosti.
     update:
-      summary: Updates an applicant by given id
-      description:
+      summary: Updates an applicant by given id | Koncový bod pro aktualizaci informací o uchazeči na základě jeho ID
+      description: Koncový bod pro aktualizaci informací o uchazeči na základě jeho ID. Je přístupný pro uchazeče s odpovídajícím ID a administrátory.
     addExp:
-      summary: Add experience
-      description:
+      summary: Add experience | Koncový bod pro vytvoření nové pracovní zkušenosti uchazeče na základě jeho ID
+      description: Koncový bod pro vytvoření nové pracovní zkušenosti uchazeče na základě jeho ID. Je přístupný pro uchazeče s odpovídajícím ID a administrátory.
     deleteExp:
-      summary: Delete experience
-      description:
+      summary: Delete experience | Koncový bod pro odstranění pracovní zkušenosti uchazeče na základě ID uchazeče a ID zkušenosti
+      description: Koncový bod pro odstranění pracovní zkušenosti uchazeče na základě ID uchazeče a ID zkušenosti. Má přístup uchazeč s odpovídajícím ID a administrátoři.
     cv:
-      summary: Generates CV for given applicant
-      description:
+      summary: Generates CV for given applicant | Koncový bod pro generování životopisu uchazeče s daným ID
+      description: Koncový bod pro generování životopisu uchazeče s daným ID. Přístupný pro uchazeče s odpovídajícím ID a administrátory.
   application:
     getOne:
-      summary: Returns an application by given id
-      description:
+      summary: Returns an application by given id | Koncový bod pro získání informací o žádosti na základě jejího ID
+      description: Koncový bod pro získání informací o žádosti na základě jejího ID. Koncový bod je plně přístupný pouze pro administrátory. Uživatelé s firemním účtem mohou vyhledávat pouze žádosti o pracovnímísto ve své společnosti, zatímco uživatelé s běžným účtem mají přístup pouze ke svým vlastním žádostem.
     getAll:
-      summary: Returns all applications
-      description:
+      summary: Returns all applications | Koncový bod pro získání všech žádostí
+      description: Koncový bod je plně přístupný pouze pro administrátory. Uživatelé s firemním účtem mohou vyhledávat pouze žádosti o pracovnímísto ve své společnosti, zatímco uživatelé s běžným účtem mají přístup pouze ke svým vlastním žádostem.
     delete:
-      summary: Delete an application
-      description:
+      summary: Delete an application | Koncový bod pro odstranění žádosti o pracovní místo
+      description: Koncový bod pro odstranění žádosti o pracovní místo. Operace je přístupná pouze administrátorům a vlastníkům žádosti.
     update:
-      summary: Change a state of an application
-      description: Company can change a state an application
+      summary: Change a state of an application | Koncový bod pro změnu stavu žádosti
+      description: Company can change a state an application | Koncový bod pro změnu stavu žádosti. Oprávnění k provádění této operace mají administrátoři a uživatelé s firemním účtem, kteří mají přístup k dané žádosti.
   auth:
     login:
-      summary: Authorize
+      summary: Authorize | Koncový bod pro přihlášení uživatele
       description:
     register:
-      summary: Registration
+      summary: Registration | Koncový bod pro registraci uživatele
       description:
     refresh:
-      summary: Refresh tokens
+      summary: Refresh tokens | Koncový bod pro obnovení přístupového tokenu
       description:
   company:
     getOne:
-      summary: Returns a company by given id
+      summary: Returns a company by given id | Koncový bod pro získání informací o společnosti na základě ID
       description:
     getAll:
-      summary: Returns all companies
+      summary: Returns all companies | Koncový bod pro získání všech společností
       description:
     update:
-      summary: Updates a company by given id
-      description:
+      summary: Updates a company by given id | Koncový bod pro aktualizaci informací o společnosti na základě ID
+      description: Koncový bod pro aktualizaci informací o společnosti na základě ID.
+        Aktualizaci mohou provést administrátoři nebo samotná společnost.
   job-cat:
     create:
-      summary: Create a category
-      description:
+      summary: Create a category | Vytvoření nové kategorie s daným jménem
+      description: Vytvoření nové kategorie s daným jménem. Pouze pro administrátory.
     delete:
-      summary: Delete a category
-      description:
+      summary: Delete a category | Odstranění kategorie na základě jejího ID
+      description: Odstranění kategorie na základě jejího ID. Pouze pro administrátory.
     getAll:
-      summary: List categories
-      description:
+      summary: List categories | Koncový bod pro získání všech kategorií
+      description: Koncový bod pro získání všech kategorií.
     getOne:
-      summary: Get occupations
+      summary: Get occupations | Koncový bod pro získání všech povolání na základě ID kategorie
       description:
     getOccupations:
-      summary: Search for occupation
+      summary: Search for occupation | Koncový bod pro získání všech povolání na základě vyhledávacího dotazu
       description:
   job:
     apply:
-      summary: Apply for a job position
-      description:
+      summary: Apply for a job position | Vytvoření žádosti o pracovní místo na základě ID uchazeče a ID pracovního místa
+      description: Vytvoření žádosti o pracovní místo na základě ID uchazeče a ID pracovního místa. Podání žádosti je možné pouze o aktivní nabídku
     create:
-      summary: Create a job position
-      description:
+      summary: Create a job position | Vytvoření nového pracovního místa
+      description: Vytvoření nového pracovního místa. Nové pracovní místo může vytvořit společnost nebo administrátor.
     update:
-      summary: Change a state of a job position
-      description:
+      summary: Change a job position | Koncový bod pro aktualizaci pracovního místa na základě ID
+      description: Koncový bod pro aktualizaci pracovního místa na základě ID. Přístupný pro administrátory a společnosti, které vlastní dané pracovní místo.
     getAll:
-      summary: Returns all job positions
+      summary: Returns all job positions | Koncový bod pro získání všech pracovních míst
       description:
     getOne:
-      summary: Returns a job position by given id
+      summary: Returns a job position by given id | Koncový bod pro získání podrobností o pracovním místě na základě ID
       description:
     favorites:
-      summary: Get favorite jobs of a current user
-      description:
+      summary: Get favorite jobs of a current user | Koncový bod pro získání uložených pracovních míst uchazeče na základě jeho ID
+      description: Koncový bod pro získání uložených pracovních míst uchazeče na základě jeho ID. Je dostupný pouze pro administrátory a uchazeče s odpovídajícím ID.
     addFavorites:
-      summary: Add to favorite jobs of a current user
-      description:
+      summary: Add to favorite jobs of a current user | Přidání pracovního místa do seznamu uložených pracovních míst uchazeče
+      description: Přidání pracovního místa do seznamu uložených pracovních míst uchazeče.
     deleteFavorites:
-      summary: Remove from favorite jobs of a current user
-      description:
+      summary: Remove from favorite jobs of a current user | Odstranění pracovního místa ze seznamu uložených pracovních míst uchazeče
+      description: Odstranění pracovního místa ze seznamu uložených pracovních míst uchazeče.
   user:
     updatePassword:
-      summary: Updates user's password
-      description:
+      summary: Updates user's password | Koncový bod pro aktualizaci informací o uživateli na základě ID
+      description: Zabezpečený koncový bod pro aktualizaci informací o uživateli na základě ID. Oprávnění k provedení aktualizace mají uživatelé, kteří mají přístup k tomuto účtu.
     getOne:
-      summary: Get user info
-      description:
+      summary: Get user info | Koncový bod pro získání informací o uživateli na základě ID
+      description: Koncový bod pro získání informací o uživateli na základě ID. Infor
+        mace o ostatních uživatelích, kromě sebe samého, může získat pouze administrátor.
     getPreferences:
-      summary: Get user preferences
+      summary: Get user preferences | Koncový bod pro získání nastavení účtu uživatele na základě ID účtu
       description:
     updatePreferences:
-      summary: Update user preferences
-      description:
+      summary: Update user preferences | Koncový bod pro aktualizaci nastavení účtu uživatele na základě ID účtu
+      description: Koncový bod pro aktualizaci nastavení účtu uživatele na základě ID účtu.
     delete:
-      summary: Delete a user
-      description:
+      summary: Delete a user | Koncový bod pro odstranění uživatele
+      description: Koncový bod pro odstranění uživatele. Tuto operaci může provést samotný uživatel na svém účtu nebo administrátor.
     getAll:
-      summary: Returns all users
-      description:
+      summary: Returns all users | Koncový bod pro získání všech uživatelů
+      description: Přistup k tomuto koncovému bodu má pouze administrátor.
     upload:
-      summary: Upload new user avatar
-      description:
+      summary: Upload new user avatar | Nahrávání nového obrázku účtu na základě ID účtu
+      description: Nahrávání nového obrázku účtu na základě ID účtu. Oprávnění k provedení této operace mají uživatelé, kteří mají přístup k tomuto účtu.
     deleteAvatar:
-      summary: Delete old user avatar
-      description:
+      summary: Delete old user avatar | Koncový bod pro odstranění obrázku účtu
+      description: Koncový bod pro odstranění obrázku účtu. Tuto operaci může provést vlastník účtu nebo administrátor.
     getAvatar:
-      summary: Get user avatar
-      description:
+      summary: Get user avatar | Koncový bod pro získání veřejných obrázků účtů
+      description: Koncový bod pro získání veřejných obrázků účtů, tedy účtů společností.
     getAvatarAuth:
-      summary: Get user avatar authenticated
-      description:
+      summary: Get user avatar authenticated | Zabezpečený koncový bod pro získání obrázků účtů uchazečů
+      description: Zabezpečený koncový bod pro získání obrázků účtů uchazečů. Administratori mohou získat libovolný obrázek, zatímco společnosti mají přístup pouze k obrázkům těch uživatelů, kteří jsou uchazeči o nějaké pracovní místo v této společnosti. Všichni uživatelé mají oprávnění k obrázku svého účtu
