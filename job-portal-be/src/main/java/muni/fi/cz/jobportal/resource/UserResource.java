@@ -44,7 +44,7 @@ public class UserResource {
   private final FileService fileService;
 
   @PutMapping("/{userId}")
-  @Operation(summary = "Updates user's password")
+  @Operation(summary = "${api.user.updatePassword.summary}", description = "${api.user.updatePassword.description}")
   @SecurityRequirement(name = BEARER_AUTH)
   public ResponseEntity<UserDto> updatePassword(@PathVariable("userId") UUID userId,
     @RequestBody @Valid UserUpdateDto payload) {
@@ -52,21 +52,21 @@ public class UserResource {
   }
 
   @GetMapping("/{userId}")
-  @Operation(summary = "Get user info")
+  @Operation(summary = "${api.user.getOne.summary}", description = "${api.user.getOne.description}")
   @SecurityRequirement(name = BEARER_AUTH)
   public ResponseEntity<UserDto> getUserInfo(@PathVariable("userId") UUID userId) {
     return ResponseEntity.ok(userService.findOne(userId));
   }
 
   @GetMapping("/{userId}/preferences")
-  @Operation(summary = "Get user preferences")
+  @Operation(summary = "${api.user.getPreferences.summary}", description = "${api.user.getPreferences.description}")
   @SecurityRequirement(name = BEARER_AUTH)
   public ResponseEntity<PreferencesDto> getUserPreferences(@PathVariable("userId") UUID userId) {
     return ResponseEntity.ok(userService.getUserPreferences(userId));
   }
 
   @PutMapping("/{userId}/preferences")
-  @Operation(summary = "Update user preferences")
+  @Operation(summary = "${api.user.updatePreferences.summary}", description = "${api.user.updatePreferences.description}")
   @SecurityRequirement(name = BEARER_AUTH)
   public ResponseEntity<PreferencesDto> updatePreferences(@PathVariable("userId") UUID userId,
     @RequestBody @Valid PreferencesDto payload) {
@@ -74,7 +74,7 @@ public class UserResource {
   }
 
   @DeleteMapping("/{userId}")
-  @Operation(summary = "Delete a user")
+  @Operation(summary = "${api.user.delete.summary}", description = "${api.user.delete.description}")
   @SecurityRequirement(name = BEARER_AUTH)
   public ResponseEntity<Void> deleteUser(@PathVariable("userId") UUID userId) {
     userService.delete(userId);
@@ -83,7 +83,7 @@ public class UserResource {
 
   @GetMapping
   @PageableAsQueryParam
-  @Operation(summary = "Returns all users")
+  @Operation(summary = "${api.user.getAll.summary}", description = "${api.user.getAll.description}")
   @SecurityRequirement(name = BEARER_AUTH)
   public Page<UserDto> getUsers(@Parameter(hidden = true) Pageable pageable,
     @RequestParam(required = false) List<String> q,
@@ -97,7 +97,7 @@ public class UserResource {
   }
 
   @PostMapping(value = "/{userId}/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-  @Operation(summary = "Upload new user avatar")
+  @Operation(summary = "${api.user.upload.summary}", description = "${api.user.upload.description}")
   @SecurityRequirement(name = BEARER_AUTH)
   public ResponseEntity<Resource> uploadAvatar(@PathVariable UUID userId,
     @RequestPart("file") MultipartFile file) {
@@ -105,20 +105,20 @@ public class UserResource {
   }
 
   @DeleteMapping("/{userId}/avatar")
-  @Operation(summary = "Delete old user avatar")
+  @Operation(summary = "${api.user.deleteAvatar.summary}", description = "${api.user.deleteAvatar.description}")
   @SecurityRequirement(name = BEARER_AUTH)
   public ResponseEntity<Resource> deleteAvatar(@PathVariable UUID userId) {
     return getResourceResponseEntity(userId, fileService.deleteAvatar(userId));
   }
 
   @GetMapping("/{userId}/avatar")
-  @Operation(summary = "Get user avatar")
+  @Operation(summary = "${api.user.getAvatar.summary}", description = "${api.user.getAvatar.description}")
   public ResponseEntity<Resource> getAvatar(@PathVariable UUID userId) {
     return getResourceResponseEntity(userId, fileService.getAvatar(userId));
   }
 
   @GetMapping("/{userId}/avatar-secure")
-  @Operation(summary = "Get user avatar authenticated")
+  @Operation(summary = "${api.user.getAvatarAuth.summary}", description = "${api.user.getAvatarAuth.description}")
   @SecurityRequirement(name = BEARER_AUTH)
   public ResponseEntity<Resource> getAvatarSecured(@PathVariable UUID userId) {
     return getResourceResponseEntity(userId, fileService.getAvatar(userId));

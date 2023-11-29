@@ -39,13 +39,13 @@ public class CompanyResource {
   private final CompanyService companyService;
 
   @GetMapping("/{companyId}")
-  @Operation(summary = "Returns a company by given id")
+  @Operation(summary = "${api.company.getOne.summary}", description = "${api.company.getOne.description}")
   public ResponseEntity<CompanyDetailDto> getCompany(@PathVariable("companyId") UUID companyId) {
     return ResponseEntity.ok(companyService.findOne(companyId));
   }
 
   @PutMapping("/{companyId}")
-  @Operation(summary = "Updates a company by given id")
+  @Operation(summary = "${api.company.update.summary}", description = "${api.company.update.description}")
   @SecurityRequirement(name = BEARER_AUTH)
   public ResponseEntity<CompanyDetailDto> updateCompany(@PathVariable("companyId") UUID companyId,
     @Valid @RequestBody CompanyUpdateDto payload) {
@@ -54,7 +54,7 @@ public class CompanyResource {
 
   @GetMapping
   @PageableAsQueryParam
-  @Operation(summary = "Returns all companies")
+  @Operation(summary = "${api.company.getAll.summary}", description = "${api.company.getAll.description}")
   public Page<CompanyDto> getCompanies(@Parameter(hidden = true) Pageable pageable,
     @RequestParam(required = false) List<String> q,
     @RequestParam(required = false) CompanyNumberOfEmployees companySize) {
