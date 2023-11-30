@@ -25,11 +25,13 @@ export class ApplicationsComponent {
         ["positionName", "name"],
         ["state", "status"]
     ])
+    lastEvent?: PageableEvent;
 
     constructor(private applicationService: ApplicationService) {
     }
 
     updateDataSource(event: PageableEvent) {
+        this.lastEvent = event
         let sorts: string[] = [];
         if (!!event.sort && !!event.sort.active && !!event.sort.direction) {
             let active = this.sortProperties.get(event.sort.active)
@@ -51,4 +53,12 @@ export class ApplicationsComponent {
     }
 
     protected readonly FiltersFor = FiltersFor;
+
+    delete($event: any) {
+        this.applicationService.deleteApplication($event.id).subscribe(() => {
+            if (this.lastEvent) {
+                this.updateDataSource(this.lastEvent)
+            }
+        })
+    }
 }

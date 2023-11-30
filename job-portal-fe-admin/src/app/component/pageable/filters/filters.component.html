@@ -71,19 +71,19 @@
         </mat-form-field>
     </div>
 
-    <mat-form-field *ngIf="isEnabled('date')">
+    <mat-form-field *ngIf="isEnabled('date')" class="f">
         <mat-label>Date from</mat-label>
         <input matInput [formControl]="filtersForm.controls.dateFrom" [matDatepicker]="picker">
         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker   ></mat-datepicker>
+        <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
 
 
-    <mat-form-field *ngIf="isEnabled('date')" >
+    <mat-form-field *ngIf="isEnabled('date')" class="f">
         <mat-label>Date to</mat-label>
         <input matInput [formControl]="filtersForm.controls.dateTo" [matDatepicker]="picker2">
         <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
-        <mat-datepicker #picker2 ></mat-datepicker>
+        <mat-datepicker #picker2></mat-datepicker>
     </mat-form-field>
 
 

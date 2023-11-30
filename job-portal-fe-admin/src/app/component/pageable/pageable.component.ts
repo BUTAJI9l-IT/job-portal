@@ -56,7 +56,7 @@ export class PageableComponent implements AfterViewInit, OnInit {
     @Output()
     addNew: EventEmitter<any> = new EventEmitter<any>()
     @Output()
-    onDelete: EventEmitter<string> = new EventEmitter<string>()
+    onDelete: EventEmitter<string> = new EventEmitter<any>()
     @Input()
     dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
     filterQ = new FormControl<string>("")
@@ -113,8 +113,8 @@ export class PageableComponent implements AfterViewInit, OnInit {
         this.addNew.emit();
     }
 
-    deleteRow(id: string) {
-        this.onDelete.emit(id)
+    deleteRow(row: any) {
+        this.onDelete.emit(row)
     }
 
     ngOnInit(): void {
