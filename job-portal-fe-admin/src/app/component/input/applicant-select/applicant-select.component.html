@@ -1,6 +1,6 @@
 <mat-form-field appearance="outline" style="width: 100%">
 
-    <mat-label>Job position</mat-label>
+    <mat-label>Applicant</mat-label>
 
     <input type="text"
            matInput
@@ -16,7 +16,7 @@
 </mat-form-field>
 
 <mat-chip-set>
-    <mat-chip-row (removed)="remove()"
+    <mat-chip-row *ngIf="!!selectedApplicant.value && !!selectedApplicant.value?.id" (removed)="remove()"
                   [editable]="false">
         {{selectedApplicant.value?.lastName + ' ' + selectedApplicant.value?.name}}
         <button matChipRemove>
