@@ -1,9 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {CompanyDto} from "../../../../model/companyDto";
 import {FormControl} from "@angular/forms";
 import {JobPositionDto} from "../../../../model/jobPositionDto";
 import {JobPositionService} from "../../../../api/jobPosition.service";
-import {ApplicantDto} from "../../../../model/applicantDto";
 
 @Component({
     selector: 'app-job-select',
@@ -28,6 +26,12 @@ export class JobSelectComponent {
     }
 
     ngOnInit(): void {
+        this.selectedCompaniesId.valueChanges.subscribe((value) => {
+            this.jobService.getJobPositions(!!this.jobControl.value && typeof this.jobControl.value === 'string' ? [this.jobControl.value] : [], undefined, undefined, !!value ? value : undefined).subscribe((resp) => {
+                this.jobs = resp.content ? resp.content : [];
+            });
+            this.onChange.emit(this.selectedJob.value?.id)
+        })
         this.jobControl.valueChanges.subscribe((value) => {
             if (typeof value === 'string') {
                 this.jobService.getJobPositions(value ? [value] : [], undefined, undefined, !!this.selectedCompaniesId.value ? this.selectedCompaniesId.value : undefined).subscribe((resp) => {
@@ -44,5 +48,7 @@ export class JobSelectComponent {
 
     remove() {
         this.selectedJob.setValue({})
+        this.jobControl.setValue('');
+        this.onChange.emit(this.selectedJob.value?.id)
     }
 }

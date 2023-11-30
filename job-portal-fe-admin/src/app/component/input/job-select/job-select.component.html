@@ -16,9 +16,9 @@
 </mat-form-field>
 
 <mat-chip-set>
-    <mat-chip-row (removed)="remove()"
+    <mat-chip-row *ngIf="!!selectedJob.value && !!selectedJob.value?.id" (removed)="remove()"
                   [editable]="false">
-        {{selectedJob.value?.positionName}}
+        <div style="overflow: hidden"> {{selectedJob.value?.positionName}}</div>
         <button matChipRemove>
             <mat-icon>cancel</mat-icon>
         </button>

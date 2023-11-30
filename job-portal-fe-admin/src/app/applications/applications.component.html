@@ -1,1 +1,2 @@
-<p>applications works!</p>
+<app-pageable [dataSource]="dataSource" [columns]="columns" [filterType]="FiltersFor.APPLICATION"
+              (onChange)="updateDataSource($event)"></app-pageable>

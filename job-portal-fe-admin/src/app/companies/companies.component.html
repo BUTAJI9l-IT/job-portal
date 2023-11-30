@@ -1,1 +1,2 @@
-<p>companies works!</p>
+<app-pageable [dataSource]="dataSource" [columns]="columns" [filterType]="FiltersFor.COMPANY"
+              (onChange)="updateDataSource($event)"></app-pageable>

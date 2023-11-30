@@ -1,1 +1,2 @@
-<p>job-positions works!</p>
+<app-pageable [dataSource]="dataSource" [columns]="columns" [filterType]="FiltersFor.JOB"
+              (onChange)="updateDataSource($event)"></app-pageable>
