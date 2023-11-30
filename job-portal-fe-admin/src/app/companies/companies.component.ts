@@ -4,6 +4,7 @@ import {MatTableDataSource} from "@angular/material/table";
 import {PageableEvent} from "../component/pageable/pageable.component";
 import {CompanyDto} from "../../model/companyDto";
 import {CompanyService} from "../../api/company.service";
+import {UserService} from "../../api/user.service";
 
 @Component({
     selector: 'app-companies',
@@ -22,11 +23,13 @@ export class CompaniesComponent {
         ["companyName", "name"],
         ["companySize", "companySize"],
     ])
+    lastEvent?: PageableEvent;
 
-    constructor(private companyService: CompanyService) {
+    constructor(private companyService: CompanyService, private userService: UserService) {
     }
 
     updateDataSource(event: PageableEvent) {
+        this.lastEvent = event
         let sorts: string[] = [];
         if (!!event.sort && !!event.sort.active && !!event.sort.direction) {
             let active = this.sortProperties.get(event.sort.active)
@@ -44,6 +47,15 @@ export class CompaniesComponent {
                     event.paginator.length = r.totalElements
                 }
             )
+    }
+
+
+    delete($event: any) {
+        this.userService.deleteUser($event.userId).subscribe(() => {
+            if (this.lastEvent) {
+                this.updateDataSource(this.lastEvent)
+            }
+        })
     }
 
     protected readonly FiltersFor = FiltersFor;
