@@ -66,8 +66,8 @@ public class ApplicantServiceImpl implements ApplicantService {
   @Transactional(readOnly = true)
   @PreAuthorize("@authorityValidator.isAdmin() || @authorityValidator.isCompany()")
   public Page<ApplicantDto> findAll(Pageable pageable, ApplicantQueryParams params) {
-    if (params.getJobPosition() != null) {
-      final var user = userRepository.getOneByIdOrThrowNotFound(getCurrentUser());
+    final var user = userRepository.getOneByIdOrThrowNotFound(getCurrentUser());
+    if (user.getScope()!= JobPortalScope.ADMIN && params.getJobPosition() != null) {
       if (user.getScope().equals(JobPortalScope.REGULAR_USER)) {
         throw new AccessDeniedException("Access denied");
       }
