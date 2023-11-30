@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {CompanyDto} from "../../../../model/companyDto";
 import {UserDto} from "../../../../model/userDto";
 import {FormControl, FormGroup} from "@angular/forms";
@@ -8,6 +8,8 @@ import CompanySizeEnum = CompanyDto.CompanySizeEnum;
 import ScopeEnum = UserDto.ScopeEnum;
 import StatusEnum = JobPositionDto.StatusEnum;
 import StateEnum = ApplicationDto.StateEnum;
+import {CategoryDto} from "../../../../model/categoryDto";
+import {JobPositionCategoryService} from "../../../../api/jobPositionCategory.service";
 
 export interface Filters {
     jobPosition: FormControl<undefined | string>,
@@ -31,7 +33,9 @@ export enum FiltersFor {
     templateUrl: './filters.component.html',
     styleUrls: ['./filters.component.css']
 })
-export class FiltersComponent {
+export class FiltersComponent implements OnInit{
+    protected readonly FiltersFor = FiltersFor;
+    categoriesList: CategoryDto[] = [];
     @Output()
     onChange = new EventEmitter<Filters>()
     @Input()
@@ -58,6 +62,9 @@ export class FiltersComponent {
         [FiltersFor.NONE, []]
     ])
 
+    constructor(private categoryService: JobPositionCategoryService) {
+    }
+
     isEnabled(filterId: string) {
         return this.getEnabled()?.includes(filterId)
     }
@@ -82,5 +89,11 @@ export class FiltersComponent {
         this.filtersForm.controls.applicant.setValue(id)
     }
 
-    protected readonly FiltersFor = FiltersFor;
+    ngOnInit(): void {
+        if (this.isEnabled("categories")) {
+            this.categoryService.getCategories().subscribe(val => {
+                this.categoriesList = !!val.jobCategories ? val.jobCategories : []
+            })
+        }
+    }
 }
