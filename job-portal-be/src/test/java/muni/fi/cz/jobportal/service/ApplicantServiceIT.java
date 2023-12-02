@@ -79,11 +79,15 @@ class ApplicantServiceIT extends AbstractIntegrationTest {
     final var pageable = Pageable.ofSize(10);
     final var params = ApplicantQueryParams.builder().build();
 
+    final var admin = userRepository.save(prepareUserEntity("adminemail", JobPortalScope.ADMIN));
+    final var company = userRepository.save(prepareCompanyEntity("company", "email@comp.com"));
+
     when(authorityValidator.isAdmin()).thenReturn(true).thenReturn(false);
     when(authorityValidator.isCompany()).thenReturn(true).thenReturn(false);
+    when(authorityValidator.getCurrentUser()).thenReturn(admin.getId()).thenReturn(company.getId());
 
     assertDoesNotThrow(() -> applicantService.findAll(pageable, params));
-    assertDoesNotThrow(() -> applicantService.findAll(pageable, params));
+    assertThrows(AccessDeniedException.class, () -> applicantService.findAll(pageable, params));
     assertThrows(AccessDeniedException.class, () -> applicantService.findAll(pageable, params));
   }
 

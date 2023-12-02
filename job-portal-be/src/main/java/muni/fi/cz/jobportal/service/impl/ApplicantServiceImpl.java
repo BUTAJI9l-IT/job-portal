@@ -18,6 +18,7 @@ import muni.fi.cz.jobportal.repository.ExperienceRepository;
 import muni.fi.cz.jobportal.repository.UserRepository;
 import muni.fi.cz.jobportal.service.ApplicantService;
 import muni.fi.cz.jobportal.service.ThymeleafService;
+import muni.fi.cz.jobportal.utils.AuthorityValidator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.NonNull;
@@ -28,8 +29,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.UUID;
-
-import static muni.fi.cz.jobportal.utils.AuthenticationUtils.getCurrentUser;
 
 /**
  * {@link ApplicantService} Implementation
@@ -46,6 +45,7 @@ public class ApplicantServiceImpl implements ApplicantService {
   private final ApplicantMapper applicantMapper;
   private final ExperienceMapper experienceMapper;
   private final ExperienceRepository experienceRepository;
+  private final AuthorityValidator authorityValidator;
 
   @NonNull
   @Override
@@ -66,14 +66,11 @@ public class ApplicantServiceImpl implements ApplicantService {
   @Transactional(readOnly = true)
   @PreAuthorize("@authorityValidator.isAdmin() || @authorityValidator.isCompany()")
   public Page<ApplicantDto> findAll(Pageable pageable, ApplicantQueryParams params) {
-    final var user = userRepository.getOneByIdOrThrowNotFound(getCurrentUser());
-    if (user.getScope()!= JobPortalScope.ADMIN && params.getJobPosition() != null) {
-      if (user.getScope().equals(JobPortalScope.REGULAR_USER)) {
-        throw new AccessDeniedException("Access denied");
-      }
-      if (user.getCompany().getJobPositions().stream().noneMatch(jp -> jp.getId().equals(params.getJobPosition()))) {
-        throw new AccessDeniedException("Cannot see applicants for position with id: " + params.getJobPosition());
-      }
+    final var user = userRepository.getOneByIdOrThrowNotFound(authorityValidator.getCurrentUser());
+    if (user.getScope() != JobPortalScope.ADMIN &&
+      (params.getJobPosition() == null ||
+        user.getCompany().getJobPositions().stream().noneMatch(jp -> jp.getId().equals(params.getJobPosition())))) {
+      throw new AccessDeniedException("Cannot see applicants for position with id: " + params.getJobPosition());
     }
     return applicantRepository.search(pageable, params).map(applicantMapper::mapDto);
   }

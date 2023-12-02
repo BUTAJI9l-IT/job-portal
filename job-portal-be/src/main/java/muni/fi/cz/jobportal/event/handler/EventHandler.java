@@ -30,7 +30,7 @@ public class EventHandler {
     final var application = applicationRepository.getOneByIdOrThrowNotFound(
       applicationStateChangedEvent.getApplication());
     if (application.getApplicant().getUser().getPreferences().getNotificationsEnabled().equals(Boolean.TRUE)
-        && (properties.getNotifications().getEnabled().equals(Boolean.TRUE))) {
+      && (properties.getNotifications().getEnabled().equals(Boolean.TRUE))) {
       final var email = new ApplicationStateChangedEmail(
         ApplicationEmailDto.builder()
           .state(applicationStateChangedEvent.getStatus())
@@ -38,7 +38,7 @@ public class EventHandler {
           .company(application.getJobPosition().getCompany().getCompanyName())
           .recipient(application.getApplicant().getUser().getEmail())
           .build());
-      emailService.sendEmail(email, application.getApplicant().getUser().getPreferences().getLanguage().getCode());
+      emailService.sendEmail(email, application.getApplicant().getUser().getPreferences().getLanguage().toLocale());
     }
   }
 }

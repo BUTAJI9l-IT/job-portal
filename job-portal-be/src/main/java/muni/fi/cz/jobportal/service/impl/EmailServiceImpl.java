@@ -8,7 +8,6 @@ import muni.fi.cz.jobportal.enums.TemplateParameter;
 import muni.fi.cz.jobportal.exception.EmailCreateException;
 import muni.fi.cz.jobportal.service.EmailService;
 import muni.fi.cz.jobportal.service.ThymeleafService;
-import org.apache.commons.lang3.LocaleUtils;
 import org.springframework.boot.autoconfigure.mail.MailProperties;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.lang.NonNull;
@@ -19,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -39,11 +39,9 @@ public class EmailServiceImpl implements EmailService {
 
   @Async
   @Override
-  public void sendEmail(@NonNull IEmail email, String lang) {
+  public void sendEmail(@NonNull IEmail email, Locale locale) {
     if (properties.getNotifications().getEnabled().equals(Boolean.TRUE)) {
-      final var locale = LocaleUtils.toLocale(lang);
-      final var subject = messageSource.getMessage("subject." + email.getTemplateName(), new Object[0],
-        locale);
+      final var subject = messageSource.getMessage("subject." + email.getTemplateName(), new Object[0], locale);
       final var message = javaMailSender.createMimeMessage();
       final var body = thymeleafService.parseTemplate(getContextVars(email), email.getTemplateName(), locale);
       final MimeMessageHelper helper;

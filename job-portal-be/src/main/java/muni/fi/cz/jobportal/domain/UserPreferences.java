@@ -1,5 +1,6 @@
 package muni.fi.cz.jobportal.domain;
 
+import com.neovisionaries.i18n.LanguageCode;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,7 +24,7 @@ public class UserPreferences {
   private User user;
 
   private Boolean notificationsEnabled;
-  @ManyToOne
-  @JoinColumn(name = "lang")
-  private Language language;
+  @Column(name = "lang")
+  @Enumerated(value = EnumType.STRING)
+  private LanguageCode language = LanguageCode.en;
 }

@@ -17,8 +17,6 @@ public interface JobPortalRepository<T, I> extends JpaRepository<T, I> {
   Class<T> getBaseClass();
 
   default T getOneByIdOrThrowNotFound(I id) {
-    return findById(id).orElseThrow(() -> {
-      throw new EntityNotFoundException(getBaseClass());
-    });
+    return findById(id).orElseThrow(() -> new EntityNotFoundException(getBaseClass()));
   }
 }
