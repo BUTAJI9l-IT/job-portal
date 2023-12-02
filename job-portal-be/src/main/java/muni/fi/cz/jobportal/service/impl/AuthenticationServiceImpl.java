@@ -67,10 +67,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
       throw new AccessDeniedException("Unauthorized");
     }
 
-    final var user = userRepository.findByEmail(request.getEmail())
-      .orElseThrow(() -> {
-        throw new EntityNotFoundException(User.class);
-      });
+    final var user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new EntityNotFoundException(User.class));
     return performLoginForUser(authentication, user.getId());
   }
 
@@ -121,14 +118,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     final var authorities = authentication.getAuthorities();
     claims.subject(user.getId().toString());
     claims.claim(EMAIL_CLAIM, user.getEmail());
-    claims.claim(LANGUAGE_CLAIM, user.getPreferences().getLanguage().getCode());
+    claims.claim(LANGUAGE_CLAIM, user.getPreferences().getLanguage());
     claims.claim(NON_USER_UUID_CLAIM, user.getNUI().toString());
     claims.claim(SCOPE_CLAIM, authorities.stream()
       .map(GrantedAuthority::getAuthority)
       .findFirst()
-      .orElseThrow(() -> {
-        throw new EmptyScopesException();
-      }));
+      .orElseThrow(EmptyScopesException::new));
     claims.subject(user.getId().toString());
     claims.expiresAt(now.plus(applicationProperties.getAccessToken().getDuration()));
     return claims.build();

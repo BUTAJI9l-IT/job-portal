@@ -15,6 +15,7 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import static muni.fi.cz.jobportal.configuration.ApplicationFonts.*;
 
@@ -55,6 +56,7 @@ public class ThymeleafConfiguration {
     ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
     messageSource.setBasename(MESSAGES);
     messageSource.setDefaultEncoding("UTF-8");
+    messageSource.setDefaultLocale(Locale.ENGLISH);
     return messageSource;
   }
 
@@ -110,6 +112,5 @@ public class ThymeleafConfiguration {
   private void addFont(DefaultFontProvider dfp, String arialFontPath) throws IOException {
     dfp.addFont(FontProgramFactory.createFont(resourceLoader.getResource(arialFontPath).getFile().getPath()));
   }
-
 
 }

@@ -41,9 +41,7 @@ public class UserServiceImpl implements UserService {
   private final ExperienceRepository experienceRepository;
   private final CompanyRepository companyRepository;
   private final RefreshTokenRepository refreshTokenRepository;
-  private final LanguageRepository languageRepository;
   private final PreferencesRepository preferencesRepository;
-  private final JobPositionRepository jobPositionRepository;
   private final UserMapper userMapper;
   private final CompanyMapper companyMapper;
   private final PreferencesMapper preferencesMapper;
@@ -117,7 +115,6 @@ public class UserServiceImpl implements UserService {
   public PreferencesDto updatePreferences(@NonNull UUID userId, @NonNull PreferencesDto payload) {
     final var userPreferences = userRepository.getOneByIdOrThrowNotFound(userId).getPreferences();
     preferencesMapper.update(userPreferences, payload);
-    userPreferences.setLanguage(languageRepository.getOneByIdOrThrowNotFound(payload.getLanguage()));
     return preferencesMapper.map(preferencesRepository.save(userPreferences));
   }
 
