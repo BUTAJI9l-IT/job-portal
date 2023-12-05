@@ -50,6 +50,10 @@ export class PageableComponent implements AfterViewInit, OnInit {
     @Input()
     addNewButton = true
     @Input()
+    route = ""
+    @Input()
+    routeId = ""
+    @Input()
     deleteButton = true
     @Output()
     onChange: EventEmitter<PageableEvent> = new EventEmitter<PageableEvent>()

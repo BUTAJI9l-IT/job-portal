@@ -1,2 +1,2 @@
-<app-pageable [dataSource]="dataSource" [columns]="columns" [filterType]="FiltersFor.COMPANY"
-              (onChange)="updateDataSource($event)" (onDelete)="delete($event)"></app-pageable>
+<app-pageable [dataSource]="dataSource" [columns]="columns" [filterType]="FiltersFor.COMPANY" [addNewButton]="false"
+              (onChange)="updateDataSource($event)" (onDelete)="delete($event)" [route]="'/users'" [routeId]="'userId'"></app-pageable>

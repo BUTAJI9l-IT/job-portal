@@ -1,7 +1,7 @@
 <div style="width: 90%; margin: auto; padding-top: 1%">
     <mat-form-field *ngIf="filterType !== FiltersFor.NONE">
         <mat-label>Filter</mat-label>
-        <input [formControl]="filterQ" (keyup)="applyFilter()" matInput #input>
+        <input [formControl]="filterQ" (keyup)="applyFilter()" matInput>
     </mat-form-field>
 </div>
 
@@ -15,30 +15,34 @@
 </div>
 
 <div class="mat-elevation-z8" style="width: 90%; margin: auto;max-height: 60%;overflow-y: scroll">
-    <table mat-table [dataSource]="dataSource" matSort (matSortChange)="onChangeEmit(false)">
+    <mat-table [dataSource]="dataSource" matSort (matSortChange)="onChangeEmit(false)">
 
         <ng-container *ngFor="let col of columns" matColumnDef={{col.ref}}>
-            <th mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="!col.sortable"> {{col.label}} </th>
-            <td mat-cell
-                *matCellDef="let row"> {{!!col.multiple ? getMultiple(row, col) : getObjectProperty(row, col.ref)}} </td>
+            <mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="!col.sortable"> {{col.label}} </mat-header-cell>
+            <mat-cell
+                *matCellDef="let row"> {{!!col.multiple ? getMultiple(row, col) : getObjectProperty(row, col.ref)}} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef></th>
-            <td mat-cell *matCellDef="let row">
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell *matCellDef="let row">
                 <button mat-icon-button (click)="deleteRow(row)">
                     <mat-icon color="warn">delete</mat-icon>
                 </button>
-            </td>
+            </mat-cell>
         </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="getDisplayedColumns(); sticky: true;"></tr>
-        <tr mat-row *matRowDef="let row; columns: getDisplayedColumns();"></tr>
+        <mat-header-row *matHeaderRowDef="getDisplayedColumns(); sticky: true;"></mat-header-row>
+        <mat-row mat-ripple matRipple class="hover" *matRowDef="let row; columns: getDisplayedColumns();"
+                 [style.pointer-events]="!route && !routeId && !row[routeId] ? 'none' : 'auto'"
+                 [style.cursor]="!route && !routeId && !row[routeId] ? 'auto' : 'pointer'"
+                 [routerLink]="!!route ? [route, row[routeId]] : [row[routeId]]">
+        </mat-row>
 
-        <tr class="mat-row" *matNoDataRow>
-            <td class="mat-cell" colspan="4">No data matching the filter</td>
-        </tr>
-    </table>
+        <mat-row *matNoDataRow>
+            <mat-cell aria-colspan="4" >No data matching the filter</mat-cell>
+        </mat-row>
+    </mat-table>
 
 </div>
 <mat-paginator *ngIf="filterType !== FiltersFor.NONE" style="width: 90%; margin: auto"

@@ -1,0 +1,13 @@
+<mat-form-field *ngIf="editMode" [appearance]="fieldAppearance" style="text-indent: 0; width: 90%">
+  <mat-label><span [translate]="label"></span></mat-label>
+  <textarea matInput
+            cdkTextareaAutosize
+            cdkAutosizeMinRows="1"
+            cdkAutosizeMaxRows="5"
+            [formControl]="formControlComponent">
+  </textarea>
+</mat-form-field>
+
+<div *ngIf="!editMode" style="width: 100%">
+  <div>{{formControlComponent.value}}</div>
+</div>
