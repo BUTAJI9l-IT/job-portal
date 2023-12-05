@@ -1,0 +1,9 @@
+<mat-form-field *ngIf="editMode" [appearance]="fieldAppearance" style="text-indent: 0; width: 100%">
+  <mat-label><span [translate]="label"></span></mat-label>
+  <input [type]="inputType ? inputType : ''" matInput [formControl]="formControlComponent" [errorStateMatcher]="matcher">
+</mat-form-field>
+
+<div *ngIf="!editMode" style="width: 100%">
+  <div *ngIf="inputType !== 'url'">{{formControlComponent.value}}</div>
+  <a *ngIf="inputType === 'url'" href="//{{formControlComponent.value}}">{{formControlComponent.value}}</a>
+</div>

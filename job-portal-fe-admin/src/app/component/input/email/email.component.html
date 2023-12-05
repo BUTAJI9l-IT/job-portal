@@ -1,0 +1,20 @@
+<mat-form-field *ngIf="editMode" class="email-input"  [appearance]="fieldAppearance">
+
+  <mat-label><span>Email</span></mat-label>
+
+  <input type="email" matInput [formControl]="formControlComponent" [errorStateMatcher]="matcher">
+
+  <mat-error
+    *ngIf="formControlComponent.hasError('email') && !formControlComponent.hasError('required')">
+    <span>Invalid email address</span>
+  </mat-error>
+
+  <mat-error *ngIf="formControlComponent.hasError('required')">
+    <span>Email is required</span>
+  </mat-error>
+
+</mat-form-field>
+
+<div *ngIf="!editMode">
+  <div>{{formControlComponent.value}}</div>
+</div>

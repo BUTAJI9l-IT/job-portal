@@ -37,10 +37,19 @@ import { CompanySelectComponent } from './input/company-select/company-select.co
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import { JobSelectComponent } from './input/job-select/job-select.component';
 import { ApplicantSelectComponent } from './input/applicant-select/applicant-select.component';
+import {TextComponent} from "./input/text/text.component";
+import {TextAreaComponent} from "./input/text-area/text-area.component";
+import {EmailComponent} from "./input/email/email.component";
+import {PhoneComponent} from "./input/phone/phone.component";
+import {AddressInputComponent} from "./input/address-input/address-input.component";
+import {ActionsComponent} from "./dialog/actions/actions.component";
+import {EditorComponent} from "./input/editor/editor.component";
+import {QuillEditorComponent, QuillViewComponent} from "ngx-quill";
+import {ConfirmationComponent} from "./dialog/confirmation/confirmation.component";
 
 @NgModule({
-  declarations: [NotFoundComponent, ForbiddenComponent, PageableComponent, FiltersComponent, CompanySelectComponent, JobSelectComponent, ApplicantSelectComponent],
-  exports: [NotFoundComponent, ForbiddenComponent, PageableComponent],
+    declarations: [NotFoundComponent, ForbiddenComponent, PageableComponent, FiltersComponent, CompanySelectComponent, JobSelectComponent, ApplicantSelectComponent, TextComponent, TextAreaComponent, EmailComponent, PhoneComponent, AddressInputComponent, ActionsComponent, EditorComponent, ConfirmationComponent],
+    exports: [NotFoundComponent, ForbiddenComponent, PageableComponent, TextComponent, TextAreaComponent, EmailComponent, PhoneComponent, AddressInputComponent, ActionsComponent, EditorComponent],
     imports: [
         MatNativeDateModule,
         CommonModule,
@@ -76,7 +85,9 @@ import { ApplicantSelectComponent } from './input/applicant-select/applicant-sel
         MatBadgeModule,
         MatRadioModule,
         MatSortModule,
-        MatAutocompleteModule
+        MatAutocompleteModule,
+        QuillViewComponent,
+        QuillEditorComponent
     ],
 })
 export class SharedModule {

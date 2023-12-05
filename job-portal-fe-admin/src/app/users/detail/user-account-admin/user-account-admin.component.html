@@ -1,0 +1,54 @@
+<mat-card>
+  <div>
+    <mat-card-header>
+
+      <img mat-card-avatar [matMenuTriggerFor]="menu" class="header-avatar"
+           src="avatar.value"
+           alt="">
+
+      <mat-menu #menu="matMenu">
+        <avatar-menu [avatarFormControl]="avatar" [userId]="userInfo.controls['id'].value"></avatar-menu>
+      </mat-menu>
+
+      <mat-card-title class="name">
+        <text-input [label]="'First name'" [formControlComponent]="$any(userInfo).controls['name']"
+                    [editMode]="editMode" fieldAppearance="outline"></text-input>
+      </mat-card-title>
+      <mat-card-title class="name">
+        <text-input [label]="'Last name'" [formControlComponent]="$any(userInfo).controls['lastName']"
+                    [editMode]="editMode" fieldAppearance="outline"></text-input>
+      </mat-card-title>
+
+      <span fxFlex></span>
+
+      <div>
+        <button *ngIf="!editMode" mat-icon-button (click)="editMode = true">
+          <mat-icon color="accent">edit</mat-icon>
+        </button>
+      </div>
+
+    </mat-card-header>
+
+    <mat-divider></mat-divider>
+
+    <mat-card-content class="card-content">
+
+      <div class="form-fields">
+        <div class="form-field">
+          <h3>Email</h3>
+          <email-input [formControlComponent]="$any(userInfo).controls['email']" [editMode]="editMode"
+                       fieldAppearance="outline"></email-input>
+        </div>
+      </div>
+
+    </mat-card-content>
+
+
+    <mat-card-actions *ngIf="editMode" align="end" class="action-buttons">
+      <dialog-actions submitText="Save changes" (onCancel)="safeCancelChange()"
+                      (onSubmit)="updateUser()"></dialog-actions>
+    </mat-card-actions>
+
+
+  </div>
+</mat-card>

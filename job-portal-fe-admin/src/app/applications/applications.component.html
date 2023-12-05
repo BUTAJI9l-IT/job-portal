@@ -1,2 +1,2 @@
-<app-pageable [dataSource]="dataSource" [columns]="columns" [filterType]="FiltersFor.APPLICATION"
+<app-pageable [dataSource]="dataSource" [columns]="columns" [filterType]="FiltersFor.APPLICATION" [routeId]="'id'"
               (onChange)="updateDataSource($event)" (onDelete)="delete($event)"></app-pageable>
