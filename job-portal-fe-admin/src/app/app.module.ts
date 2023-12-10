@@ -22,8 +22,6 @@ import {MatTableModule} from "@angular/material/table";
 import {MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule} from "@angular/material/snack-bar";
 import {ApiModule} from "../api/api.module";
 import {authInterceptorProviders} from "./helpers/auth.interceptor";
-import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
-import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {MatMenuModule} from "@angular/material/menu";
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatListModule} from "@angular/material/list";
@@ -77,13 +75,6 @@ const routes: Routes = [
         SharedModule,
         HttpClientModule,
         BrowserModule,
-        TranslateModule.forRoot({
-            loader: {
-                provide: TranslateLoader,
-                useFactory: HttpLoaderFactory,
-                deps: [HttpClient]
-            }
-        }),
         BrowserAnimationsModule,
         ReactiveFormsModule,
         MatFormFieldModule,
@@ -118,11 +109,8 @@ const routes: Routes = [
         authInterceptorProviders, loadingInterceptorProviders,
     ],
     bootstrap: [AppComponent],
-    exports: [RouterModule, TranslateModule]
+    exports: [RouterModule]
 })
 export class AppModule {
 }
 
-export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
-    return new TranslateHttpLoader(http);
-}

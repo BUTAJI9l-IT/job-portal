@@ -75,14 +75,14 @@
         <mat-divider></mat-divider>
 
         <h3 style="margin-left: 25px" >Experiences</h3>
-          <app-experiences-list [experiences]="$any(applicantInfo).controls['experiences']"></app-experiences-list>
+          <app-experiences-list [dataSource]="$any(applicantInfo).controls['experiences'].value" (onDelete)="deleteExperience($event)" (addNew)="addExperience()"></app-experiences-list>
       </div>
 
     </mat-card-content>
 
 
     <mat-card-actions *ngIf="editMode" align="end" class="action-buttons">
-      <dialog-actions submitText="dialog.actions.save" (onCancel)="safeCancelChange()"
+      <dialog-actions submitText="Save" (onCancel)="safeCancelChange()"
                       (onSubmit)="updateUser()"></dialog-actions>
     </mat-card-actions>
 

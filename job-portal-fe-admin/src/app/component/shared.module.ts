@@ -1,6 +1,5 @@
 import {NgModule} from '@angular/core';
 import {NotFoundComponent} from "../home/components/not-found/not-found.component";
-import {TranslateModule} from "@ngx-translate/core";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSelectModule} from "@angular/material/select";
@@ -30,13 +29,13 @@ import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {MatBadgeModule} from "@angular/material/badge";
 import {MatRadioModule} from "@angular/material/radio";
 import {ForbiddenComponent} from "../home/components/forbidden/forbidden.component";
-import { PageableComponent } from './pageable/pageable.component';
+import {PageableComponent} from './pageable/pageable.component';
 import {MatSortModule} from "@angular/material/sort";
-import { FiltersComponent } from './pageable/filters/filters.component';
-import { CompanySelectComponent } from './input/company-select/company-select.component';
+import {FiltersComponent} from './pageable/filters/filters.component';
+import {CompanySelectComponent} from './input/company-select/company-select.component';
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
-import { JobSelectComponent } from './input/job-select/job-select.component';
-import { ApplicantSelectComponent } from './input/applicant-select/applicant-select.component';
+import {JobSelectComponent} from './input/job-select/job-select.component';
+import {ApplicantSelectComponent} from './input/applicant-select/applicant-select.component';
 import {TextComponent} from "./input/text/text.component";
 import {TextAreaComponent} from "./input/text-area/text-area.component";
 import {EmailComponent} from "./input/email/email.component";
@@ -46,14 +45,18 @@ import {ActionsComponent} from "./dialog/actions/actions.component";
 import {EditorComponent} from "./input/editor/editor.component";
 import {QuillEditorComponent, QuillViewComponent} from "ngx-quill";
 import {ConfirmationComponent} from "./dialog/confirmation/confirmation.component";
+import {AddExperienceComponent} from "./dialog/add-experience/add-experience.component";
+import {DateRangeComponent} from "./input/date-range/date-range.component";
+import {EditableInputComponent} from "./input/editable-input/editable-input.component";
+import {ExtendableChipsComponent} from "./input/extendable-chips/extendable-chips.component";
+import {AddJobComponent} from "./dialog/add-job/add-job.component";
 
 @NgModule({
-    declarations: [NotFoundComponent, ForbiddenComponent, PageableComponent, FiltersComponent, CompanySelectComponent, JobSelectComponent, ApplicantSelectComponent, TextComponent, TextAreaComponent, EmailComponent, PhoneComponent, AddressInputComponent, ActionsComponent, EditorComponent, ConfirmationComponent],
-    exports: [NotFoundComponent, ForbiddenComponent, PageableComponent, TextComponent, TextAreaComponent, EmailComponent, PhoneComponent, AddressInputComponent, ActionsComponent, EditorComponent],
+    declarations: [NotFoundComponent, ForbiddenComponent, PageableComponent, FiltersComponent, CompanySelectComponent, JobSelectComponent, ApplicantSelectComponent, TextComponent, TextAreaComponent, EmailComponent, PhoneComponent, AddressInputComponent, ActionsComponent, EditorComponent, ConfirmationComponent, AddExperienceComponent, DateRangeComponent, EditableInputComponent, ExtendableChipsComponent,AddJobComponent],
+    exports: [NotFoundComponent, ForbiddenComponent, PageableComponent, FiltersComponent, CompanySelectComponent, JobSelectComponent, ApplicantSelectComponent, TextComponent, TextAreaComponent, EmailComponent, PhoneComponent, AddressInputComponent, ActionsComponent, EditorComponent, ConfirmationComponent, AddExperienceComponent, DateRangeComponent, EditableInputComponent, ExtendableChipsComponent,AddJobComponent],
     imports: [
         MatNativeDateModule,
         CommonModule,
-        TranslateModule,
         ReactiveFormsModule,
         MatFormFieldModule,
         MatSelectModule,

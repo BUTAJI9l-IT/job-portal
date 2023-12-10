@@ -1,18 +1,18 @@
 <mat-form-field [appearance]="fieldAppearance" style="width: 100%">
-  <mat-label><span [translate]="'inputs.date-range.label'"></span></mat-label>
+  <mat-label>Date range</mat-label>
   <mat-date-range-input [formGroup]="dateRange" [rangePicker]="picker">
     <input matStartDate [formControl]="dateRange.controls.from"
-           [placeholder]="'inputs.date-range.placeholder.start' | translate">
+           [placeholder]="'From'">
     <input matEndDate [formControl]="dateRange.controls.to"
-           [placeholder]="'inputs.date-range.placeholder.end' | translate">
+           [placeholder]="'To'">
   </mat-date-range-input>
   <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
   <mat-date-range-picker #picker></mat-date-range-picker>
 
   <mat-error
-    *ngIf="dateRange.controls.from.hasError('matStartDateInvalid')">{{'inputs.date-range.error.start' | translate}}
+    *ngIf="dateRange.controls.from.hasError('matStartDateInvalid')">{{'From date is wrong'}}
   </mat-error>
   <mat-error
-    *ngIf="dateRange.controls.to.hasError('matEndDateInvalid')">{{'inputs.date-range.error.end' | translate}}
+    *ngIf="dateRange.controls.to.hasError('matEndDateInvalid')">{{'To date is wrong'}}
   </mat-error>
 </mat-form-field>

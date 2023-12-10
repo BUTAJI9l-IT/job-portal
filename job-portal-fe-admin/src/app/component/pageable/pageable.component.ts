@@ -60,7 +60,7 @@ export class PageableComponent implements AfterViewInit, OnInit {
     @Output()
     addNew: EventEmitter<any> = new EventEmitter<any>()
     @Output()
-    onDelete: EventEmitter<string> = new EventEmitter<any>()
+    onDelete: EventEmitter<any> = new EventEmitter<any>()
     @Input()
     dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
     filterQ = new FormControl<string>("")
@@ -151,7 +151,7 @@ export class PageableComponent implements AfterViewInit, OnInit {
 
     isISOString(val: string) {
         const d = new Date(val);
-        return !Number.isNaN(d.valueOf());
+        return val !== null && !Number.isNaN(d.valueOf());
     };
 
     protected readonly FiltersFor = FiltersFor;

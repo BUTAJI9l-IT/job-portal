@@ -1,2 +1,2 @@
-<app-pageable [deleteButton]="true" [dataSource]="dataSource" [columns]="columns"
-              [filterType]="FiltersFor.NONE"></app-pageable>
+<app-pageable [dataSource]="dataSource" [columns]="columns"
+              [filterType]="FiltersFor.NONE" (onDelete)="delete($event)" (addNew)="addNewEvent()"></app-pageable>

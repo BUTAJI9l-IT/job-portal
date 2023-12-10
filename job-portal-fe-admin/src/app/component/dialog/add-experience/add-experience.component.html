@@ -3,7 +3,7 @@
     <div class="form-field">
       <mat-form-field appearance="outline" style="width: 100%">
 
-        <mat-label><span [translate]="'inputs.occupation.label'"></span></mat-label>
+        <mat-label><span>Occupation</span></mat-label>
 
         <input type="text"
                matInput
@@ -13,7 +13,7 @@
 
         <mat-autocomplete #autoOccupation="matAutocomplete" [displayWith]="occupationTranslate">
           <mat-option *ngFor="let option of occupations" [value]="option">
-            <span>{{('categories.occupations.' + option.id | translate)}} {{translate.currentLang === 'en' ? '' : ('(' + option.name + ')')}}</span>
+            <span>{{option.name}}</span>
           </mat-option>
         </mat-autocomplete>
 
@@ -24,19 +24,19 @@
   <div class="form-fields">
     <div class="form-field">
       <mat-form-field appearance="outline" style="width: 100%">
-        <mat-label><span [translate]="'inputs.categories.label'"></span></mat-label>
+        <mat-label><span>Categories</span></mat-label>
         <mat-select [(ngModel)]="jobCategoriesSelected" multiple [compareWith]="equalsCat">
 
           <mat-select-trigger>
-            {{jobCategoriesSelected[0] ? ('categories.' + jobCategoriesSelected[0].id | translate) : ''}} {{jobCategoriesSelected[1] ? (', ' + ('categories.' + jobCategoriesSelected[1].id | translate)) : ''}}
+            {{jobCategoriesSelected[0] ? jobCategoriesSelected[0].name : ''}} {{jobCategoriesSelected[1] ? (', ' + jobCategoriesSelected[1].name) : ''}}
             <span *ngIf="(jobCategoriesSelected.length || 0) > 2" class="additional-selection">
-              (+{{(jobCategoriesSelected.length || 0) - 2}} {{jobCategoriesSelected.length === 3 ? ('inputs.categories.other' | translate) : ('inputs.categories.others' | translate)}}
+              (+{{(jobCategoriesSelected.length || 0) - 2}} {{jobCategoriesSelected.length === 3 ? 'other' : 'others'}}
               )
             </span>
           </mat-select-trigger>
 
           <mat-option *ngFor="let cat of categories" [value]="cat">
-            {{'categories.' + cat.id | translate}}
+            {{cat.name}}
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -46,7 +46,7 @@
   <div class="form-field">
     <mat-form-field appearance="outline" style="width: 100%">
 
-      <mat-label><span [translate]="'inputs.company.name.label'"></span></mat-label>
+      <mat-label><span>Company</span></mat-label>
 
       <input type="text"
              matInput
@@ -70,5 +70,5 @@
   </div>
 
 </div>
-<dialog-actions [submitText]="'dialog.experience.submit'" (onSubmit)="createExperience()"
+<dialog-actions [submitText]="'Save experience'" (onSubmit)="createExperience()"
                 (onCancel)="safeClose()"></dialog-actions>
