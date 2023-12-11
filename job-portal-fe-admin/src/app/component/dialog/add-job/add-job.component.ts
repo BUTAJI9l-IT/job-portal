@@ -4,7 +4,6 @@ import {ReferenceDto} from "../../../../model/referenceDto";
 import {CompanyDto} from "../../../../model/companyDto";
 import {ConfirmationService} from "../../../service/confirmation.service";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {TranslateService} from "@ngx-translate/core";
 import {JobPositionCategoryService} from "../../../../api/jobPositionCategory.service";
 import {StorageService} from "../../../service/storage.service";
 import {AlertService} from "../../../service/alert.service";
@@ -32,7 +31,7 @@ export class AddJobComponent extends AbstractSafeClosableComponent<AddJobCompone
     state: new FormControl(''),
     city: new FormControl(''),
   });
-  override confirmationText?: string = "dialog.confirmation.jobPosition.add-new";
+  override confirmationText?: string = "Cancel adding a new job position? All changes will be lost.";
   jobCategoriesSelected: ReferenceDto[] = [];
   occupations: ReferenceDto[] = [];
   companies: CompanyDto[] = [];
@@ -43,7 +42,6 @@ export class AddJobComponent extends AbstractSafeClosableComponent<AddJobCompone
   constructor(
     confirmationService: ConfirmationService,
     dialogRef: MatDialogRef<AddJobComponent>,
-    translate: TranslateService,
     @Inject(MAT_DIALOG_DATA) public dialogData: any,
     private categoryService: JobPositionCategoryService,
     private jobPositionService: JobPositionService,
@@ -51,7 +49,7 @@ export class AddJobComponent extends AbstractSafeClosableComponent<AddJobCompone
     private alertService: AlertService,
     private companyService: CompanyService
   ) {
-    super(confirmationService, translate, dialogRef, dialogData);
+    super(confirmationService, dialogRef, dialogData);
     this.dialogRef.updateSize("50%")
   }
 
@@ -85,7 +83,7 @@ export class AddJobComponent extends AbstractSafeClosableComponent<AddJobCompone
         return {id: jcat.controls['id'].value, name: jcat.controls['name'].value}
       });
       this.update = true;
-      this.confirmationText = 'dialog.confirmation.jobPosition.update'
+      this.confirmationText = 'There are unsaved changes, continue?'
     }
     this.jobPosition.controls.occupation.addValidators([Validators.required]);
     this.jobPosition.controls.company.addValidators([Validators.required]);
@@ -124,7 +122,7 @@ export class AddJobComponent extends AbstractSafeClosableComponent<AddJobCompone
 
   occupationTranslate = (value: ReferenceDto) => {
     if (value.id) {
-      return this.translate.instant('categories.occupations.' + value.id);
+      return value.name!
     }
     if (this.update && value.name) {
       return value.name
@@ -175,7 +173,7 @@ export class AddJobComponent extends AbstractSafeClosableComponent<AddJobCompone
         },
         error: err => {
           this.alertService.commonErrorHandle(err.error);
-          this.alertService.showMessage("alerts.jobPosition.updated");
+          this.alertService.showMessage("Position has been updated");
         }
       });
     }
@@ -213,7 +211,7 @@ export class AddJobComponent extends AbstractSafeClosableComponent<AddJobCompone
     this.jobPositionService.createJobPosition(request).subscribe({
       next: () => {
         this.dialogRef.close(true);
-        this.alertService.showMessage("alerts.jobPosition.added");
+        this.alertService.showMessage("Position has been added");
       },
       error: err => {
         this.alertService.commonErrorHandle(err.error);

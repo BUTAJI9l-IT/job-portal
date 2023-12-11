@@ -10,7 +10,7 @@ import {RouterModule, Routes} from "@angular/router";
 import {AppComponent} from "./app.component";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatIconModule} from "@angular/material/icon";
-import {HttpClient, HttpClientModule} from "@angular/common/http";
+import {HttpClientModule} from "@angular/common/http";
 import {MatChipsModule} from "@angular/material/chips";
 import {MatDialogModule} from "@angular/material/dialog";
 import {MatInputModule} from "@angular/material/input";
@@ -22,8 +22,6 @@ import {MatTableModule} from "@angular/material/table";
 import {MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule} from "@angular/material/snack-bar";
 import {ApiModule} from "../api/api.module";
 import {authInterceptorProviders} from "./helpers/auth.interceptor";
-import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
-import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {MatMenuModule} from "@angular/material/menu";
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatListModule} from "@angular/material/list";
@@ -41,7 +39,6 @@ import {ApplicationsComponent} from './applications/applications.component';
 import {CategoriesComponent} from './categories/categories.component';
 import {UserComponent} from './users/detail/user.component';
 import {JobPositionComponent} from "./job-positions/detail/job-position.component";
-import {ApplicationComponent} from "./applications/detail/application.component";
 import {UserAccountAdminComponent} from "./users/detail/user-account-admin/user-account-admin.component";
 import {UserAccountApplicantComponent} from "./users/detail/user-account-applicant/user-account-applicant.component";
 import {UserAccountCompanyComponent} from "./users/detail/user-account-company/user-account-company.component";
@@ -50,7 +47,7 @@ import {AvatarMenuComponent} from "./users/detail/avatar-menu/avatar-menu.compon
 import {AbstractAccountComponent} from "./users/detail/abstract-account/abstract-account.component";
 import {NgOptimizedImage} from "@angular/common";
 import {QuillModule} from "ngx-quill";
-import { ExperiencesListComponent } from './users/detail/experiences-list/experiences-list.component';
+import {ExperiencesListComponent} from './users/detail/experiences-list/experiences-list.component';
 
 
 const routes: Routes = [
@@ -65,25 +62,17 @@ const routes: Routes = [
     {path: 'categories', component: CategoriesComponent},
     {path: 'users/:id', component: UserComponent},
     {path: 'job-positions/:id', component: JobPositionComponent},
-    {path: 'applications/:id', component: ApplicationComponent},
 
     {path: 'forbidden', pathMatch: 'full', component: ForbiddenComponent},
     {path: '**', pathMatch: 'full', component: NotFoundComponent}
 ]
 
 @NgModule({
-    declarations: [AppComponent, LoginComponent, UsersComponent, ApplicantsComponent, CompaniesComponent, JobPositionsComponent, ApplicationsComponent, CategoriesComponent, UserComponent, JobPositionComponent, ApplicationComponent, UserAccountAdminComponent, UserAccountApplicantComponent, UserAccountCompanyComponent, AvatarMenuComponent, AbstractAccountComponent, ExperiencesListComponent],
+    declarations: [AppComponent, LoginComponent, UsersComponent, ApplicantsComponent, CompaniesComponent, JobPositionsComponent, ApplicationsComponent, CategoriesComponent, UserComponent, JobPositionComponent, UserAccountAdminComponent, UserAccountApplicantComponent, UserAccountCompanyComponent, AvatarMenuComponent, AbstractAccountComponent, ExperiencesListComponent],
     imports: [
         SharedModule,
         HttpClientModule,
         BrowserModule,
-        TranslateModule.forRoot({
-            loader: {
-                provide: TranslateLoader,
-                useFactory: HttpLoaderFactory,
-                deps: [HttpClient]
-            }
-        }),
         BrowserAnimationsModule,
         ReactiveFormsModule,
         MatFormFieldModule,
@@ -118,11 +107,8 @@ const routes: Routes = [
         authInterceptorProviders, loadingInterceptorProviders,
     ],
     bootstrap: [AppComponent],
-    exports: [RouterModule, TranslateModule]
+    exports: [RouterModule]
 })
 export class AppModule {
 }
 
-export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
-    return new TranslateHttpLoader(http);
-}

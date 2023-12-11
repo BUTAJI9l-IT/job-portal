@@ -3,6 +3,9 @@ import {FiltersFor} from "../component/pageable/filters/filters.component";
 import {MatTableDataSource} from "@angular/material/table";
 import {JobPositionCategoryService} from "../../api/jobPositionCategory.service";
 import {ReferenceDto} from "../../model/referenceDto";
+import {MatDialog} from "@angular/material/dialog";
+import {AddApplicationComponent} from "../component/dialog/add-application/add-application.component";
+import {AddCategoryComponent} from "../component/dialog/add-category/add-category.component";
 
 @Component({
     selector: 'app-categories',
@@ -16,7 +19,7 @@ export class CategoriesComponent implements OnInit {
         {ref: "name", label: "Category name", sortable: false}
     ];
 
-    constructor(private categoryService: JobPositionCategoryService) {
+    constructor(private categoryService: JobPositionCategoryService, private dialog: MatDialog) {
     }
 
     protected readonly FiltersFor = FiltersFor;
@@ -25,5 +28,9 @@ export class CategoriesComponent implements OnInit {
         this.categoryService.getCategories().subscribe(cats => {
             this.dataSource = new MatTableDataSource<ReferenceDto>(cats.jobCategories)
         })
+    }
+
+    createNewCategory() {
+        this.dialog.open(AddCategoryComponent);
     }
 }

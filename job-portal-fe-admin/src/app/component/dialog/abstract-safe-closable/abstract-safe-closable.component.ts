@@ -1,7 +1,6 @@
 import {Component, HostListener, Inject} from '@angular/core';
 import {ConfirmationService} from "../../../service/confirmation.service";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {TranslateService} from "@ngx-translate/core";
 import {MyErrorStateMatcher} from "../../../state/error/my-error-state-matcher";
 
 @Component({template: ''})
@@ -12,7 +11,6 @@ export abstract class AbstractSafeClosableComponent<T> {
 
   protected constructor(
     public confirmationService: ConfirmationService,
-    public translate: TranslateService,
     protected dialogRef: MatDialogRef<T>,
     @Inject(MAT_DIALOG_DATA) protected _data?: any
   ) {

@@ -1,24 +1,20 @@
 import {Injectable} from '@angular/core';
 import {ErrorResponse} from "../../model/errorResponse";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {TranslateService} from "@ngx-translate/core";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AlertService {
 
-  constructor(private _snackBar: MatSnackBar, private translate: TranslateService,) {
+  constructor(private _snackBar: MatSnackBar) {
   }
 
   public handleErrorCode(err: ErrorResponse): boolean {
     if (err.type) {
       const code = err.type.split('/').at(-1);
-      let key = "errorCodes." + code;
-      if (this.translate.translations[this.translate.currentLang][key] !== undefined) {
-        this.showMessage(key);
-        return true;
-      }
+      this.showMessage("Error occurred: " + code);
+      return true;
     }
     return false;
   }
@@ -27,16 +23,16 @@ export class AlertService {
   public showMessage(message: string, confirmationMessage: string): void;
 
   public showMessage(message: string, confirmationMessage?: string): void {
-    this._snackBar.open(this.translate.instant(message), this.translate.instant(confirmationMessage ? confirmationMessage : "alerts.common.ok"));
+    this._snackBar.open(message, confirmationMessage ? confirmationMessage : "OK");
   }
 
   public showCommonError(): void {
-    this.showMessage("alerts.common.error");
+    this.showMessage("Error occurred");
   }
 
   public commonErrorHandle(err: ErrorResponse): void {
     if (!this.handleErrorCode(err)) {
-      this.showMessage("alerts.common.error");
+      this.showMessage("Error occurred");
     }
   }
 }

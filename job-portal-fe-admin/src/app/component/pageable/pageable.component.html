@@ -26,7 +26,7 @@
         <ng-container matColumnDef="actions">
             <mat-header-cell *matHeaderCellDef></mat-header-cell>
             <mat-cell *matCellDef="let row">
-                <button mat-icon-button (click)="deleteRow(row)">
+                <button mat-icon-button [style.pointer-events]="'auto'" (click)="deleteRow(row);$event.stopPropagation();">
                     <mat-icon color="warn">delete</mat-icon>
                 </button>
             </mat-cell>

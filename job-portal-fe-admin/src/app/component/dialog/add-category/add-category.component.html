@@ -1,0 +1,11 @@
+<mat-dialog-content class="registration-content">
+    <div class="container">
+        <div class="input-field">
+            <mat-form-field style="text-indent: 0; width: 100%">
+                <mat-label><span>New category name</span></mat-label>
+                <input matInput [formControl]="categoryForm">
+            </mat-form-field>
+        </div>
+    </div>
+</mat-dialog-content>
+<dialog-actions (onSubmit)="saveCategory()" (onCancel)="safeClose()"></dialog-actions>

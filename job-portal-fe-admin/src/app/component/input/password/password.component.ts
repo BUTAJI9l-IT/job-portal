@@ -13,5 +13,5 @@ export class PasswordComponent extends EditableInputComponent {
   hide = true;
 
   @Input()
-  override label: string = "inputs.password.label";
+  override label: string = "Password";
 }

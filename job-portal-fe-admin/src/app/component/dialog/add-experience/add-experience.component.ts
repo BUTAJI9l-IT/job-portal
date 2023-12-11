@@ -2,7 +2,6 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {AbstractSafeClosableComponent} from "../abstract-safe-closable/abstract-safe-closable.component";
 import {ConfirmationService} from "../../../service/confirmation.service";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {TranslateService} from "@ngx-translate/core";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ReferenceDto} from "../../../../model/referenceDto";
 import {JobPositionCategoryService} from "../../../../api/jobPositionCategory.service";
@@ -30,7 +29,7 @@ export class AddExperienceComponent extends AbstractSafeClosableComponent<AddExp
       to: new FormControl<Date | null>(null),
     })
   });
-  override confirmationText?: string = "dialog.confirmation.experience.add-new";
+  override confirmationText?: string = "Experience will not be saved, continue?";
   jobCategoriesSelected: ReferenceDto[] = [];
 
   occupations: ReferenceDto[] = []
@@ -42,7 +41,6 @@ export class AddExperienceComponent extends AbstractSafeClosableComponent<AddExp
   constructor(
     confirmationService: ConfirmationService,
     dialogRef: MatDialogRef<AddExperienceComponent>,
-    translate: TranslateService,
     @Inject(MAT_DIALOG_DATA) public dialogData: any,
     private categoryService: JobPositionCategoryService,
     private applicantService: ApplicantService,
@@ -50,7 +48,7 @@ export class AddExperienceComponent extends AbstractSafeClosableComponent<AddExp
     private alertService: AlertService,
     private companyService: CompanyService
   ) {
-    super(confirmationService, translate, dialogRef, dialogData);
+    super(confirmationService, dialogRef, dialogData);
     this.dialogRef.updateSize("50%")
   }
 
@@ -84,7 +82,7 @@ export class AddExperienceComponent extends AbstractSafeClosableComponent<AddExp
 
   occupationTranslate = (value: ReferenceDto) => {
     if (value.id) {
-      return this.translate.instant('categories.occupations.' + value.id);
+      return value.name!;
     }
     return ''
   }
@@ -122,7 +120,7 @@ export class AddExperienceComponent extends AbstractSafeClosableComponent<AddExp
     this.applicantService.addExperience(request, this.userId).subscribe({
       next: () => {
         this.dialogRef.close(true);
-        this.alertService.showMessage("alerts.experience.added");
+        this.alertService.showMessage("Experience has been added");
       },
       error: err => {
         this.alertService.commonErrorHandle(err.error);

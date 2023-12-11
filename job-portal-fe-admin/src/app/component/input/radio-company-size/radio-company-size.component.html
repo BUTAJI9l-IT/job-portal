@@ -2,6 +2,6 @@
   class="example-radio-group"
   [formControl]="size">
   <mat-radio-button class="example-radio-button" *ngFor="let size of cSizes" [value]="size.value">
-    {{'inputs.company.size.value.' + size.value | translate}}
+    {{size.value}}
   </mat-radio-button>
 </mat-radio-group>

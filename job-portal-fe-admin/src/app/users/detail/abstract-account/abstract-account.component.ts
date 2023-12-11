@@ -10,6 +10,7 @@ import {CompanyService} from "../../../../api/company.service";
 import {ConfirmationService} from "../../../service/confirmation.service";
 import {UserDto} from "../../../../model/userDto";
 import {emailValidators} from "../../../component/input/email/email.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({template: ''})
 export class AbstractAccountComponent {
@@ -56,6 +57,7 @@ export class AbstractAccountComponent {
               protected userService: UserService,
               protected applicantService: ApplicantService,
               protected companyService: CompanyService,
+              protected dialog: MatDialog,
               private sanitizer: DomSanitizer
   ) {
     this.route.params.subscribe(params => {
@@ -108,7 +110,7 @@ export class AbstractAccountComponent {
 
   protected safeCancelChange() {
     if (this.hasChange) {
-      this.confirmationService.openConfirm("dialog.confirmation.text.changes", () => {
+      this.confirmationService.openConfirm("Cancel changes?", () => {
         this.rollbackChanges();
         this.changeEditMode();
       });

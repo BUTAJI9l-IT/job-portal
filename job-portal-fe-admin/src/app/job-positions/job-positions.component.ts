@@ -4,6 +4,8 @@ import {PageableEvent} from "../component/pageable/pageable.component";
 import {JobPositionDto} from "../../model/jobPositionDto";
 import {JobPositionService} from "../../api/jobPosition.service";
 import {FiltersFor} from "../component/pageable/filters/filters.component";
+import {MatDialog} from "@angular/material/dialog";
+import {AddJobComponent} from "../component/dialog/add-job/add-job.component";
 
 @Component({
     selector: 'app-job-positions',
@@ -26,7 +28,7 @@ export class JobPositionsComponent {
         ["positionName", "name"]
     ])
 
-    constructor(private jobService: JobPositionService) {
+    constructor(private jobService: JobPositionService, private dialog: MatDialog) {
     }
 
     updateDataSource(event: PageableEvent) {
@@ -50,4 +52,12 @@ export class JobPositionsComponent {
     }
 
     protected readonly FiltersFor = FiltersFor;
+
+    addJob() {
+        this.dialog.open(AddJobComponent).afterClosed().subscribe((res: boolean) => {
+            if (res) {
+                window.location.reload();
+            }
+        })
+    }
 }

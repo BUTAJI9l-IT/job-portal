@@ -4,6 +4,8 @@ import {MatTableDataSource} from "@angular/material/table";
 import {UserDto} from "../../model/userDto";
 import {PageableEvent} from "../component/pageable/pageable.component";
 import {FiltersFor} from "../component/pageable/filters/filters.component";
+import {AddUserComponent} from "../component/dialog/add-user/add-user.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
     selector: 'app-users',
@@ -21,7 +23,7 @@ export class UsersComponent {
     ];
     lastEvent?: PageableEvent;
 
-    constructor(private userService: UserService) {
+    constructor(private userService: UserService, private dialog: MatDialog) {
     }
 
     updateDataSource(event: PageableEvent) {
@@ -46,5 +48,9 @@ export class UsersComponent {
                 this.updateDataSource(this.lastEvent)
             }
         })
+    }
+
+    registerNew() {
+        const dialogRef = this.dialog.open(AddUserComponent);
     }
 }

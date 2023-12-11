@@ -1,6 +1,5 @@
 import {Component, Input} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn} from "@angular/forms";
-import {MyErrorStateMatcher} from "../../../../state/error/my-error-state-matcher";
 
 export const checkPasswordsValidator: ValidatorFn = (group: AbstractControl): ValidationErrors | null => {
   let pass = group.get('password');

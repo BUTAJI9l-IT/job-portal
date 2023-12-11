@@ -19,7 +19,6 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        console.log(this.router.url)
         if (this.router.url !== "/login" && this.router.url !== "/" && this.storage.getTokenInfo()?.scope !== "ADMIN") {
             window.location.replace("login")
         }

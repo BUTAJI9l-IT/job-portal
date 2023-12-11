@@ -5,6 +5,7 @@ import {ApplicantDetailDto} from "../../../../model/applicantDetailDto";
 import {ExperienceDto} from "../../../../model/experienceDto";
 import {ApplicantUpdateDto} from "../../../../model/applicantUpdateDto";
 import {phoneValidators} from "../../../component/input/phone/phone.component";
+import {AddExperienceComponent} from "../../../component/dialog/add-experience/add-experience.component";
 
 @Component({
   selector: 'user-account-applicant',
@@ -30,7 +31,7 @@ export class UserAccountApplicantComponent extends AbstractAccountComponent {
         this.userInfo.controls["name"].setValue(response.name);
         this.userInfo.controls["lastName"].setValue(response.lastName);
 
-        this.alertService.showMessage("alerts.changed.success");
+        this.alertService.showMessage("Changes were saved");
       },
       error: err => {
         this.alertService.commonErrorHandle(err.error);
@@ -83,5 +84,25 @@ export class UserAccountApplicantComponent extends AbstractAccountComponent {
         this.alertService.commonErrorHandle(err.error);
       }
     });
+  }
+
+  deleteExperience($event: string) {
+    this.applicantService.removeExperience(this.applicantInfo.controls["id"].value, $event).subscribe(
+        () => {
+          this.buildNonUserForm();
+        }
+    )
+  }
+
+  addExperience() {
+    this.dialog.open(AddExperienceComponent, {
+      data: {
+        userId: this.applicantInfo.controls["id"].value
+      }
+    }).afterClosed().subscribe((res: boolean) => {
+      if (res) {
+        this.buildNonUserForm();
+      }
+    })
   }
 }

@@ -1,0 +1,21 @@
+<mat-chip-set>
+
+  <ng-container *ngIf="!showAllCategories">
+    <mat-chip *ngFor="let cat of this.categories.controls.slice(0, maxVisible)">
+      <span>{{cat.controls['name'].value}}</span>
+    </mat-chip>
+    <mat-chip highlighted color="primary" *ngIf="remainingCategories > 0" (click)="toggleCategories(); $event.stopPropagation()">
+      <span class="clickable">Show more</span> {{ remainingCategories }}+
+    </mat-chip>
+  </ng-container>
+
+  <ng-container *ngIf="showAllCategories">
+    <mat-chip *ngFor="let cat of this.categories.controls">
+      <span>{{cat.controls['name'].value}}</span>
+    </mat-chip>
+    <mat-chip highlighted color="primary" (click)="toggleCategories(); $event.stopPropagation()">
+      <span class="clickable">Show less</span>
+    </mat-chip>
+  </ng-container>
+
+</mat-chip-set>
