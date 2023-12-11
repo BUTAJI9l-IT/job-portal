@@ -53,9 +53,11 @@ import {AddJobComponent} from "./dialog/add-job/add-job.component";
 import { AddUserComponent } from './dialog/add-user/add-user.component';
 import {PasswordComponent} from "./input/password/password.component";
 import {RepeatComponent} from "./input/password/repeat/repeat.component";
+import { AddApplicationComponent } from './dialog/add-application/add-application.component';
+import { AddCategoryComponent } from './dialog/add-category/add-category.component';
 
 @NgModule({
-    declarations: [NotFoundComponent, ForbiddenComponent, PageableComponent, FiltersComponent, CompanySelectComponent, JobSelectComponent, ApplicantSelectComponent, TextComponent, TextAreaComponent, EmailComponent, PhoneComponent, AddressInputComponent, ActionsComponent, EditorComponent, ConfirmationComponent, AddExperienceComponent, DateRangeComponent, EditableInputComponent, ExtendableChipsComponent,AddJobComponent, AddUserComponent,PasswordComponent,RepeatComponent],
+    declarations: [NotFoundComponent, ForbiddenComponent, PageableComponent, FiltersComponent, CompanySelectComponent, JobSelectComponent, ApplicantSelectComponent, TextComponent, TextAreaComponent, EmailComponent, PhoneComponent, AddressInputComponent, ActionsComponent, EditorComponent, ConfirmationComponent, AddExperienceComponent, DateRangeComponent, EditableInputComponent, ExtendableChipsComponent,AddJobComponent, AddUserComponent,PasswordComponent,RepeatComponent, AddApplicationComponent, AddCategoryComponent],
     exports: [NotFoundComponent, ForbiddenComponent, PageableComponent, FiltersComponent, CompanySelectComponent, JobSelectComponent, ApplicantSelectComponent, TextComponent, TextAreaComponent, EmailComponent, PhoneComponent, AddressInputComponent, ActionsComponent, EditorComponent, ConfirmationComponent, AddExperienceComponent, DateRangeComponent, EditableInputComponent, ExtendableChipsComponent,AddJobComponent,PasswordComponent,RepeatComponent],
     imports: [
         MatNativeDateModule,

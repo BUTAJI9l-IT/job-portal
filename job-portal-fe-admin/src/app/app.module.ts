@@ -10,7 +10,7 @@ import {RouterModule, Routes} from "@angular/router";
 import {AppComponent} from "./app.component";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatIconModule} from "@angular/material/icon";
-import {HttpClient, HttpClientModule} from "@angular/common/http";
+import {HttpClientModule} from "@angular/common/http";
 import {MatChipsModule} from "@angular/material/chips";
 import {MatDialogModule} from "@angular/material/dialog";
 import {MatInputModule} from "@angular/material/input";
@@ -39,7 +39,6 @@ import {ApplicationsComponent} from './applications/applications.component';
 import {CategoriesComponent} from './categories/categories.component';
 import {UserComponent} from './users/detail/user.component';
 import {JobPositionComponent} from "./job-positions/detail/job-position.component";
-import {ApplicationComponent} from "./applications/detail/application.component";
 import {UserAccountAdminComponent} from "./users/detail/user-account-admin/user-account-admin.component";
 import {UserAccountApplicantComponent} from "./users/detail/user-account-applicant/user-account-applicant.component";
 import {UserAccountCompanyComponent} from "./users/detail/user-account-company/user-account-company.component";
@@ -48,7 +47,7 @@ import {AvatarMenuComponent} from "./users/detail/avatar-menu/avatar-menu.compon
 import {AbstractAccountComponent} from "./users/detail/abstract-account/abstract-account.component";
 import {NgOptimizedImage} from "@angular/common";
 import {QuillModule} from "ngx-quill";
-import { ExperiencesListComponent } from './users/detail/experiences-list/experiences-list.component';
+import {ExperiencesListComponent} from './users/detail/experiences-list/experiences-list.component';
 
 
 const routes: Routes = [
@@ -63,14 +62,13 @@ const routes: Routes = [
     {path: 'categories', component: CategoriesComponent},
     {path: 'users/:id', component: UserComponent},
     {path: 'job-positions/:id', component: JobPositionComponent},
-    {path: 'applications/:id', component: ApplicationComponent},
 
     {path: 'forbidden', pathMatch: 'full', component: ForbiddenComponent},
     {path: '**', pathMatch: 'full', component: NotFoundComponent}
 ]
 
 @NgModule({
-    declarations: [AppComponent, LoginComponent, UsersComponent, ApplicantsComponent, CompaniesComponent, JobPositionsComponent, ApplicationsComponent, CategoriesComponent, UserComponent, JobPositionComponent, ApplicationComponent, UserAccountAdminComponent, UserAccountApplicantComponent, UserAccountCompanyComponent, AvatarMenuComponent, AbstractAccountComponent, ExperiencesListComponent],
+    declarations: [AppComponent, LoginComponent, UsersComponent, ApplicantsComponent, CompaniesComponent, JobPositionsComponent, ApplicationsComponent, CategoriesComponent, UserComponent, JobPositionComponent, UserAccountAdminComponent, UserAccountApplicantComponent, UserAccountCompanyComponent, AvatarMenuComponent, AbstractAccountComponent, ExperiencesListComponent],
     imports: [
         SharedModule,
         HttpClientModule,

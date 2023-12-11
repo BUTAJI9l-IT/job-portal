@@ -4,6 +4,9 @@ import {MatTableDataSource} from "@angular/material/table";
 import {PageableEvent} from "../component/pageable/pageable.component";
 import {ApplicationService} from "../../api/application.service";
 import {ApplicationDto} from "../../model/applicationDto";
+import {AddUserComponent} from "../component/dialog/add-user/add-user.component";
+import {MatDialog} from "@angular/material/dialog";
+import {AddApplicationComponent} from "../component/dialog/add-application/add-application.component";
 
 @Component({
     selector: 'app-applications',
@@ -27,7 +30,7 @@ export class ApplicationsComponent {
     ])
     lastEvent?: PageableEvent;
 
-    constructor(private applicationService: ApplicationService) {
+    constructor(private applicationService: ApplicationService, private dialog: MatDialog) {
     }
 
     updateDataSource(event: PageableEvent) {
@@ -60,5 +63,9 @@ export class ApplicationsComponent {
                 this.updateDataSource(this.lastEvent)
             }
         })
+    }
+
+    createNewApplication() {
+        this.dialog.open(AddApplicationComponent);
     }
 }
