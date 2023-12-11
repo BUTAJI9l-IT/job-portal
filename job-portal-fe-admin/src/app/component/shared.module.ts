@@ -50,10 +50,13 @@ import {DateRangeComponent} from "./input/date-range/date-range.component";
 import {EditableInputComponent} from "./input/editable-input/editable-input.component";
 import {ExtendableChipsComponent} from "./input/extendable-chips/extendable-chips.component";
 import {AddJobComponent} from "./dialog/add-job/add-job.component";
+import { AddUserComponent } from './dialog/add-user/add-user.component';
+import {PasswordComponent} from "./input/password/password.component";
+import {RepeatComponent} from "./input/password/repeat/repeat.component";
 
 @NgModule({
-    declarations: [NotFoundComponent, ForbiddenComponent, PageableComponent, FiltersComponent, CompanySelectComponent, JobSelectComponent, ApplicantSelectComponent, TextComponent, TextAreaComponent, EmailComponent, PhoneComponent, AddressInputComponent, ActionsComponent, EditorComponent, ConfirmationComponent, AddExperienceComponent, DateRangeComponent, EditableInputComponent, ExtendableChipsComponent,AddJobComponent],
-    exports: [NotFoundComponent, ForbiddenComponent, PageableComponent, FiltersComponent, CompanySelectComponent, JobSelectComponent, ApplicantSelectComponent, TextComponent, TextAreaComponent, EmailComponent, PhoneComponent, AddressInputComponent, ActionsComponent, EditorComponent, ConfirmationComponent, AddExperienceComponent, DateRangeComponent, EditableInputComponent, ExtendableChipsComponent,AddJobComponent],
+    declarations: [NotFoundComponent, ForbiddenComponent, PageableComponent, FiltersComponent, CompanySelectComponent, JobSelectComponent, ApplicantSelectComponent, TextComponent, TextAreaComponent, EmailComponent, PhoneComponent, AddressInputComponent, ActionsComponent, EditorComponent, ConfirmationComponent, AddExperienceComponent, DateRangeComponent, EditableInputComponent, ExtendableChipsComponent,AddJobComponent, AddUserComponent,PasswordComponent,RepeatComponent],
+    exports: [NotFoundComponent, ForbiddenComponent, PageableComponent, FiltersComponent, CompanySelectComponent, JobSelectComponent, ApplicantSelectComponent, TextComponent, TextAreaComponent, EmailComponent, PhoneComponent, AddressInputComponent, ActionsComponent, EditorComponent, ConfirmationComponent, AddExperienceComponent, DateRangeComponent, EditableInputComponent, ExtendableChipsComponent,AddJobComponent,PasswordComponent,RepeatComponent],
     imports: [
         MatNativeDateModule,
         CommonModule,
