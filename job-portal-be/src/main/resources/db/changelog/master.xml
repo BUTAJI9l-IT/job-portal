@@ -10,4 +10,6 @@
   <includeAll path="2023.04" relativeToChangelogFile="true"/>
   <includeAll path="2023.12" relativeToChangelogFile="true"/>
 
+  <includeAll path="demo-db" relativeToChangelogFile="true" context="demo"/>
+
 </databaseChangeLog>

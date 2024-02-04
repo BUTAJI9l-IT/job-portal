@@ -11,7 +11,7 @@ spring:
     include: api
   liquibase:
     enabled: true
-    contexts: default, data
+    contexts: ${LIQUIBASE_CONTEXTS:default, data}
     change-log: classpath:db/changelog/master.xml
     drop-first: false
   jpa:
