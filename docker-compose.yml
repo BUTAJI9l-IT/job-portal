@@ -23,6 +23,7 @@ services:
       - EMAIL_NOTIFICATION_APP_USERNAME=  # add your email (according to stmp) (not good practice, it is better to store in 'secrets')
       - EMAIL_NOTIFICATION_APP_PASSWORD= # generate password for application in gmail (not good practice, it is better to store in 'secrets')
       - NOTIFICATIONS_ENABLED=false # enable notifications
+      - LIQUIBASE_CONTEXTS=default, data, demo
     volumes:
       - app-data:/tmp
 
@@ -35,6 +36,16 @@ services:
       - "4200:4200"
     depends_on:
       - job-portal
+#
+#  frontend-admin:
+#    image: job-portal-fe-admin
+#    container_name: job-portal-fe-admin
+#    build:
+#      context: ./job-portal-fe-admin
+#    ports:
+#      - "4200:4200"
+#    depends_on:
+#      - job-portal
 
   db:
     image: 'postgres:13.1-alpine'
