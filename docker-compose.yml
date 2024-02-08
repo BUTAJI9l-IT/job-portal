@@ -20,9 +20,9 @@ services:
       - SPRING_JPA_HIBERNATE_DDL_AUTO=validate
       - EMAIL_STMP_HOST=smtp.gmail.com # specify another stmp in case you do not use gmail
       - EMAIL_PORT=587
-      - EMAIL_NOTIFICATION_APP_USERNAME=  # add your email (according to stmp) (not good practice, it is better to store in 'secrets')
-      - EMAIL_NOTIFICATION_APP_PASSWORD= # generate password for application in gmail (not good practice, it is better to store in 'secrets')
-      - NOTIFICATIONS_ENABLED=false # enable notifications
+      - EMAIL_NOTIFICATION_APP_USERNAME=muni.job.portal.application@gmail.com # add your email (according to stmp) (not good practice, it is better to store in 'secrets')
+      - EMAIL_NOTIFICATION_APP_PASSWORD=cfvbocfzpaoektzs # generate password for application in gmail (not good practice, it is better to store in 'secrets')
+      - NOTIFICATIONS_ENABLED=true # enable notifications
       - LIQUIBASE_CONTEXTS=default, data, demo
     volumes:
       - app-data:/tmp
