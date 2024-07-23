@@ -1,5 +1,17 @@
 package muni.fi.cz.jobportal.repository.search.impl;
 
+import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.SORT_SUFFIX;
+import static muni.fi.cz.jobportal.utils.ClassFieldsUtils.applyToAnnotatedFieldsWithValuesPresent;
+import static muni.fi.cz.jobportal.utils.ClassFieldsUtils.findAnnotation;
+import static muni.fi.cz.jobportal.utils.ClassFieldsUtils.getFieldValue;
+import static muni.fi.cz.jobportal.utils.ClassFieldsUtils.isCollectionType;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import java.lang.reflect.Field;
+import java.time.temporal.TemporalAdjuster;
+import java.util.Collection;
+import java.util.function.Consumer;
 import muni.fi.cz.jobportal.annotation.search.DateQueryField;
 import muni.fi.cz.jobportal.annotation.search.DateQueryField.RangeSide;
 import muni.fi.cz.jobportal.annotation.search.KeywordQueryField;
@@ -21,16 +33,6 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.lang.NonNull;
 import org.springframework.util.CollectionUtils;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import java.lang.reflect.Field;
-import java.time.temporal.TemporalAdjuster;
-import java.util.Collection;
-import java.util.function.Consumer;
-
-import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.SORT_SUFFIX;
-import static muni.fi.cz.jobportal.utils.ClassFieldsUtils.*;
-
 /**
  * {@link SearchRepository} abstract implementation class.
  *
@@ -38,7 +40,8 @@ import static muni.fi.cz.jobportal.utils.ClassFieldsUtils.*;
  * @param <Q> Type of search parameters class.
  * @author Vitalii Bortsov
  */
-public abstract class AbstractJobPortalSearchRepository<T, Q extends QueryParams> implements SearchRepository<T, Q> {
+public abstract class AbstractJobPortalSearchRepository<T, Q extends QueryParams> implements
+  SearchRepository<T, Q> {
 
   @Autowired
   private EntityManager entityManager;
@@ -47,7 +50,8 @@ public abstract class AbstractJobPortalSearchRepository<T, Q extends QueryParams
 
   @Override
   public void afterPropertiesSet() {
-    Search.session(entityManagerFactory.unwrap(SessionFactory.class).openSession()).massIndexer(getBaseClass()).start();
+    Search.session(entityManagerFactory.unwrap(SessionFactory.class).openSession())
+      .massIndexer(getBaseClass()).start();
   }
 
   @Override
@@ -68,7 +72,8 @@ public abstract class AbstractJobPortalSearchRepository<T, Q extends QueryParams
     return new PageImpl<>(result.hits(), pageable, result.total().hitCount());
   }
 
-  private SearchPredicate getPredicate(Q params, SearchScope<T> scope, BooleanPredicateClausesStep<?> rootPredicate) {
+  private SearchPredicate getPredicate(Q params, SearchScope<T> scope,
+    BooleanPredicateClausesStep<?> rootPredicate) {
     var isNotEmpty = addFulltext(params, scope, rootPredicate);
     isNotEmpty |= addKeywords(params, scope, rootPredicate);
     if (!isNotEmpty) {
@@ -77,11 +82,13 @@ public abstract class AbstractJobPortalSearchRepository<T, Q extends QueryParams
     return rootPredicate.toPredicate();
   }
 
-  private boolean addFulltext(Q params, SearchScope<T> scope, BooleanPredicateClausesStep<?> rootPredicate) {
+  private boolean addFulltext(Q params, SearchScope<T> scope,
+    BooleanPredicateClausesStep<?> rootPredicate) {
     if (!CollectionUtils.isEmpty(params.getQList()) && params.getQueryIndices().length != 0) {
       final var colPredicate = scope.predicate().bool();
       params.getQList().forEach(
-        colValue -> colPredicate.should(scope.predicate().match().fields(params.getQueryIndices()).matching(colValue)));
+        colValue -> colPredicate.should(
+          scope.predicate().match().fields(params.getQueryIndices()).matching(colValue)));
       rootPredicate.must(colPredicate);
       return true;
     }
@@ -110,11 +117,13 @@ public abstract class AbstractJobPortalSearchRepository<T, Q extends QueryParams
       } else if (isCollectionType(field) && value instanceof Collection<?> collection) {
         final var colPredicate = scope.predicate().bool();
         collection.forEach(
-          colValue -> colPredicate.should(scope.predicate().match().field(indexField).matching(colValue.toString())));
+          colValue -> colPredicate.should(
+            scope.predicate().match().field(indexField).matching(colValue.toString())));
         rootPredicate.must(colPredicate);
       } else {
         rootPredicate.must(
-          scope.predicate().match().field(indexField).matching(annotation.generic() ? value : value.toString()));
+          scope.predicate().match().field(indexField)
+            .matching(annotation.generic() ? value : value.toString()));
       }
     };
   }

@@ -1,5 +1,7 @@
 package muni.fi.cz.jobportal.factory;
 
+import java.util.ArrayList;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import muni.fi.cz.jobportal.api.common.CompanyDto;
 import muni.fi.cz.jobportal.api.common.ExperienceDto;
@@ -10,9 +12,6 @@ import muni.fi.cz.jobportal.repository.CompanyRepository;
 import muni.fi.cz.jobportal.repository.JobCategoryRepository;
 import org.mapstruct.ObjectFactory;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.Optional;
 
 /**
  * Object factory for experiences
@@ -31,13 +30,14 @@ public class ExperienceFactory {
   public Experience prepare(ExperienceDto source) {
     final var experience = new Experience();
     if (source.getCompany().getId() != null) {
-      experience.setCompany(companyRepository.getOneByIdOrThrowNotFound(source.getCompany().getId()));
+      experience.setCompany(
+        companyRepository.getOneByIdOrThrowNotFound(source.getCompany().getId()));
     }
     experience.setJobCategories(
-        jobCategoryRepository.findAllById(
-            Optional.ofNullable(source.getJobCategories())
-                .map(u -> u.stream().map(ReferenceDto::getId).toList())
-                .orElse(new ArrayList<>())));
+      jobCategoryRepository.findAllById(
+        Optional.ofNullable(source.getJobCategories())
+          .map(u -> u.stream().map(ReferenceDto::getId).toList())
+          .orElse(new ArrayList<>())));
     return experience;
   }
 

@@ -1,13 +1,16 @@
 package muni.fi.cz.jobportal.api.search;
 
+import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.CITY;
+import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.COUNTRY;
+import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.JOB_POSITION;
+import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.NAME;
+import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.STATE;
+
+import java.util.UUID;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 import muni.fi.cz.jobportal.annotation.search.KeywordQueryField;
-
-import java.util.UUID;
-
-import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.*;
 
 @EqualsAndHashCode(callSuper = true)
 @Data

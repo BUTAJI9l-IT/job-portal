@@ -32,7 +32,8 @@ public class ProblemConfiguration {
      * Handler for unauthorized requests
      */
     @ExceptionHandler(JwtValidationException.class)
-    public ResponseEntity<Problem> handleJwtException(final JwtValidationException ex, final NativeWebRequest request) {
+    public ResponseEntity<Problem> handleJwtException(final JwtValidationException ex,
+      final NativeWebRequest request) {
       if (!ex.getErrors().isEmpty()) {
         final var error = ex.getErrors().iterator().next();
 

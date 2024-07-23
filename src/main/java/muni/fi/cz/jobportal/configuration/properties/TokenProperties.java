@@ -1,8 +1,7 @@
 package muni.fi.cz.jobportal.configuration.properties;
 
-import lombok.Data;
-
 import java.time.Duration;
+import lombok.Data;
 
 @Data
 public class TokenProperties {

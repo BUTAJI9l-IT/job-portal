@@ -1,11 +1,10 @@
 package muni.fi.cz.jobportal.api.common;
 
-import lombok.Data;
-import muni.fi.cz.jobportal.annotation.DateRange;
-
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import java.util.UUID;
+import lombok.Data;
+import muni.fi.cz.jobportal.annotation.DateRange;
 
 @Data
 public class ExperienceDto {

@@ -7,6 +7,6 @@ import muni.fi.cz.jobportal.api.request.ApplicationUpdateDto;
 import muni.fi.cz.jobportal.api.search.ApplicationQueryParams;
 
 public interface ApplicationService extends
-    CRUDService<ApplicationCreateDto, ApplicationDto, ApplicationUpdateDto, ApplicationDetailDto, ApplicationQueryParams> {
+  CRUDService<ApplicationCreateDto, ApplicationDto, ApplicationUpdateDto, ApplicationDetailDto, ApplicationQueryParams> {
 
 }

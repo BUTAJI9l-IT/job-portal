@@ -1,12 +1,12 @@
 package muni.fi.cz.jobportal.repository;
 
+import java.util.UUID;
 import muni.fi.cz.jobportal.domain.JobPosition;
 import muni.fi.cz.jobportal.repository.search.JobPositionSearchRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import java.util.UUID;
-
-public interface JobPositionRepository extends JobPositionSearchRepository, JobPortalRepository<JobPosition, UUID> {
+public interface JobPositionRepository extends JobPositionSearchRepository,
+  JobPortalRepository<JobPosition, UUID> {
 
   @Query(
     """

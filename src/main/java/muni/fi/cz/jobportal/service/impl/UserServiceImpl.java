@@ -1,5 +1,6 @@
 package muni.fi.cz.jobportal.service.impl;
 
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import muni.fi.cz.jobportal.annotation.JobPortalService;
 import muni.fi.cz.jobportal.api.common.PreferencesDto;
@@ -14,7 +15,12 @@ import muni.fi.cz.jobportal.exception.UserAlreadyRegisteredException;
 import muni.fi.cz.jobportal.mapper.CompanyMapper;
 import muni.fi.cz.jobportal.mapper.PreferencesMapper;
 import muni.fi.cz.jobportal.mapper.UserMapper;
-import muni.fi.cz.jobportal.repository.*;
+import muni.fi.cz.jobportal.repository.ApplicantRepository;
+import muni.fi.cz.jobportal.repository.CompanyRepository;
+import muni.fi.cz.jobportal.repository.ExperienceRepository;
+import muni.fi.cz.jobportal.repository.PreferencesRepository;
+import muni.fi.cz.jobportal.repository.RefreshTokenRepository;
+import muni.fi.cz.jobportal.repository.UserRepository;
 import muni.fi.cz.jobportal.service.ApplicantService;
 import muni.fi.cz.jobportal.service.CompanyService;
 import muni.fi.cz.jobportal.service.UserService;
@@ -24,8 +30,6 @@ import org.springframework.lang.NonNull;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.UUID;
 
 /**
  * {@link UserService} Implementation
@@ -62,7 +66,8 @@ public class UserServiceImpl implements UserService {
         applicantService.create(new ApplicantCreateDto(user.getId())).getId()));
     } else if (payload.getScope().equals(JobPortalScope.COMPANY)) {
       user.setCompany(
-        companyRepository.getOneByIdOrThrowNotFound(companyService.create(companyMapper.map(payload, user)).getId()));
+        companyRepository.getOneByIdOrThrowNotFound(
+          companyService.create(companyMapper.map(payload, user)).getId()));
     }
     return userMapper.map(user);
   }
@@ -93,10 +98,11 @@ public class UserServiceImpl implements UserService {
     final var user = userRepository.getOneByIdOrThrowNotFound(id);
     refreshTokenRepository.deleteAllByUserId(id);
     if (user.getCompany() != null) {
-      experienceRepository.findExperiencesByCompany(user.getCompany().getId()).forEach(experience -> {
-        experience.setCompany(null);
-        experienceRepository.save(experience);
-      });
+      experienceRepository.findExperiencesByCompany(user.getCompany().getId())
+        .forEach(experience -> {
+          experience.setCompany(null);
+          experienceRepository.save(experience);
+        });
     }
     userRepository.delete(user);
   }

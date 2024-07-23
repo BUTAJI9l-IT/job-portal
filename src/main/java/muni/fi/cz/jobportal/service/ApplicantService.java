@@ -1,5 +1,7 @@
 package muni.fi.cz.jobportal.service;
 
+import java.io.ByteArrayInputStream;
+import java.util.UUID;
 import muni.fi.cz.jobportal.api.common.ApplicantDto;
 import muni.fi.cz.jobportal.api.common.ExperienceDto;
 import muni.fi.cz.jobportal.api.detail.ApplicantDetailDto;
@@ -8,15 +10,12 @@ import muni.fi.cz.jobportal.api.request.ApplicantUpdateDto;
 import muni.fi.cz.jobportal.api.search.ApplicantQueryParams;
 import org.springframework.lang.NonNull;
 
-import java.io.ByteArrayInputStream;
-import java.util.UUID;
-
 public interface ApplicantService extends
-    CRUDService<ApplicantCreateDto, ApplicantDto, ApplicantUpdateDto, ApplicantDetailDto, ApplicantQueryParams> {
+  CRUDService<ApplicantCreateDto, ApplicantDto, ApplicantUpdateDto, ApplicantDetailDto, ApplicantQueryParams> {
 
   /**
-   * Generates a PDF file as byte array that contains CV of given applicant. CV is built based on information about the
-   * applicant in the system.
+   * Generates a PDF file as byte array that contains CV of given applicant. CV is built based on
+   * information about the applicant in the system.
    *
    * @param applicantId applicant id
    * @return byte array of PDF file

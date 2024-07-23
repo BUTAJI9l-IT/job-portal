@@ -1,16 +1,29 @@
 package muni.fi.cz.jobportal.domain;
 
-import lombok.*;
+import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.FULLTEXT_SUFFIX;
+import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.NAME;
+import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.SORT_SUFFIX;
+import static muni.fi.cz.jobportal.configuration.search.LuceneConfiguration.FULLTEXT_ANALYZER;
+import static muni.fi.cz.jobportal.configuration.search.LuceneConfiguration.SORT_NORMALIZER;
+import static muni.fi.cz.jobportal.configuration.search.LuceneConfiguration.SUGGESTER;
+import static org.hibernate.search.engine.backend.types.Sortable.YES;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import java.util.UUID;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordField;
-
-import javax.persistence.*;
-import java.util.UUID;
-
-import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.*;
-import static muni.fi.cz.jobportal.configuration.search.LuceneConfiguration.*;
-import static org.hibernate.search.engine.backend.types.Sortable.YES;
 
 /**
  * Occupation entity class.
@@ -32,7 +45,8 @@ public class Occupation {
   private UUID id;
 
   @KeywordField(name = NAME + SORT_SUFFIX, sortable = YES, normalizer = SORT_NORMALIZER)
-  @FullTextField(name = NAME + FULLTEXT_SUFFIX, analyzer = FULLTEXT_ANALYZER, searchAnalyzer = SUGGESTER)
+  @FullTextField(name = NAME
+    + FULLTEXT_SUFFIX, analyzer = FULLTEXT_ANALYZER, searchAnalyzer = SUGGESTER)
   private String name;
 
   @ManyToOne(fetch = FetchType.LAZY)

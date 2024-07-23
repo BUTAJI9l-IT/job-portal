@@ -1,7 +1,10 @@
 package muni.fi.cz.jobportal.resource;
 
+import static muni.fi.cz.jobportal.api.ApiTags.AUTHORIZATION;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import muni.fi.cz.jobportal.api.common.LoginResponse;
 import muni.fi.cz.jobportal.api.common.RegistrationRequest;
@@ -13,10 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.validation.Valid;
-
-import static muni.fi.cz.jobportal.api.ApiTags.AUTHORIZATION;
 
 /**
  * Controller with authorization endpoints.
@@ -45,7 +44,8 @@ public class AuthenticationResource {
 
   @PostMapping("/refresh")
   @Operation(summary = "${api.auth.refresh.summary}", description = "${api.auth.refresh.description}")
-  public ResponseEntity<LoginResponse> refreshToken(@Valid @RequestBody RefreshTokenRequest request) {
+  public ResponseEntity<LoginResponse> refreshToken(
+    @Valid @RequestBody RefreshTokenRequest request) {
     return ResponseEntity.ok(authenticationService.refresh(request));
   }
 

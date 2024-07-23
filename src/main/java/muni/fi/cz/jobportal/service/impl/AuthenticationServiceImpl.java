@@ -1,5 +1,12 @@
 package muni.fi.cz.jobportal.service.impl;
 
+import static muni.fi.cz.jobportal.api.JwtClaims.EMAIL_CLAIM;
+import static muni.fi.cz.jobportal.api.JwtClaims.LANGUAGE_CLAIM;
+import static muni.fi.cz.jobportal.api.JwtClaims.NON_USER_UUID_CLAIM;
+import static muni.fi.cz.jobportal.api.JwtClaims.SCOPE_CLAIM;
+
+import java.time.Instant;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import muni.fi.cz.jobportal.annotation.JobPortalService;
 import muni.fi.cz.jobportal.api.common.LoginResponse;
@@ -31,11 +38,6 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 
-import java.time.Instant;
-import java.util.UUID;
-
-import static muni.fi.cz.jobportal.api.JwtClaims.*;
-
 /**
  * {@link AuthenticationService} Implementation
  *
@@ -58,16 +60,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
   @NonNull
   @Override
   public LoginResponse performLogin(@NonNull LoginRequest request) {
-    final var authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-      request.getEmail(),
-      request.getPassword()
-    ));
+    final var authentication = authenticationManager.authenticate(
+      new UsernamePasswordAuthenticationToken(
+        request.getEmail(),
+        request.getPassword()
+      ));
 
     if (!authentication.isAuthenticated()) {
       throw new AccessDeniedException("Unauthorized");
     }
 
-    final var user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new EntityNotFoundException(User.class));
+    final var user = userRepository.findByEmail(request.getEmail())
+      .orElseThrow(() -> new EntityNotFoundException(User.class));
     return performLoginForUser(authentication, user.getId());
   }
 
@@ -107,10 +111,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
     final var userId = userService.create(userMapper.map(request)).getId();
     return performLoginForUser(authenticationManager.authenticate(
-      new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword().getPassword())), userId);
+      new UsernamePasswordAuthenticationToken(request.getEmail(),
+        request.getPassword().getPassword())), userId);
   }
 
-  private JwtClaimsSet createAccessToken(UUID id, User user, Instant now, Authentication authentication) {
+  private JwtClaimsSet createAccessToken(UUID id, User user, Instant now,
+    Authentication authentication) {
     final var claims = JwtClaimsSet.builder()
       .id(id.toString())
       .issuedAt(now);
@@ -133,17 +139,22 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     final var user = userRepository.getOneByIdOrThrowNotFound(userId);
     final var now = staticObjectFactory.getNowAsInstant();
 
-    final var accessTokenClaims = createAccessToken(staticObjectFactory.getRandomId(), user, now, authentication);
+    final var accessTokenClaims = createAccessToken(staticObjectFactory.getRandomId(), user, now,
+      authentication);
     final var refreshTokenClaims = JwtClaimsSet.from(accessTokenClaims)
       .expiresAt(now.plus(applicationProperties.getRefreshToken().getDuration())).build();
 
     return getLoginResponse(user, accessTokenClaims, refreshTokenClaims);
   }
 
-  private LoginResponse getLoginResponse(User user, JwtClaimsSet accessTokenClaims, JwtClaimsSet refreshTokenClaims) {
-    final var accessTokenValue = jwtEncoder.encode(JwtEncoderParameters.from(accessTokenClaims)).getTokenValue();
-    final var refreshTokenValue = jwtEncoder.encode(JwtEncoderParameters.from(refreshTokenClaims)).getTokenValue();
-    refreshTokenRepository.save(new RefreshToken(refreshTokenValue, refreshTokenClaims.getExpiresAt(), user));
+  private LoginResponse getLoginResponse(User user, JwtClaimsSet accessTokenClaims,
+    JwtClaimsSet refreshTokenClaims) {
+    final var accessTokenValue = jwtEncoder.encode(JwtEncoderParameters.from(accessTokenClaims))
+      .getTokenValue();
+    final var refreshTokenValue = jwtEncoder.encode(JwtEncoderParameters.from(refreshTokenClaims))
+      .getTokenValue();
+    refreshTokenRepository.save(
+      new RefreshToken(refreshTokenValue, refreshTokenClaims.getExpiresAt(), user));
     return new LoginResponse(accessTokenValue, refreshTokenValue);
   }
 }

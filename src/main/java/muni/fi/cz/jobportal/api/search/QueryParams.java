@@ -1,12 +1,11 @@
 package muni.fi.cz.jobportal.api.search;
 
-import lombok.Data;
-import lombok.experimental.SuperBuilder;
+import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.FULLTEXT_SUFFIX;
 
 import java.util.Arrays;
 import java.util.List;
-
-import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.FULLTEXT_SUFFIX;
+import lombok.Data;
+import lombok.experimental.SuperBuilder;
 
 /**
  * Search parameters abstract class.
@@ -27,6 +26,7 @@ public abstract class QueryParams {
   }
 
   public String[] getQueryIndices() {
-    return Arrays.stream(queryIndices()).map(field -> field + FULLTEXT_SUFFIX).toArray(String[]::new);
+    return Arrays.stream(queryIndices()).map(field -> field + FULLTEXT_SUFFIX)
+      .toArray(String[]::new);
   }
 }

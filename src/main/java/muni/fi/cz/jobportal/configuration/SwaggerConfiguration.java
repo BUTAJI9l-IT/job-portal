@@ -1,19 +1,18 @@
 package muni.fi.cz.jobportal.configuration;
 
+import static muni.fi.cz.jobportal.configuration.constants.ApplicationConstants.BEARER_AUTH;
+
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.security.SecurityScheme.Type;
 import io.swagger.v3.oas.models.servers.Server;
+import java.util.Properties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.Properties;
-
-import static muni.fi.cz.jobportal.configuration.constants.ApplicationConstants.BEARER_AUTH;
 
 /**
  * Configuration class for Swagger OpenAPI.
@@ -26,12 +25,13 @@ public class SwaggerConfiguration {
   @Bean
   public OpenAPI openAPI(BuildProperties buildProperties) {
     final var component = new Components()
-        .addSecuritySchemes(BEARER_AUTH, new SecurityScheme().type(Type.HTTP).scheme("Bearer"));
+      .addSecuritySchemes(BEARER_AUTH, new SecurityScheme().type(Type.HTTP).scheme("Bearer"));
 
-    final var info = new Info().title(buildProperties.getArtifact()).version(buildProperties.getVersion());
+    final var info = new Info().title(buildProperties.getArtifact())
+      .version(buildProperties.getVersion());
 
     return new OpenAPI().info(info).components(component)
-        .addServersItem(new Server().url("/").description("xx"));
+      .addServersItem(new Server().url("/").description("xx"));
   }
 
   @Bean

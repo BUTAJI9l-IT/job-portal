@@ -1,13 +1,12 @@
 package muni.fi.cz.jobportal.annotation.search;
 
-import org.springframework.core.annotation.AliasFor;
+import static muni.fi.cz.jobportal.annotation.search.DateQueryField.RangeSide.FROM;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import static muni.fi.cz.jobportal.annotation.search.DateQueryField.RangeSide.FROM;
+import org.springframework.core.annotation.AliasFor;
 
 /**
  * Annotation for processing search parameters fields that contain date range parts (from-to).

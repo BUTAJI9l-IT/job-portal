@@ -5,7 +5,8 @@ import muni.fi.cz.jobportal.domain.Applicant;
 import muni.fi.cz.jobportal.repository.search.ApplicantSearchRepository;
 
 public class ApplicantSearchRepositoryImpl extends
-  AbstractJobPortalSearchRepository<Applicant, ApplicantQueryParams> implements ApplicantSearchRepository {
+  AbstractJobPortalSearchRepository<Applicant, ApplicantQueryParams> implements
+  ApplicantSearchRepository {
 
   @Override
   public Class<Applicant> getBaseClass() {

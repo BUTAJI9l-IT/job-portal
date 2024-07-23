@@ -1,11 +1,10 @@
 package muni.fi.cz.jobportal.utils;
 
-import org.springframework.stereotype.Component;
-
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.util.UUID;
+import org.springframework.stereotype.Component;
 
 @Component
 public class StaticObjectFactory {

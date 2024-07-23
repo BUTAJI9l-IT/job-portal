@@ -1,10 +1,9 @@
 package muni.fi.cz.jobportal.service;
 
+import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.NonNull;
-
-import java.util.UUID;
 
 /**
  * Interface for CRUD operations

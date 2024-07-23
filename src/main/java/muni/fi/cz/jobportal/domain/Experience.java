@@ -1,13 +1,20 @@
 package muni.fi.cz.jobportal.domain;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-
-import javax.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Experience entity class.
@@ -40,8 +47,8 @@ public class Experience {
 
   @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(name = "experience_category",
-      joinColumns = @JoinColumn(name = "experience", referencedColumnName = "id"),
-      inverseJoinColumns = @JoinColumn(name = "category", referencedColumnName = "id"))
+    joinColumns = @JoinColumn(name = "experience", referencedColumnName = "id"),
+    inverseJoinColumns = @JoinColumn(name = "category", referencedColumnName = "id"))
   private List<JobCategory> jobCategories;
 
 }

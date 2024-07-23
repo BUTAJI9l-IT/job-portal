@@ -1,5 +1,9 @@
 package muni.fi.cz.jobportal.service.impl;
 
+import jakarta.mail.MessagingException;
+import java.io.UnsupportedEncodingException;
+import java.util.Locale;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import muni.fi.cz.jobportal.configuration.properties.JobPortalApplicationProperties;
@@ -15,11 +19,6 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-
-import javax.mail.MessagingException;
-import java.io.UnsupportedEncodingException;
-import java.util.Locale;
-import java.util.Map;
 
 /**
  * {@link EmailService} Implementation
@@ -41,9 +40,11 @@ public class EmailServiceImpl implements EmailService {
   @Override
   public void sendEmail(@NonNull IEmail email, Locale locale) {
     if (properties.getNotifications().getEnabled().equals(Boolean.TRUE)) {
-      final var subject = messageSource.getMessage("subject." + email.getTemplateName(), new Object[0], locale);
+      final var subject = messageSource.getMessage("subject." + email.getTemplateName(),
+        new Object[0], locale);
       final var message = javaMailSender.createMimeMessage();
-      final var body = thymeleafService.parseTemplate(getContextVars(email), email.getTemplateName(), locale);
+      final var body = thymeleafService.parseTemplate(getContextVars(email),
+        email.getTemplateName(), locale);
       final MimeMessageHelper helper;
       try {
         helper = new MimeMessageHelper(message, true);

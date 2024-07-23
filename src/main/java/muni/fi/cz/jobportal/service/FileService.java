@@ -1,10 +1,9 @@
 package muni.fi.cz.jobportal.service;
 
+import java.util.UUID;
 import muni.fi.cz.jobportal.api.common.AvatarResponse;
 import org.springframework.lang.NonNull;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.UUID;
 
 public interface FileService {
 

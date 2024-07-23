@@ -1,10 +1,9 @@
 package muni.fi.cz.jobportal.api.detail;
 
-import lombok.Data;
-import muni.fi.cz.jobportal.api.common.ExperienceDto;
-
 import java.util.List;
 import java.util.UUID;
+import lombok.Data;
+import muni.fi.cz.jobportal.api.common.ExperienceDto;
 
 @Data
 public class ApplicantDetailDto {

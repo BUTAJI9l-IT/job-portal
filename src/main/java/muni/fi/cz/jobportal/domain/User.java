@@ -1,20 +1,38 @@
 package muni.fi.cz.jobportal.domain;
 
+import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.EMAIL;
+import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.FULLTEXT_SUFFIX;
+import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.SORT_SUFFIX;
+import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.USER_SCOPE;
+import static muni.fi.cz.jobportal.configuration.search.LuceneConfiguration.FULLTEXT_ANALYZER;
+import static muni.fi.cz.jobportal.configuration.search.LuceneConfiguration.SORT_NORMALIZER;
+import static muni.fi.cz.jobportal.configuration.search.LuceneConfiguration.SUGGESTER;
+import static muni.fi.cz.jobportal.enums.JobPortalScope.ADMIN;
+import static org.hibernate.search.engine.backend.types.Sortable.YES;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import java.util.UUID;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import muni.fi.cz.jobportal.configuration.search.binder.UserBinder;
 import muni.fi.cz.jobportal.enums.JobPortalScope;
 import org.hibernate.search.mapper.pojo.bridge.mapping.annotation.TypeBinderRef;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.*;
-
-import javax.persistence.*;
-import java.util.UUID;
-
-import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.*;
-import static muni.fi.cz.jobportal.configuration.search.LuceneConfiguration.*;
-import static muni.fi.cz.jobportal.enums.JobPortalScope.ADMIN;
-import static org.hibernate.search.engine.backend.types.Sortable.YES;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.TypeBinding;
 
 /**
  * User entity class.
@@ -36,7 +54,8 @@ public class User {
 
   @Column(name = "email", unique = true)
   @KeywordField(name = EMAIL + SORT_SUFFIX, sortable = YES, normalizer = SORT_NORMALIZER)
-  @FullTextField(name = EMAIL + FULLTEXT_SUFFIX, analyzer = FULLTEXT_ANALYZER, searchAnalyzer = SUGGESTER)
+  @FullTextField(name = EMAIL
+    + FULLTEXT_SUFFIX, analyzer = FULLTEXT_ANALYZER, searchAnalyzer = SUGGESTER)
   private String email;
   @Column(name = "password")
   private String password;

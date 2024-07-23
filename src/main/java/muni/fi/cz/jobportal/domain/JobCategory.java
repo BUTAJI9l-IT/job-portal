@@ -1,13 +1,21 @@
 package muni.fi.cz.jobportal.domain;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import java.util.List;
+import java.util.UUID;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import javax.persistence.*;
-import java.util.List;
-import java.util.UUID;
 
 /**
  * Job Category entity class.
@@ -38,14 +46,10 @@ public class JobCategory {
   private List<Occupation> occupations;
 
   @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(name = "position_category",
-    joinColumns = @JoinColumn(name = "category", referencedColumnName = "id"),
-    inverseJoinColumns = @JoinColumn(name = "job_position", referencedColumnName = "id"))
+  @JoinTable(name = "position_category", joinColumns = @JoinColumn(name = "category", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "job_position", referencedColumnName = "id"))
   private List<JobPosition> positions;
 
   @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(name = "experience_category",
-    joinColumns = @JoinColumn(name = "category", referencedColumnName = "id"),
-    inverseJoinColumns = @JoinColumn(name = "experience", referencedColumnName = "id"))
+  @JoinTable(name = "experience_category", joinColumns = @JoinColumn(name = "category", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "experience", referencedColumnName = "id"))
   private List<JobCategory> experiences;
 }

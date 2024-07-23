@@ -5,7 +5,8 @@ import org.springframework.http.HttpStatus;
 public class UploadFailedException extends JobPortalException {
 
   public UploadFailedException() {
-    super("Error occurred during document uploading", HttpStatus.INTERNAL_SERVER_ERROR, null, "010");
+    super("Error occurred during document uploading", HttpStatus.INTERNAL_SERVER_ERROR, null,
+      "010");
   }
 
 }

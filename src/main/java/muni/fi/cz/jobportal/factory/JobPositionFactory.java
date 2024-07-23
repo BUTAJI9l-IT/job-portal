@@ -1,5 +1,6 @@
 package muni.fi.cz.jobportal.factory;
 
+import java.util.ArrayList;
 import lombok.RequiredArgsConstructor;
 import muni.fi.cz.jobportal.api.common.JobPositionDto;
 import muni.fi.cz.jobportal.api.common.ReferenceDto;
@@ -13,8 +14,6 @@ import muni.fi.cz.jobportal.utils.AuthorityValidator;
 import muni.fi.cz.jobportal.utils.StaticObjectFactory;
 import org.mapstruct.ObjectFactory;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
 
 /**
  * Object factory for job positions

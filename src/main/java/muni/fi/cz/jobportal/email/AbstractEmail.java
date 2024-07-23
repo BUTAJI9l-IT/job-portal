@@ -1,11 +1,10 @@
 package muni.fi.cz.jobportal.email;
 
+import java.util.EnumMap;
+import java.util.Map;
 import lombok.Getter;
 import muni.fi.cz.jobportal.api.email.EmailDetailsDto;
 import muni.fi.cz.jobportal.enums.TemplateParameter;
-
-import java.util.EnumMap;
-import java.util.Map;
 
 /**
  * Abstract {@link IEmail} interface implementation.

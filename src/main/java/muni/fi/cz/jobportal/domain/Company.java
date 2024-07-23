@@ -1,5 +1,28 @@
 package muni.fi.cz.jobportal.domain;
 
+import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.COMPANY_SIZE;
+import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.DESCRIPTION;
+import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.FULLTEXT_SUFFIX;
+import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.NAME;
+import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.SORT_SUFFIX;
+import static muni.fi.cz.jobportal.configuration.search.LuceneConfiguration.FULLTEXT_ANALYZER;
+import static muni.fi.cz.jobportal.configuration.search.LuceneConfiguration.SORT_NORMALIZER;
+import static muni.fi.cz.jobportal.configuration.search.LuceneConfiguration.SUGGESTER;
+import static org.hibernate.search.engine.backend.types.Sortable.YES;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import java.util.List;
+import java.util.UUID;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,14 +31,6 @@ import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextFi
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordField;
-
-import javax.persistence.*;
-import java.util.List;
-import java.util.UUID;
-
-import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.*;
-import static muni.fi.cz.jobportal.configuration.search.LuceneConfiguration.*;
-import static org.hibernate.search.engine.backend.types.Sortable.YES;
 
 /**
  * Company entity class.
@@ -34,11 +49,13 @@ public class Company {
   @GeneratedValue
   private UUID id;
   @KeywordField(name = NAME + SORT_SUFFIX, sortable = YES, normalizer = SORT_NORMALIZER)
-  @FullTextField(name = NAME + FULLTEXT_SUFFIX, analyzer = FULLTEXT_ANALYZER, searchAnalyzer = SUGGESTER)
+  @FullTextField(name = NAME
+    + FULLTEXT_SUFFIX, analyzer = FULLTEXT_ANALYZER, searchAnalyzer = SUGGESTER)
   private String companyName;
   private String companyLink;
   @KeywordField(name = DESCRIPTION + SORT_SUFFIX, sortable = YES, normalizer = SORT_NORMALIZER)
-  @FullTextField(name = DESCRIPTION + FULLTEXT_SUFFIX, analyzer = FULLTEXT_ANALYZER, searchAnalyzer = SUGGESTER)
+  @FullTextField(name = DESCRIPTION
+    + FULLTEXT_SUFFIX, analyzer = FULLTEXT_ANALYZER, searchAnalyzer = SUGGESTER)
   private String description;
 
   @Enumerated(EnumType.STRING)
@@ -46,7 +63,8 @@ public class Company {
   @GenericField(name = COMPANY_SIZE)
   private CompanyNumberOfEmployees companySize;
 
-  @OneToMany(mappedBy = "company", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)
+  @OneToMany(mappedBy = "company", cascade = {CascadeType.PERSIST,
+    CascadeType.REMOVE}, fetch = FetchType.LAZY)
   private List<JobPosition> jobPositions;
 
   @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)

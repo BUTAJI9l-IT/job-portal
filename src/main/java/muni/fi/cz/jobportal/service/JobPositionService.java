@@ -1,5 +1,6 @@
 package muni.fi.cz.jobportal.service;
 
+import java.util.UUID;
 import muni.fi.cz.jobportal.api.common.FavouritesJobsResponse;
 import muni.fi.cz.jobportal.api.common.JobPositionDto;
 import muni.fi.cz.jobportal.api.detail.JobPositionDetailDto;
@@ -8,10 +9,8 @@ import muni.fi.cz.jobportal.api.request.JobPositionUpdateDto;
 import muni.fi.cz.jobportal.api.search.JobPositionQueryParams;
 import org.springframework.lang.NonNull;
 
-import java.util.UUID;
-
 public interface JobPositionService extends
-    CRUDService<JobPositionCreateDto, JobPositionDto, JobPositionUpdateDto, JobPositionDetailDto, JobPositionQueryParams> {
+  CRUDService<JobPositionCreateDto, JobPositionDto, JobPositionUpdateDto, JobPositionDetailDto, JobPositionQueryParams> {
 
   /**
    * Creates a new application.
@@ -50,5 +49,6 @@ public interface JobPositionService extends
    * @return updated list of favorites job positions for given applicant
    */
   @NonNull
-  FavouritesJobsResponse removeFromFavorites(@NonNull UUID applicantId, @NonNull UUID jobPositionId);
+  FavouritesJobsResponse removeFromFavorites(@NonNull UUID applicantId,
+    @NonNull UUID jobPositionId);
 }

@@ -1,9 +1,8 @@
 package muni.fi.cz.jobportal.api.request;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import muni.fi.cz.jobportal.enums.CompanyNumberOfEmployees;
-
-import javax.validation.constraints.NotBlank;
 
 @Data
 public class CompanyUpdateDto {

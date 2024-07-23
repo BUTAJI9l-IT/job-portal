@@ -1,7 +1,24 @@
 package muni.fi.cz.jobportal.service.impl;
 
+import static muni.fi.cz.jobportal.enums.TemplateParameter.AVATAR;
+import static muni.fi.cz.jobportal.enums.TemplateParameter.EMAIL;
+import static muni.fi.cz.jobportal.enums.TemplateParameter.EXPERIENCES;
+import static muni.fi.cz.jobportal.enums.TemplateParameter.LAST_NAME;
+import static muni.fi.cz.jobportal.enums.TemplateParameter.NAME;
+import static muni.fi.cz.jobportal.enums.TemplateParameter.PHONE;
+import static muni.fi.cz.jobportal.enums.TemplateParameter.PROFILE;
+
 import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.UUID;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import muni.fi.cz.jobportal.enums.TemplateParameter;
 import muni.fi.cz.jobportal.exception.ConversionException;
@@ -15,18 +32,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Base64Utils;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
-import static muni.fi.cz.jobportal.enums.TemplateParameter.*;
 
 /**
  * {@link ThymeleafService} Implementation
@@ -53,12 +58,14 @@ public class ThymeleafServiceImpl implements ThymeleafService {
         NAME, safeGetString(applicant.getUser().getName()),
         LAST_NAME, safeGetString(applicant.getUser().getLastName()),
         AVATAR,
-        Base64Utils.encodeToString(fileService.getAvatar(applicant.getUser().getId()).resource().getInputStream()
-          .readAllBytes()),
+        Base64Utils.encodeToString(
+          fileService.getAvatar(applicant.getUser().getId()).resource().getInputStream()
+            .readAllBytes()),
         EMAIL, safeGetString(applicant.getUser().getEmail()),
         PHONE, safeGetString(applicant.getPhone()),
         PROFILE, safeGetString(applicant.getProfile()),
-        EXPERIENCES, experienceMapper.map(applicant.getExperiences() != null ? applicant.getExperiences() : List.of())
+        EXPERIENCES, experienceMapper.map(
+          applicant.getExperiences() != null ? applicant.getExperiences() : List.of())
       ), CV_TEMPLATE_NAME, Locale.ENGLISH));
     } catch (IOException e) {
       throw new ConversionException();
@@ -67,7 +74,8 @@ public class ThymeleafServiceImpl implements ThymeleafService {
 
   @NonNull
   @Override
-  public String parseTemplate(@NonNull Map<TemplateParameter, Object> variables, @NonNull String template,
+  public String parseTemplate(@NonNull Map<TemplateParameter, Object> variables,
+    @NonNull String template,
     @NonNull Locale lang) {
     final var context = new Context();
     context.setVariables(variables.entrySet().stream()

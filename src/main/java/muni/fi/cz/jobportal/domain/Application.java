@@ -1,5 +1,21 @@
 package muni.fi.cz.jobportal.domain;
 
+import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.APPLICATION_DATE;
+import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.SORT_SUFFIX;
+import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.STATUS;
+import static org.hibernate.search.engine.backend.types.Sortable.YES;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import java.time.Instant;
+import java.util.UUID;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,13 +26,6 @@ import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericFie
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordField;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.TypeBinding;
-
-import javax.persistence.*;
-import java.time.Instant;
-import java.util.UUID;
-
-import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.*;
-import static org.hibernate.search.engine.backend.types.Sortable.YES;
 
 /**
  * Application entity class.

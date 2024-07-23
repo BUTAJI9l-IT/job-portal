@@ -1,8 +1,7 @@
 package muni.fi.cz.jobportal.repository;
 
-import muni.fi.cz.jobportal.domain.UserPreferences;
-
 import java.util.UUID;
+import muni.fi.cz.jobportal.domain.UserPreferences;
 
 public interface PreferencesRepository extends JobPortalRepository<UserPreferences, UUID> {
 

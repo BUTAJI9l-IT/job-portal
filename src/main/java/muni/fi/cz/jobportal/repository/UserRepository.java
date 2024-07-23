@@ -1,11 +1,10 @@
 package muni.fi.cz.jobportal.repository;
 
+import java.util.Optional;
+import java.util.UUID;
 import muni.fi.cz.jobportal.domain.User;
 import muni.fi.cz.jobportal.repository.search.UserSearchRepository;
 import org.springframework.data.jpa.repository.Query;
-
-import java.util.Optional;
-import java.util.UUID;
 
 public interface UserRepository extends UserSearchRepository, JobPortalRepository<User, UUID> {
 

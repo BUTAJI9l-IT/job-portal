@@ -1,10 +1,9 @@
 package muni.fi.cz.jobportal.utils.validation;
 
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import muni.fi.cz.jobportal.annotation.DateRange;
 import muni.fi.cz.jobportal.api.common.DateRangeDto;
-
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
 
 /**
  * Validator for {@link DateRange} annotation.

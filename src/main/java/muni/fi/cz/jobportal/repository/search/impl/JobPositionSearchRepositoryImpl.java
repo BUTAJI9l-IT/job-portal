@@ -5,7 +5,8 @@ import muni.fi.cz.jobportal.domain.JobPosition;
 import muni.fi.cz.jobportal.repository.search.JobPositionSearchRepository;
 
 public class JobPositionSearchRepositoryImpl extends
-  AbstractJobPortalSearchRepository<JobPosition, JobPositionQueryParams> implements JobPositionSearchRepository {
+  AbstractJobPortalSearchRepository<JobPosition, JobPositionQueryParams> implements
+  JobPositionSearchRepository {
 
   @Override
   public Class<JobPosition> getBaseClass() {

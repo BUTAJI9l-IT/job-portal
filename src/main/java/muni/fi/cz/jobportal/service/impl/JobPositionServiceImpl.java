@@ -1,5 +1,7 @@
 package muni.fi.cz.jobportal.service.impl;
 
+import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import muni.fi.cz.jobportal.annotation.JobPortalService;
 import muni.fi.cz.jobportal.api.common.FavouritesJobsResponse;
@@ -28,9 +30,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.lang.NonNull;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.UUID;
 
 /**
  * {@link JobPositionService} Implementation
@@ -82,7 +81,8 @@ public class JobPositionServiceImpl implements JobPositionService {
   @Override
   @PreAuthorize("@authorityValidator.jobBelongsToCompany(#id)")
   public JobPositionDetailDto update(@NonNull UUID id, @NonNull JobPositionUpdateDto payload) {
-    final var updated = jobPositionMapper.update(jobPositionRepository.getOneByIdOrThrowNotFound(id), payload);
+    final var updated = jobPositionMapper.update(
+      jobPositionRepository.getOneByIdOrThrowNotFound(id), payload);
     if (payload.getStatus().equals(PositionState.INACTIVE)) {
       updated.getApplications().forEach(application -> {
         application.setState(ApplicationState.CLOSED);
@@ -112,7 +112,8 @@ public class JobPositionServiceImpl implements JobPositionService {
     if (applicationRepository.existsActive(applicant.getId(), jobPositionId)) {
       throw new ApplicationAlreadyExistsException();
     }
-    applicationService.create(ApplicationCreateDto.builder().job(jobPositionId).applicant(applicant.getId()).build());
+    applicationService.create(
+      ApplicationCreateDto.builder().job(jobPositionId).applicant(applicant.getId()).build());
     return jobPositionMapper.map(jobPositionRepository.saveAndFlush(jobPosition));
   }
 
@@ -131,7 +132,8 @@ public class JobPositionServiceImpl implements JobPositionService {
   @NonNull
   @Override
   @PreAuthorize("@authorityValidator.isAdmin() OR @authorityValidator.isCurrentApplicant(#applicantId)")
-  public FavouritesJobsResponse addToFavorites(@NonNull UUID applicantId, @NonNull UUID jobPositionId) {
+  public FavouritesJobsResponse addToFavorites(@NonNull UUID applicantId,
+    @NonNull UUID jobPositionId) {
     final var applicant = applicantRepository.getOneByIdOrThrowNotFound(applicantId);
     final var jobPosition = jobPositionRepository.getOneByIdOrThrowNotFound(jobPositionId);
     if (jobPositionRepository.applicantWithIdLiked(jobPosition, applicant.getId())) {
@@ -148,7 +150,8 @@ public class JobPositionServiceImpl implements JobPositionService {
   @NonNull
   @Override
   @PreAuthorize("@authorityValidator.isAdmin() OR @authorityValidator.isCurrentApplicant(#applicantId)")
-  public FavouritesJobsResponse removeFromFavorites(@NonNull UUID applicantId, @NonNull UUID jobPositionId) {
+  public FavouritesJobsResponse removeFromFavorites(@NonNull UUID applicantId,
+    @NonNull UUID jobPositionId) {
     final var applicant = applicantRepository.getOneByIdOrThrowNotFound(applicantId);
     final var jobPosition = jobPositionRepository.getOneByIdOrThrowNotFound(jobPositionId);
     if (!jobPositionRepository.applicantWithIdLiked(jobPosition, applicant.getId())) {

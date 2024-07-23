@@ -1,9 +1,8 @@
 package muni.fi.cz.jobportal.service;
 
+import java.util.Locale;
 import muni.fi.cz.jobportal.email.IEmail;
 import org.springframework.lang.NonNull;
-
-import java.util.Locale;
 
 public interface EmailService {
 

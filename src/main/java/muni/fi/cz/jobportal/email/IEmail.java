@@ -1,8 +1,7 @@
 package muni.fi.cz.jobportal.email;
 
-import muni.fi.cz.jobportal.enums.TemplateParameter;
-
 import java.util.Map;
+import muni.fi.cz.jobportal.enums.TemplateParameter;
 
 public interface IEmail {
 

@@ -1,5 +1,13 @@
 package muni.fi.cz.jobportal.utils;
 
+import static muni.fi.cz.jobportal.api.JwtClaims.SCOPE_CLAIM;
+import static muni.fi.cz.jobportal.enums.JobPortalScope.ADMIN;
+import static muni.fi.cz.jobportal.enums.JobPortalScope.COMPANY;
+import static muni.fi.cz.jobportal.enums.JobPortalScope.REGULAR_USER;
+import static muni.fi.cz.jobportal.utils.AuthenticationUtils.getClaim;
+import static muni.fi.cz.jobportal.utils.AuthenticationUtils.getJwtFromHeader;
+
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import muni.fi.cz.jobportal.api.request.JobPositionCreateDto;
 import muni.fi.cz.jobportal.repository.ApplicantRepository;
@@ -11,16 +19,9 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.UUID;
-
-import static muni.fi.cz.jobportal.api.JwtClaims.SCOPE_CLAIM;
-import static muni.fi.cz.jobportal.enums.JobPortalScope.*;
-import static muni.fi.cz.jobportal.utils.AuthenticationUtils.getClaim;
-import static muni.fi.cz.jobportal.utils.AuthenticationUtils.getJwtFromHeader;
-
 /**
- * Authority validator class contains methods for validating permissions of current authorized user to perform certain
- * operations in the system.
+ * Authority validator class contains methods for validating permissions of current authorized user
+ * to perform certain operations in the system.
  *
  * @author Vitalii Bortsov
  */
@@ -55,7 +56,8 @@ public class AuthorityValidator {
 
   public boolean canManageApplication(@NonNull UUID id) {
     return isAdmin() || (isCompany() && isCurrentUser(
-      applicationRepository.getOneByIdOrThrowNotFound(id).getJobPosition().getCompany().getUser().getId()));
+      applicationRepository.getOneByIdOrThrowNotFound(id).getJobPosition().getCompany().getUser()
+        .getId()));
   }
 
   public boolean canDeleteApplication(@NonNull UUID id) {

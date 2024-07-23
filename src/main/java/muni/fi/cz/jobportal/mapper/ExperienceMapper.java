@@ -1,5 +1,6 @@
 package muni.fi.cz.jobportal.mapper;
 
+import java.util.List;
 import muni.fi.cz.jobportal.api.common.ExperienceDto;
 import muni.fi.cz.jobportal.domain.Applicant;
 import muni.fi.cz.jobportal.domain.Experience;
@@ -8,8 +9,6 @@ import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
-
-import java.util.List;
 
 /**
  * Mapper for experiences

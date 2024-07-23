@@ -1,8 +1,14 @@
 package muni.fi.cz.jobportal.resource;
 
+import static muni.fi.cz.jobportal.api.ApiTags.APPLICATION;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import java.time.Instant;
+import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import muni.fi.cz.jobportal.annotation.JobPortalSecuredController;
 import muni.fi.cz.jobportal.api.common.ApplicationDto;
@@ -15,14 +21,13 @@ import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.time.Instant;
-import java.util.List;
-import java.util.UUID;
-
-import static muni.fi.cz.jobportal.api.ApiTags.APPLICATION;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * Controller with application entity related endpoints.
@@ -39,7 +44,8 @@ public class ApplicationResource {
 
   @GetMapping("/{applicationId}")
   @Operation(summary = "${api.application.getOne.summary}", description = "${api.application.getOne.description}")
-  public ResponseEntity<ApplicationDetailDto> getApplication(@PathVariable("applicationId") UUID applicationId) {
+  public ResponseEntity<ApplicationDetailDto> getApplication(
+    @PathVariable("applicationId") UUID applicationId) {
     return ResponseEntity.ok(applicationService.findOne(applicationId));
   }
 
@@ -68,7 +74,8 @@ public class ApplicationResource {
 
   @PutMapping("/{applicationId}/state")
   @Operation(summary = "${api.application.update.summary}", description = "${api.application.update.description}")
-  public ResponseEntity<ApplicationDetailDto> changeApplicationState(@PathVariable("applicationId") UUID applicationId,
+  public ResponseEntity<ApplicationDetailDto> changeApplicationState(
+    @PathVariable("applicationId") UUID applicationId,
     @Valid @RequestBody ApplicationUpdateDto payload) {
     return ResponseEntity.ok(applicationService.update(applicationId, payload));
   }

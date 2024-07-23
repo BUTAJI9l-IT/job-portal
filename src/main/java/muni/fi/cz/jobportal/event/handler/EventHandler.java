@@ -26,10 +26,12 @@ public class EventHandler {
   private final JobPortalApplicationProperties properties;
 
   @EventListener
-  public void handleApplicationStateChange(ApplicationStateChangedEvent applicationStateChangedEvent) {
+  public void handleApplicationStateChange(
+    ApplicationStateChangedEvent applicationStateChangedEvent) {
     final var application = applicationRepository.getOneByIdOrThrowNotFound(
       applicationStateChangedEvent.getApplication());
-    if (application.getApplicant().getUser().getPreferences().getNotificationsEnabled().equals(Boolean.TRUE)
+    if (application.getApplicant().getUser().getPreferences().getNotificationsEnabled()
+      .equals(Boolean.TRUE)
       && (properties.getNotifications().getEnabled().equals(Boolean.TRUE))) {
       final var email = new ApplicationStateChangedEmail(
         ApplicationEmailDto.builder()
@@ -38,7 +40,8 @@ public class EventHandler {
           .company(application.getJobPosition().getCompany().getCompanyName())
           .recipient(application.getApplicant().getUser().getEmail())
           .build());
-      emailService.sendEmail(email, application.getApplicant().getUser().getPreferences().getLanguage().toLocale());
+      emailService.sendEmail(email,
+        application.getApplicant().getUser().getPreferences().getLanguage().toLocale());
     }
   }
 }

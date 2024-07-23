@@ -1,10 +1,9 @@
 package muni.fi.cz.jobportal.repository;
 
+import java.util.UUID;
 import muni.fi.cz.jobportal.domain.RefreshToken;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-
-import java.util.UUID;
 
 public interface RefreshTokenRepository extends JobPortalRepository<RefreshToken, String> {
 

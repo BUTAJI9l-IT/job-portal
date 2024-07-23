@@ -1,5 +1,8 @@
 package muni.fi.cz.jobportal.service.impl;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import muni.fi.cz.jobportal.annotation.JobPortalService;
 import muni.fi.cz.jobportal.api.common.AvatarResponse;
@@ -19,10 +22,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.util.UUID;
 
 /**
  * {@link FileService} Implementation
@@ -49,7 +48,8 @@ public class FileServiceImpl implements FileService {
     }
     final File fileDB;
     try {
-      fileDB = new File(null, StringUtils.cleanPath(file.getOriginalFilename()), file.getContentType(),
+      fileDB = new File(null, StringUtils.cleanPath(file.getOriginalFilename()),
+        file.getContentType(),
         file.getBytes(), user);
     } catch (IOException ignored) {
       throw new UploadFailedException();
@@ -57,7 +57,8 @@ public class FileServiceImpl implements FileService {
 
     user.setAvatar(fileRepository.saveAndFlush(fileDB));
     userRepository.saveAndFlush(user);
-    return new AvatarResponse(new InputStreamResource(new ByteArrayInputStream(user.getAvatar().getData())),
+    return new AvatarResponse(
+      new InputStreamResource(new ByteArrayInputStream(user.getAvatar().getData())),
       MediaType.parseMediaType(user.getAvatar().getExt()));
   }
 
@@ -90,7 +91,8 @@ public class FileServiceImpl implements FileService {
         } else if (auth.getScope().equals(JobPortalScope.COMPANY)) {
           final var authCompany = auth.getCompany().getId();
           if (user.getApplicant().getApplications().stream()
-            .noneMatch(application -> application.getJobPosition().getCompany().getId().equals(authCompany))) {
+            .noneMatch(application -> application.getJobPosition().getCompany().getId()
+              .equals(authCompany))) {
             throw new AccessDeniedException(
               "Companies can see avatars of applicants, which have applied for their jobs");
           }
@@ -98,7 +100,8 @@ public class FileServiceImpl implements FileService {
       }
     }
     return user.getAvatar() == null ? getDefaultAvatar()
-      : new AvatarResponse(new InputStreamResource(new ByteArrayInputStream(user.getAvatar().getData())),
+      : new AvatarResponse(
+        new InputStreamResource(new ByteArrayInputStream(user.getAvatar().getData())),
         MediaType.parseMediaType(user.getAvatar().getExt()));
   }
 

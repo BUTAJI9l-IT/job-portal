@@ -1,9 +1,14 @@
 package muni.fi.cz.jobportal.resource;
 
+import static muni.fi.cz.jobportal.api.ApiTags.JOB_POSITION_CATEGORY;
+import static muni.fi.cz.jobportal.configuration.constants.ApplicationConstants.BEARER_AUTH;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import muni.fi.cz.jobportal.annotation.JobPortalController;
 import muni.fi.cz.jobportal.api.common.CategoryDto;
@@ -15,13 +20,12 @@ import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.UUID;
-
-import static muni.fi.cz.jobportal.api.ApiTags.JOB_POSITION_CATEGORY;
-import static muni.fi.cz.jobportal.configuration.constants.ApplicationConstants.BEARER_AUTH;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * Controller with job category entity related endpoints.
@@ -39,7 +43,8 @@ public class JobPositionCategoryResource {
   @PostMapping("/{categoryName}")
   @Operation(summary = "${api.job-cat.create.summary}", description = "${api.job-cat.create.description}")
   @SecurityRequirement(name = BEARER_AUTH)
-  public ResponseEntity<ReferenceDto> createCategory(@PathVariable("categoryName") String categoryName) {
+  public ResponseEntity<ReferenceDto> createCategory(
+    @PathVariable("categoryName") String categoryName) {
     return ResponseEntity.ok(jobPositionCategoryService.create(categoryName));
   }
 
@@ -68,7 +73,8 @@ public class JobPositionCategoryResource {
   @Operation(summary = "${api.job-cat.getOccupations.summary}", description = "${api.job-cat.getOccupations.description}")
   public Page<ReferenceDto> getOccupations(@Parameter(hidden = true) Pageable pageable,
     @RequestParam(required = false) List<String> q) {
-    return jobPositionCategoryService.searchOccupations(pageable, OccupationQueryParams.builder().qList(q).build());
+    return jobPositionCategoryService.searchOccupations(pageable,
+      OccupationQueryParams.builder().qList(q).build());
   }
 
 }

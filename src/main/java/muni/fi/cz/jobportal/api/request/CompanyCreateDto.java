@@ -1,13 +1,12 @@
 package muni.fi.cz.jobportal.api.request;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import muni.fi.cz.jobportal.enums.CompanyNumberOfEmployees;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import java.util.UUID;
 
 @Data
 @AllArgsConstructor

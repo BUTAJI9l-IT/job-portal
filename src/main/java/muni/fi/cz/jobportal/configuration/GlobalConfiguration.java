@@ -11,8 +11,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  */
 @Configuration
 @EnableJpaRepositories(
-    enableDefaultTransactions = false,
-    basePackages = {"muni.fi.cz.jobportal.repository"}
+  enableDefaultTransactions = false,
+  basePackages = {"muni.fi.cz.jobportal.repository"}
 )
 @EnableScheduling
 public class GlobalConfiguration {

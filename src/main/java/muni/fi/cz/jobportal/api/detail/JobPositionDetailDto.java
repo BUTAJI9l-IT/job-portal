@@ -1,13 +1,12 @@
 package muni.fi.cz.jobportal.api.detail;
 
+import java.time.Instant;
+import java.util.List;
+import java.util.UUID;
 import lombok.Data;
 import muni.fi.cz.jobportal.api.common.ReferenceDto;
 import muni.fi.cz.jobportal.api.common.ReferenceUserDto;
 import muni.fi.cz.jobportal.enums.PositionState;
-
-import java.time.Instant;
-import java.util.List;
-import java.util.UUID;
 
 @Data
 public class JobPositionDetailDto {

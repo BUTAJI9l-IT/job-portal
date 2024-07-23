@@ -1,15 +1,14 @@
 package muni.fi.cz.jobportal.api.request;
 
 import com.neovisionaries.i18n.LanguageCode;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import muni.fi.cz.jobportal.annotation.RepeatPassword;
 import muni.fi.cz.jobportal.api.common.RepeatPasswordDto;
 import muni.fi.cz.jobportal.enums.CompanyNumberOfEmployees;
 import muni.fi.cz.jobportal.enums.JobPortalScope;
-
-import javax.validation.Valid;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
 
 @Data
 public class UserCreateDto {

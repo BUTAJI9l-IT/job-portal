@@ -1,11 +1,10 @@
 package muni.fi.cz.jobportal.api.detail;
 
+import java.util.List;
+import java.util.UUID;
 import lombok.Data;
 import muni.fi.cz.jobportal.api.common.JobPositionDto;
 import muni.fi.cz.jobportal.enums.CompanyNumberOfEmployees;
-
-import java.util.List;
-import java.util.UUID;
 
 @Data
 public class CompanyDetailDto {

@@ -1,15 +1,14 @@
 package muni.fi.cz.jobportal.utils;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-import org.springframework.core.annotation.AnnotatedElementUtils;
-
 import java.beans.PropertyDescriptor;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.function.Consumer;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import org.springframework.core.annotation.AnnotatedElementUtils;
 
 /**
  * Utility class for helping process class fields with {@link java.lang.reflect}.
@@ -19,10 +18,11 @@ import java.util.function.Consumer;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ClassFieldsUtils {
 
-  public static boolean applyToAnnotatedFieldsWithValuesPresent(Object obj, Class<? extends Annotation> annotationClass,
-      Consumer<Field> action) {
+  public static boolean applyToAnnotatedFieldsWithValuesPresent(Object obj,
+    Class<? extends Annotation> annotationClass,
+    Consumer<Field> action) {
     final var filtered = Arrays.stream(obj.getClass().getDeclaredFields())
-        .filter(f -> isAnnotationPresent(f, annotationClass) && fieldValuePresent(obj, f)).toList();
+      .filter(f -> isAnnotationPresent(f, annotationClass) && fieldValuePresent(obj, f)).toList();
     if (filtered.isEmpty()) {
       return false;
     }
@@ -30,7 +30,8 @@ public class ClassFieldsUtils {
     return true;
   }
 
-  public static boolean isAnnotationPresent(Field field, Class<? extends Annotation> annotationClass) {
+  public static boolean isAnnotationPresent(Field field,
+    Class<? extends Annotation> annotationClass) {
     return findAnnotation(field, annotationClass) != null;
   }
 
@@ -44,7 +45,8 @@ public class ClassFieldsUtils {
 
   public static <T> Object getFieldValue(Field field, T object) {
     try {
-      return new PropertyDescriptor(field.getName(), object.getClass()).getReadMethod().invoke(object);
+      return new PropertyDescriptor(field.getName(), object.getClass()).getReadMethod()
+        .invoke(object);
     } catch (Exception e) {
       return null;
     }

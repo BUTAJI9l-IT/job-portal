@@ -1,12 +1,11 @@
 package muni.fi.cz.jobportal.service;
 
-import muni.fi.cz.jobportal.enums.TemplateParameter;
-import org.springframework.lang.NonNull;
-
 import java.io.ByteArrayInputStream;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
+import muni.fi.cz.jobportal.enums.TemplateParameter;
+import org.springframework.lang.NonNull;
 
 public interface ThymeleafService {
 

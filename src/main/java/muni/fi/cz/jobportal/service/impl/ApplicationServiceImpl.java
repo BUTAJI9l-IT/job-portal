@@ -1,5 +1,6 @@
 package muni.fi.cz.jobportal.service.impl;
 
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import muni.fi.cz.jobportal.annotation.JobPortalService;
 import muni.fi.cz.jobportal.api.common.ApplicationDto;
@@ -25,8 +26,6 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.UUID;
-
 /**
  * {@link ApplicationService} Implementation
  *
@@ -45,23 +44,28 @@ public class ApplicationServiceImpl implements ApplicationService {
   @NonNull
   @Override
   public ApplicationDetailDto create(@NonNull ApplicationCreateDto payload) {
-    return applicationMapper.map(applicationRepository.saveAndFlush(applicationMapper.map(payload)));
+    return applicationMapper.map(
+      applicationRepository.saveAndFlush(applicationMapper.map(payload)));
   }
 
   @NonNull
   @Override
   public ApplicationDetailDto findOne(@NonNull UUID id) {
-    final var currentUser = userRepository.getOneByIdOrThrowNotFound(authorityValidator.getCurrentUser());
+    final var currentUser = userRepository.getOneByIdOrThrowNotFound(
+      authorityValidator.getCurrentUser());
     final var application = applicationRepository.getOneByIdOrThrowNotFound(id);
     if (currentUser.getScope().equals(JobPortalScope.COMPANY)) {
-      if (!application.getJobPosition().getCompany().getUser().getId().equals(currentUser.getId())) {
-        throw new AccessDeniedException("Access denied: Cannot see an application for another company's job position");
+      if (!application.getJobPosition().getCompany().getUser().getId()
+        .equals(currentUser.getId())) {
+        throw new AccessDeniedException(
+          "Access denied: Cannot see an application for another company's job position");
       }
       if (application.getState().equals(ApplicationState.OPEN)) {
         application.setState(ApplicationState.SEEN);
         applicationRepository.saveAndFlush(application);
       }
-    } else if (currentUser.getScope().equals(JobPortalScope.REGULAR_USER) && (!application.getApplicant().getUser()
+    } else if (currentUser.getScope().equals(JobPortalScope.REGULAR_USER)
+      && (!application.getApplicant().getUser()
       .getId().equals(currentUser.getId()))) {
       throw new AccessDeniedException("Access denied: Cannot see another applicant's application");
     }
@@ -72,7 +76,8 @@ public class ApplicationServiceImpl implements ApplicationService {
   @Override
   @Transactional(readOnly = true)
   public Page<ApplicationDto> findAll(Pageable pageable, ApplicationQueryParams params) {
-    checkParamPermissions(params, userRepository.getOneByIdOrThrowNotFound(authorityValidator.getCurrentUser()));
+    checkParamPermissions(params,
+      userRepository.getOneByIdOrThrowNotFound(authorityValidator.getCurrentUser()));
     return applicationRepository.search(pageable, params).map(applicationMapper::mapDto);
   }
 
@@ -108,14 +113,17 @@ public class ApplicationServiceImpl implements ApplicationService {
     if (user.getScope().equals(JobPortalScope.ADMIN)) {
       return;
     }
-    if (params.getJobPosition() == null && params.getApplicant() == null && params.getCompany() == null) {
-      throw new AccessDeniedException("Access denied: not allowed to browse through all applications");
+    if (params.getJobPosition() == null && params.getApplicant() == null
+      && params.getCompany() == null) {
+      throw new AccessDeniedException(
+        "Access denied: not allowed to browse through all applications");
     }
     if (user.getScope().equals(JobPortalScope.COMPANY) &&
       (params.getApplicant() != null ||
         (params.getCompany() != null && !params.getCompany().equals(user.getCompany().getId())) ||
         (params.getJobPosition() != null &&
-          (user.getCompany().getJobPositions() == null || user.getCompany().getJobPositions().stream()
+          (user.getCompany().getJobPositions() == null || user.getCompany().getJobPositions()
+            .stream()
             .noneMatch(jp -> jp.getId().equals(params.getJobPosition())))))) {
       throw new AccessDeniedException(
         "Access denied: Company is not allowed to filter by another company, another companies' jobs, or see all applications of users");

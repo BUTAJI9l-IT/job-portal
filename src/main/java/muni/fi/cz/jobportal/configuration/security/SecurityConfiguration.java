@@ -1,9 +1,20 @@
 package muni.fi.cz.jobportal.configuration.security;
 
+import static org.springframework.security.web.util.matcher.RegexRequestMatcher.regexMatcher;
+
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
+import java.io.IOException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertificateException;
+import java.security.interfaces.RSAPublicKey;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import muni.fi.cz.jobportal.configuration.properties.JobPortalApplicationProperties;
 import muni.fi.cz.jobportal.utils.StaticObjectFactory;
@@ -15,23 +26,22 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer.CacheControlConfig;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.jwt.*;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.JwtEncoder;
+import org.springframework.security.oauth2.jwt.JwtTimestampValidator;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.zalando.problem.spring.web.advice.security.SecurityProblemSupport;
-
-import java.io.IOException;
-import java.security.*;
-import java.security.cert.CertificateException;
-import java.security.interfaces.RSAPublicKey;
-import java.util.List;
 
 /**
  * Configuration class for security settings of the application
@@ -39,9 +49,7 @@ import java.util.List;
  * @author Vitalii Bortsov
  */
 @Configuration
-@EnableGlobalMethodSecurity(
-  prePostEnabled = true
-)
+@EnableMethodSecurity
 @Import(SecurityProblemSupport.class)
 @RequiredArgsConstructor
 public class SecurityConfiguration {
@@ -53,7 +61,8 @@ public class SecurityConfiguration {
   };
 
   private static final String UUID_REGEX = "[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}";
-  private static final List<String> ALLOWED_CORS_HEADERS = List.of("x-requested-with", "authorization", "origin",
+  private static final List<String> ALLOWED_CORS_HEADERS = List.of("x-requested-with",
+    "authorization", "origin",
     "content-type", "version",
     "content-disposition", "location");
   private final JobPortalApplicationProperties applicationProperties;
@@ -75,27 +84,30 @@ public class SecurityConfiguration {
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    http.csrf().disable();
-    http.headers().cacheControl().disable();
+    http.csrf(AbstractHttpConfigurer::disable);
+    http.headers(h -> h.cacheControl(CacheControlConfig::disable));
 
-    http.cors().configurationSource(corsFilter());
-    http
-      .authorizeHttpRequests()
-      .antMatchers(HttpMethod.POST, "/auth/**").permitAll()
-      .antMatchers(HttpMethod.GET, "/auth/**", "/companies/**", "/job-categories/**", "/positions", "/positions/")
-      .permitAll()
-      .regexMatchers(HttpMethod.GET, "/positions/" + UUID_REGEX, "/users/" + UUID_REGEX + "/avatar").permitAll()
-      .antMatchers(HttpMethod.GET, SWAGGER_PUBLIC_ENDPOINTS).permitAll()
-      .anyRequest()
-      .authenticated();
+    http.cors(c -> c.configurationSource(corsFilter()));
+    http.authorizeHttpRequests(ar ->
+      ar.requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
+        .requestMatchers(HttpMethod.GET, "/auth/**", "/companies/**", "/job-categories/**",
+          "/positions", "/positions/")
+        .permitAll()
+        .requestMatchers(
+          regexMatcher(HttpMethod.GET, "/positions/" + UUID_REGEX),
+          regexMatcher(HttpMethod.GET, "/users/" + UUID_REGEX + "/avatar")
+        ).permitAll()
+        .requestMatchers(HttpMethod.GET, SWAGGER_PUBLIC_ENDPOINTS).permitAll()
+        .anyRequest()
+        .authenticated()
+    );
 
-    http.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
+    http.oauth2ResourceServer(rs -> rs.jwt(Customizer.withDefaults()));
 
     http.httpBasic(Customizer.withDefaults());
 
-    http.exceptionHandling()
-      .authenticationEntryPoint(securityProblemSupport)
-      .accessDeniedHandler(securityProblemSupport);
+    http.exceptionHandling(eh -> eh.authenticationEntryPoint(securityProblemSupport)
+      .accessDeniedHandler(securityProblemSupport));
 
     return http.build();
   }
@@ -117,9 +129,11 @@ public class SecurityConfiguration {
           .keyID(storeProperties.getKid())
           .build();
       } else {
-        throw new BeanInitializationException("Failed to initialize KeyPair provider. Create key is not private");
+        throw new BeanInitializationException(
+          "Failed to initialize KeyPair provider. Create key is not private");
       }
-    } catch (KeyStoreException | NoSuchAlgorithmException | UnrecoverableKeyException | IOException |
+    } catch (KeyStoreException | NoSuchAlgorithmException | UnrecoverableKeyException |
+             IOException |
              CertificateException ex) {
       throw new BeanInitializationException(ex.getMessage(), ex);
     }
@@ -128,7 +142,8 @@ public class SecurityConfiguration {
   @Bean
   public JwtDecoder jwtDecoder(StaticObjectFactory staticObjectFactory) {
     try {
-      final var result = NimbusJwtDecoder.withPublicKey((RSAPublicKey) rsaKey().toPublicKey()).build();
+      final var result = NimbusJwtDecoder.withPublicKey((RSAPublicKey) rsaKey().toPublicKey())
+        .build();
       final var validator = new JwtTimestampValidator();
       validator.setClock(staticObjectFactory.getClock());
 
@@ -147,7 +162,8 @@ public class SecurityConfiguration {
   }
 
   @Bean
-  public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+  public AuthenticationManager authenticationManager(
+    AuthenticationConfiguration authenticationConfiguration)
     throws Exception {
     return authenticationConfiguration.getAuthenticationManager();
   }

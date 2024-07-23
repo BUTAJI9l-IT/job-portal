@@ -27,10 +27,10 @@ public class UserDetailServiceImpl implements UserDetailsService {
   @Transactional(readOnly = true)
   public UserDetails loadUserByUsername(@NonNull String email) throws UsernameNotFoundException {
     return userRepository.findByEmail(email)
-        .map(user -> User.withUsername(email).password(user.getPassword())
-            .authorities(new SimpleGrantedAuthority(user.getScope().toString())).build())
-        .orElseThrow(() -> {
-          throw new EntityNotFoundException(muni.fi.cz.jobportal.domain.User.class);
-        });
+      .map(user -> User.withUsername(email).password(user.getPassword())
+        .authorities(new SimpleGrantedAuthority(user.getScope().toString())).build())
+      .orElseThrow(() -> {
+        throw new EntityNotFoundException(muni.fi.cz.jobportal.domain.User.class);
+      });
   }
 }

@@ -1,8 +1,29 @@
 package muni.fi.cz.jobportal.configuration;
 
+import static muni.fi.cz.jobportal.configuration.ApplicationFonts.ARIAL_BOLD_FONT_PATH;
+import static muni.fi.cz.jobportal.configuration.ApplicationFonts.ARIAL_FONT_PATH;
+import static muni.fi.cz.jobportal.configuration.ApplicationFonts.LATO_BLACK_FONT_PATH;
+import static muni.fi.cz.jobportal.configuration.ApplicationFonts.LATO_BLACK_ITALIC_FONT_PATH;
+import static muni.fi.cz.jobportal.configuration.ApplicationFonts.LATO_BOLD_FONT_PATH;
+import static muni.fi.cz.jobportal.configuration.ApplicationFonts.LATO_BOLD_ITALIC_FONT_PATH;
+import static muni.fi.cz.jobportal.configuration.ApplicationFonts.LATO_ITALIC_FONT_PATH;
+import static muni.fi.cz.jobportal.configuration.ApplicationFonts.LATO_LIGHT_FONT_PATH;
+import static muni.fi.cz.jobportal.configuration.ApplicationFonts.LATO_LIGHT_ITALIC_FONT_PATH;
+import static muni.fi.cz.jobportal.configuration.ApplicationFonts.LATO_REGULAR_FONT_PATH;
+import static muni.fi.cz.jobportal.configuration.ApplicationFonts.LATO_THIN_FONT_PATH;
+import static muni.fi.cz.jobportal.configuration.ApplicationFonts.LATO_THIN_ITALIC_FONT_PATH;
+import static muni.fi.cz.jobportal.configuration.ApplicationFonts.OSWALD_BOLD_FONT_PATH;
+import static muni.fi.cz.jobportal.configuration.ApplicationFonts.OSWALD_EXTRALIGHT_FONT_PATH;
+import static muni.fi.cz.jobportal.configuration.ApplicationFonts.OSWALD_LIGHT_FONT_PATH;
+import static muni.fi.cz.jobportal.configuration.ApplicationFonts.OSWALD_MEDIUM_FONT_PATH;
+import static muni.fi.cz.jobportal.configuration.ApplicationFonts.OSWALD_REGULAR_FONT_PATH;
+import static muni.fi.cz.jobportal.configuration.ApplicationFonts.OSWALD_SEMIBOLD_FONT_PATH;
+
 import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.resolver.font.DefaultFontProvider;
 import com.itextpdf.io.font.FontProgramFactory;
+import java.io.IOException;
+import java.util.Locale;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.webresources.TomcatURLStreamHandlerFactory;
 import org.springframework.context.annotation.Bean;
@@ -10,14 +31,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.io.ResourceLoader;
 import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
-import org.thymeleaf.spring5.SpringTemplateEngine;
+import org.thymeleaf.spring6.SpringTemplateEngine;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
-
-import java.io.IOException;
-import java.util.Locale;
-
-import static muni.fi.cz.jobportal.configuration.ApplicationFonts.*;
 
 /**
  * Configuration class for Thymeleaf processor.
@@ -71,7 +87,8 @@ public class ThymeleafConfiguration {
 
   @Bean
   public ClassLoaderTemplateResolver cssTemplateResolver() {
-    final var templateResolver = new ClassLoaderTemplateResolver(Thread.currentThread().getContextClassLoader());
+    final var templateResolver = new ClassLoaderTemplateResolver(
+      Thread.currentThread().getContextClassLoader());
     templateResolver.setTemplateMode(TemplateMode.CSS);
     templateResolver.setPrefix(CSS_PREFIX);
     templateResolver.setSuffix(".css");
@@ -110,7 +127,8 @@ public class ThymeleafConfiguration {
   }
 
   private void addFont(DefaultFontProvider dfp, String arialFontPath) throws IOException {
-    dfp.addFont(FontProgramFactory.createFont(resourceLoader.getResource(arialFontPath).getFile().getPath()));
+    dfp.addFont(
+      FontProgramFactory.createFont(resourceLoader.getResource(arialFontPath).getFile().getPath()));
   }
 
 }

@@ -1,5 +1,8 @@
 package muni.fi.cz.jobportal.configuration.search.binder;
 
+import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.CATEGORY;
+import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.COMPANY;
+
 import com.nimbusds.oauth2.sdk.util.CollectionUtils;
 import muni.fi.cz.jobportal.domain.JobPosition;
 import muni.fi.cz.jobportal.domain.JobPosition_;
@@ -8,9 +11,6 @@ import org.hibernate.search.engine.backend.document.IndexFieldReference;
 import org.hibernate.search.mapper.pojo.bridge.TypeBridge;
 import org.hibernate.search.mapper.pojo.bridge.binding.TypeBindingContext;
 import org.hibernate.search.mapper.pojo.bridge.runtime.TypeBridgeWriteContext;
-
-import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.CATEGORY;
-import static muni.fi.cz.jobportal.configuration.constants.SearchProperties.COMPANY;
 
 /**
  * Type binder for job position entity.
@@ -35,12 +35,16 @@ public class JobPositionBinder extends AbstractBinder {
       new Bridge(company, companyFulltext, companySort, categories, categoriesSort));
   }
 
-  private record Bridge(IndexFieldReference<String> company, IndexFieldReference<String> companyFulltext,
-                        IndexFieldReference<String> companySort, IndexFieldReference<String> categories,
-                        IndexFieldReference<String> categoriesSort) implements TypeBridge<JobPosition> {
+  private record Bridge(IndexFieldReference<String> company,
+                        IndexFieldReference<String> companyFulltext,
+                        IndexFieldReference<String> companySort,
+                        IndexFieldReference<String> categories,
+                        IndexFieldReference<String> categoriesSort) implements
+    TypeBridge<JobPosition> {
 
     @Override
-    public void write(DocumentElement target, JobPosition jobPosition, TypeBridgeWriteContext context) {
+    public void write(DocumentElement target, JobPosition jobPosition,
+      TypeBridgeWriteContext context) {
       if (CollectionUtils.isNotEmpty(jobPosition.getJobCategories())) {
         jobPosition.getJobCategories().forEach(jpc -> {
           target.addValue(categories, jpc.getId().toString());

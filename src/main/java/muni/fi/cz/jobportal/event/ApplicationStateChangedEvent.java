@@ -1,10 +1,9 @@
 package muni.fi.cz.jobportal.event;
 
+import java.util.UUID;
 import lombok.Getter;
 import muni.fi.cz.jobportal.enums.ApplicationState;
 import org.springframework.context.ApplicationEvent;
-
-import java.util.UUID;
 
 /**
  * Event for application status changes.

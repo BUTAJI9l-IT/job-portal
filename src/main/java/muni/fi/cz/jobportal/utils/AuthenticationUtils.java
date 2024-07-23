@@ -1,5 +1,7 @@
 package muni.fi.cz.jobportal.utils;
 
+import java.util.Optional;
+import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.NonNull;
@@ -9,9 +11,6 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtClaimAccessor;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
-import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Utility class for handling authorization header with access token.
@@ -31,8 +30,9 @@ public class AuthenticationUtils {
   public static String getJwtFromHeader() {
     final var requestAttributes = RequestContextHolder.getRequestAttributes();
 
-    return requestAttributes != null ? Optional.ofNullable(((ServletRequestAttributes) requestAttributes).getRequest()
-      .getHeader("Authorization")).map(auth -> auth.substring(7)).orElse(null) : null;
+    return requestAttributes != null ? Optional.ofNullable(
+      ((ServletRequestAttributes) requestAttributes).getRequest()
+        .getHeader("Authorization")).map(auth -> auth.substring(7)).orElse(null) : null;
   }
 
   public static Jwt getAccessToken() {
@@ -45,7 +45,8 @@ public class AuthenticationUtils {
 
   public static Optional<String> getClaim(@NonNull String claim) {
     final var accessToken = getAccessToken();
-    return accessToken == null ? Optional.empty() : Optional.ofNullable(accessToken.getClaim(claim));
+    return accessToken == null ? Optional.empty()
+      : Optional.ofNullable(accessToken.getClaim(claim));
   }
 
   public static Authentication getAuthentication() {

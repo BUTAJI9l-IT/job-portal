@@ -1,10 +1,9 @@
 package muni.fi.cz.jobportal.repository;
 
-import muni.fi.cz.jobportal.domain.JobCategory;
-import org.springframework.data.jpa.repository.Query;
-
 import java.util.Optional;
 import java.util.UUID;
+import muni.fi.cz.jobportal.domain.JobCategory;
+import org.springframework.data.jpa.repository.Query;
 
 public interface JobCategoryRepository extends JobPortalRepository<JobCategory, UUID> {
 

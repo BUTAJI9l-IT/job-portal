@@ -1,5 +1,6 @@
 package muni.fi.cz.jobportal.service.impl;
 
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import muni.fi.cz.jobportal.annotation.JobPortalService;
 import muni.fi.cz.jobportal.api.common.CompanyDto;
@@ -16,8 +17,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.lang.NonNull;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.UUID;
 
 /**
  * {@link CompanyService} Implementation

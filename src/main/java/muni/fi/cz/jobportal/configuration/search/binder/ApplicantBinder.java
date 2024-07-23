@@ -26,16 +26,21 @@ public class ApplicantBinder extends AbstractBinder {
 
     final var fullName = fulltext(typeBindingContext, SearchProperties.NAME, String.class);
     final var fullNameSort = sort(typeBindingContext, SearchProperties.NAME, String.class);
-    final var jobPositionId = keywordCollection(typeBindingContext, SearchProperties.JOB_POSITION, String.class);
-    final var jobPositionFulltext = fulltextCollection(typeBindingContext, SearchProperties.JOB_POSITION, String.class);
-    final var jobPositionSort = sortCollection(typeBindingContext, SearchProperties.JOB_POSITION, String.class);
+    final var jobPositionId = keywordCollection(typeBindingContext, SearchProperties.JOB_POSITION,
+      String.class);
+    final var jobPositionFulltext = fulltextCollection(typeBindingContext,
+      SearchProperties.JOB_POSITION, String.class);
+    final var jobPositionSort = sortCollection(typeBindingContext, SearchProperties.JOB_POSITION,
+      String.class);
 
     typeBindingContext.bridge(Applicant.class,
       new Bridge(fullName, fullNameSort, jobPositionId, jobPositionFulltext, jobPositionSort));
   }
 
-  private record Bridge(IndexFieldReference<String> fullName, IndexFieldReference<String> fullNameSort,
-                        IndexFieldReference<String> jobPositionId, IndexFieldReference<String> jobPositionFulltext,
+  private record Bridge(IndexFieldReference<String> fullName,
+                        IndexFieldReference<String> fullNameSort,
+                        IndexFieldReference<String> jobPositionId,
+                        IndexFieldReference<String> jobPositionFulltext,
                         IndexFieldReference<String> jobPositionSort) implements
     TypeBridge<Applicant> {
 

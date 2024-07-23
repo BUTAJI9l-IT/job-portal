@@ -19,8 +19,8 @@ public class UserBinder extends AbstractBinder {
   @Override
   public void bind(TypeBindingContext typeBindingContext) {
     typeBindingContext.dependencies()
-        .use(User_.NAME)
-        .use(User_.LAST_NAME);
+      .use(User_.NAME)
+      .use(User_.LAST_NAME);
 
     final var fullName = fulltext(typeBindingContext, SearchProperties.NAME, String.class);
     final var fullNameSort = sort(typeBindingContext, SearchProperties.NAME, String.class);
@@ -28,8 +28,9 @@ public class UserBinder extends AbstractBinder {
     typeBindingContext.bridge(User.class, new Bridge(fullName, fullNameSort));
   }
 
-  private record Bridge(IndexFieldReference<String> fullNameField, IndexFieldReference<String> fullNameSort) implements
-      TypeBridge<User> {
+  private record Bridge(IndexFieldReference<String> fullNameField,
+                        IndexFieldReference<String> fullNameSort) implements
+    TypeBridge<User> {
 
     @Override
     public void write(DocumentElement target, User user, TypeBridgeWriteContext context) {

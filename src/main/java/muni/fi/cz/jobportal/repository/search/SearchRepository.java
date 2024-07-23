@@ -17,8 +17,8 @@ public interface SearchRepository<T, Q extends QueryParams> extends Initializing
    *
    * @param pageable pageable parameter
    * @param params   search parameters
-   * @return pageable model for the base entity of this repository that contains all the entities, which have matched
-   * search parameters
+   * @return pageable model for the base entity of this repository that contains all the entities,
+   * which have matched search parameters
    */
   Page<T> search(Pageable pageable, Q params);
 
