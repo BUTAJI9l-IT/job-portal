@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:experimental
 
 # maven build (optionally build is taken from cache in case the source code was not changed)
-FROM maven:3.8.3-openjdk-17 AS build
+FROM maven:3.9.8-amazoncorretto-21 AS build
 WORKDIR /workspace/app
 
 COPY pom.xml .
@@ -11,7 +11,7 @@ COPY src src
 RUN --mount=type=cache,target=/root/.m2 mvn install -DskipTests
 RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 
-FROM openjdk:17
+FROM openjdk:21
 VOLUME /tmp
 LABEL maintainer="JobPortal"
 
