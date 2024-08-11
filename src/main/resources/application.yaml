@@ -22,7 +22,7 @@ spring:
       'hibernate.cache.use_second_level_cache': true
       'hibernate.cache.region.factory_class': org.hibernate.cache.jcache.JCacheRegionFactory
       'hibernate.cache.use_query_cache': true
-      'hibernate.search.backend.analysis.configurer': muni.fi.cz.jobportal.configuration.search.LuceneConfiguration
+      'hibernate.search.backend.analysis.configurer': com.github.butaji9l.jobportal.be.configuration.search.LuceneConfiguration
       'hibernate.search.backend.directory.root': ./tmp/index
   datasource:
     url: jdbc:postgresql://localhost:5432/jobportal
@@ -45,7 +45,7 @@ spring:
         smtp.starttls.enable: ${NOTIFICATIONS_ENABLED:false}
 springdoc:
   packages-to-scan:
-    - muni.fi.cz.jobportal.resource
+    - com.github.butaji9l.jobportal.be.resource
   api-docs:
     resolve-schema-properties: true
   writer-with-order-by-keys: true
