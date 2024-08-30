@@ -20,7 +20,7 @@ on:
       run_docker:
         description: 'Run Docker job'
         required: false
-        default: 'true'
+        default: 'false'
 
 jobs:
   build:
@@ -44,7 +44,7 @@ jobs:
 
   deploy:
     needs: build
-    if: github.ref == 'refs/heads/master' && github.event.inputs.run_docker == 'true'
+#    if: github.ref == 'refs/heads/master' && github.event.inputs.run_docker == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
