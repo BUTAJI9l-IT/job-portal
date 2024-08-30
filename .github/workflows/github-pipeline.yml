@@ -36,6 +36,12 @@ jobs:
       - name: Build with Maven
         run: mvn clean install -DskipTests=false -DskipITs=false
 
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
       - name: Build the Docker image
         if: github.ref == 'refs/heads/master'
         run: DOCKER_BUILDKIT=1 docker build . --file Dockerfile --tag ${{ github.event.repository.name }}:${{ github.sha }}
