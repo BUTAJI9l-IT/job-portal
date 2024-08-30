@@ -33,9 +33,6 @@ jobs:
           distribution: 'corretto'
           cache: maven
 
-      - name: Cache dependencies
-        run: mvn dependency:go-offline
-
       - name: Build with Maven
         run: mvn clean install -DskipTests=false -DskipITs=false
 
