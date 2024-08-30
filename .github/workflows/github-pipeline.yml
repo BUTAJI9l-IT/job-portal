@@ -20,7 +20,7 @@ on:
       run_docker:
         description: 'Run Docker job'
         required: false
-        default: 'false'
+        default: 'true'
 
 jobs:
   build:
