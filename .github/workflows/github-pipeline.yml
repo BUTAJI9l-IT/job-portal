@@ -50,3 +50,6 @@ jobs:
 
       - name: Push Docker image to registry
         run: docker push ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:${{ github.sha }}
+
+      - name: Update latest Docker image
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:latest
